@@ -24,3 +24,22 @@ class ReconciliationResult(BaseModel):
     verdict: Literal["verified", "drift", "unverifiable"]
     ledger_summary: str = ""
     amount_at_risk_usd: float = 0.0
+
+
+class RemediationReceipt(BaseModel):
+    """Proof that a drift was acted on, safe to retry and show on camera."""
+
+    idempotency_key: str
+    promise: PromiseEntity
+    amount_usd: float
+    status: Literal["executed", "already_executed"]
+
+
+class AuditReport(BaseModel):
+    """One transcript audited end to end: promises, drifts, totals."""
+
+    promises: list[PromiseEntity] = Field(default_factory=list)
+    results: list[ReconciliationResult] = Field(default_factory=list)
+    drifts: list[ReconciliationResult] = Field(default_factory=list)
+    total_at_risk_usd: float = 0.0
+    verdict: Literal["verified_green", "drift_found"] = "verified_green"
