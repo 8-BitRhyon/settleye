@@ -1,0 +1,23 @@
+{
+  "case": "A",
+  "description": "General support pleasantries. Zero promises expected. Verdict: Verified Green.",
+  "turns": [
+    {
+      "role": "customer",
+      "text": "Hi, I wanted to check the status of my order #1042."
+    },
+    {
+      "role": "agent",
+      "text": "Hi! Thanks for reaching out. Order #1042 shipped yesterday and the carrier shows it arriving Thursday. Is there anything else I can help with?"
+    },
+    {
+      "role": "customer",
+      "text": "No, that covers it. Thanks!"
+    },
+    {
+      "role": "agent",
+      "text": "You are welcome. Have a great day!"
+    }
+  ],
+  "expected_promises": []
+}

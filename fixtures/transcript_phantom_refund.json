@@ -1,0 +1,31 @@
+{
+  "case": "B",
+  "description": "Agent confirms a $45 refund for order #992 that never settles. Expect STATE_DRIFT_EXCEPTION.",
+  "turns": [
+    {
+      "role": "customer",
+      "text": "The jacket I ordered (order #992) arrived with a torn seam. I want a refund."
+    },
+    {
+      "role": "agent",
+      "text": "I am sorry about the torn seam. I have processed a full $45 refund for order #992. It should appear on your statement within 5 to 10 business days."
+    },
+    {
+      "role": "customer",
+      "text": "Great, thank you for sorting that out so fast."
+    }
+  ],
+  "expected_promises": [
+    {
+      "action": "refund",
+      "amount": 45.0,
+      "order_id": "992",
+      "target_system": "stripe",
+      "asserted_state": "full refund processed"
+    }
+  ],
+  "ledger_state": {
+    "refunds_for_order_992_usd": 0.0
+  },
+  "expected_verdict": "drift"
+}

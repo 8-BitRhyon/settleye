@@ -1,0 +1,18 @@
+{
+  "description": "Mock ledger for offline development and CI. Mirrors Stripe test-mode shapes. Never real money.",
+  "charges": [
+    {
+      "id": "ch_test_992",
+      "order_id": "992",
+      "amount_usd": 45.0,
+      "refunded_usd": 0.0
+    },
+    {
+      "id": "ch_test_1042",
+      "order_id": "1042",
+      "amount_usd": 120.0,
+      "refunded_usd": 0.0
+    }
+  ],
+  "refunds": []
+}

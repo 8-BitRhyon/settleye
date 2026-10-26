@@ -1,0 +1,47 @@
+# OS / editor
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+*.swp
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+.venv/
+venv/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+
+# Node
+node_modules/
+
+# Build output
+dist/
+build/
+.build/
+
+# Env & secrets (NEVER commit real credentials)
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+*.p12
+secrets/
+
+# Test / coverage
+coverage/
+.coverage
+htmlcov/
+*.lcov
+coverage-final.json
+
+# Logs
+*.log
+npm-debug.log*
+
+# Local tooling state
+.tmp/
