@@ -5,6 +5,7 @@ import os
 from pathlib import Path
 
 from fastapi import FastAPI, HTTPException
+from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 
 from app.audit import audit_transcript
@@ -15,6 +16,21 @@ from app.remediate.service import RemediationError, RemediationService
 from app.value import ValueLedger, summarize
 
 app = FastAPI(title="PromiseCheck", version="0.1.0")
+
+# The judging demo runs the dashboard (Vite dev or static hosting) on a
+# different origin than the API. Extra origins come from ALLOWED_ORIGINS
+# as a comma-separated list; localhost:5173 is always allowed for dev.
+_extra_origins = [
+    origin.strip()
+    for origin in os.environ.get("ALLOWED_ORIGINS", "").split(",")
+    if origin.strip()
+]
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["http://localhost:5173", "http://127.0.0.1:5173", *_extra_origins],
+    allow_methods=["GET", "POST", "OPTIONS"],
+    allow_headers=["Content-Type", "Authorization"],
+)
 
 
 class AuditRequest(BaseModel):

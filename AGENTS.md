@@ -19,6 +19,7 @@ PromiseCheck is an execution auditor for AI support agents: it extracts promised
 - Backend test: `cd backend && uv run pytest`
 - Backend dev: `cd backend && uv run uvicorn app.main:app --reload`
 - Frontend install: `cd frontend && npm install`
+- Frontend test: `cd frontend && npm test`
 - Frontend test/typecheck: `cd frontend && npm run typecheck`
 - Frontend build: `cd frontend && npm run build`
 - Frontend dev: `cd frontend && npm run dev`
