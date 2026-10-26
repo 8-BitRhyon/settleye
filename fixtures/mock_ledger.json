@@ -12,7 +12,20 @@
       "order_id": "1042",
       "amount_usd": 120.0,
       "refunded_usd": 0.0
+    },
+    {
+      "id": "ch_test_1043",
+      "order_id": "1043",
+      "amount_usd": 120.0,
+      "refunded_usd": 120.0
     }
   ],
-  "refunds": []
+  "refunds": [
+    {
+      "id": "re_test_1043",
+      "charge_id": "ch_test_1043",
+      "order_id": "1043",
+      "amount_usd": 120.0
+    }
+  ]
 }
