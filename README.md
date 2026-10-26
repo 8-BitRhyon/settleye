@@ -27,6 +27,28 @@ npm run dev
 
 Copy `.env.example` to `.env` and fill in test-mode credentials only. Never commit `.env`.
 
+## Live model proof (how extraction is tested)
+
+Everything below the model call is unit-tested with mock transports
+(`backend/tests/`, 36 green, no network). The live call needs real
+Baseten credits exactly once per verification:
+
+```bash
+export BASETEN_API_KEY=...
+cd backend
+uv run python -m app.extract.live_check ../fixtures/transcript_phantom_refund.json
+```
+
+Exit 0 prints the model ID, wall time, and validated entities. Anything
+else fails loudly: `2` means no key (nothing was called), `3` means the
+endpoint is unreachable (bad key, wrong URL, or cold start), `4` means
+the output never validated after bounded repairs. Expected result on the
+phantom fixture: one `refund $45 order #992` entity.
+
+Failure guide: 401 means the key is wrong; model-not-found means the ID
+drifted (it must stay `meta-models/muse-spark-open`); a first-call
+timeout usually means a cold start, wait and retry once.
+
 ## How it works
 
 1. **Ingest:** support transcript or audio in, normalized to text.
