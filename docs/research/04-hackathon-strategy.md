@@ -24,9 +24,15 @@ Push the Frontier: an execution-verification layer for the agent economy is a ne
 - Nov 3: last day for submission questions. Nov 4 9pm ET: hard submission stop. Submit by noon.
 - Nov 5-8 judging; Nov 9 noon closing ceremony plus live finals (top 5 per track).
 
-## Originality disclosure
+## Submission checklist (from the kickoff stream)
 
-Repo is greenfield and public; every commit timestamped here. Demo opens with the required line: nothing pre-existed, everything shown was built for this event. Submission lists all contributors; one representative submits.
+- [ ] Repository public and reviewable (disqualifier trap: closed-source repos get tossed). Verified public 2026-10-27.
+- [ ] Open the submission form early and read every field; do not meet it for the first time on Nov 4.
+- [ ] Video link works in an incognito window; repo link works logged-out.
+- [ ] Every contributor listed; one representative submits.
+- [ ] Submit by noon ET Nov 4, never the last hour.
+- [ ] Demo opens with the pre-existing-vs-built line.
+- [ ] Post demo on X at submission for Most Viral (engagement to Nov 8 EOD).
 
 ## What past Meta winners did
 
