@@ -54,6 +54,7 @@ The page optimizes audit signups. Stars measure curiosity. Signups prove merchan
 ## Build spec
 
 - Same Vite app, second static entry (`landing.html`) through rollup options input. Inbox stays at root. Both entries must pass `npm run build`.
+- The landing carries one lazy Three.js module (`src/landing-eye.ts`) for the third-eye brand mark in the final CTA card. It loads only on viewport entry, disposes offscreen, and falls back to static CSS under reduced motion or WebGL failure. Performance floor is 85. Accessibility stays 100.
 - Theme tokens go in CSS through Tailwind v4 `@theme`. Fonts load in the entry head.
 - Copy comes verbatim from `landing-copy.md`. Any deviation needs a repo source first.
 - Acceptance: typecheck clean and build clean. Every CTA scrolls or links somewhere real. Only the video slot and the audit contact may stay placeholders.

@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import {
   auditTranscript,
   explainDrift,
@@ -8,6 +8,7 @@ import {
   type DriftResult,
   type ValueSummary,
 } from "./api";
+import { EyeIcon, type EyeIconHandle } from "./components/EyeIcon";
 import {
   AUDIT_LOADING_LABEL,
   SAMPLE_PHANTOM_TRANSCRIPT,
@@ -18,6 +19,14 @@ import {
 
 type RemediateState = Record<string, "idle" | "sending" | "done" | string>;
 type ExplainState = Record<string, string | undefined>;
+
+function DriftEye() {
+  const ref = useRef<EyeIconHandle | null>(null);
+  useEffect(() => {
+    ref.current?.startAnimation();
+  }, []);
+  return <EyeIcon ref={ref} size={14} className="text-red-400" />;
+}
 
 export default function App() {
   const [transcript, setTranscript] = useState(SAMPLE_PHANTOM_TRANSCRIPT);
@@ -177,8 +186,9 @@ export default function App() {
                 >
                   <div className="flex items-center justify-between gap-3">
                     <span
-                      className={`rounded-full px-2 py-0.5 text-xs font-bold ${verdictClasses(result.verdict)}`}
+                      className={`flex items-center gap-1.5 rounded-full px-2 py-0.5 text-xs font-bold ${verdictClasses(result.verdict)}`}
                     >
+                      {result.verdict === "drift" && <DriftEye />}
                       {verdictLabel(result.verdict)}
                     </span>
                     <span className="font-mono text-xs text-zinc-400">

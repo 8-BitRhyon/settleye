@@ -131,6 +131,193 @@ details[open ] summary {
     linear-gradient(135deg, #1b1b1f 0%, var(--color-ink-900) 55%);
 }
 
+/* Third eye: pure CSS brand mark beside the final CTA. Layered radial
+   gradients give the sphere depth; a dark lid sweeps down for one blink
+   per 6s cycle and a faint gold halo pulses behind it. Only transform
+   and opacity animate, so the mark never shifts layout. */
+.third-eye {
+  position: relative;
+  width: 9rem;
+  height: 9rem;
+  flex: none;
+}
+
+.third-eye::before {
+  content: "";
+  position: absolute;
+  inset: -22%;
+  border-radius: 9999px;
+  background: radial-gradient(
+    circle,
+    rgba(180, 83, 9, 0.26) 0%,
+    rgba(4, 120, 87, 0.12) 42%,
+    transparent 68%
+  );
+  animation: third-eye-glow 8s ease-in-out infinite;
+}
+
+.third-eye::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 9999px;
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  border-top-color: rgba(180, 83, 9, 0.45);
+  box-shadow: 0 22px 44px -20px rgba(0, 0, 0, 0.85);
+  pointer-events: none;
+}
+
+.third-eye__ball {
+  position: absolute;
+  inset: 0.55rem;
+  display: block;
+  overflow: hidden;
+  border-radius: 9999px;
+  background:
+    radial-gradient(circle at 34% 26%, rgba(255, 255, 255, 0.9) 0%, rgba(255, 255, 255, 0) 46%),
+    radial-gradient(circle at 50% 42%, #fdfcf7 0%, #f2eee1 38%, #dcd4bf 74%, #aca184 100%);
+  box-shadow:
+    inset -16px -20px 30px rgba(19, 19, 22, 0.3),
+    inset 12px 14px 24px rgba(255, 255, 255, 0.65),
+    inset 0 18px 22px rgba(19, 19, 22, 0.26),
+    inset 0 -14px 20px rgba(19, 19, 22, 0.22);
+}
+
+.third-eye__iris {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 56%;
+  aspect-ratio: 1;
+  display: block;
+  border-radius: 9999px;
+  transform: translate(-50%, -50%);
+  background:
+    repeating-conic-gradient(
+      from 12deg,
+      rgba(255, 255, 255, 0.07) 0deg 5deg,
+      rgba(0, 0, 0, 0.05) 5deg 10deg,
+      transparent 10deg 16deg
+    ),
+    radial-gradient(circle at 38% 32%, #5eead4 0%, #10b981 26%, #047857 52%, #334155 78%, #022c22 100%);
+  box-shadow:
+    inset 0 0 0 2px rgba(2, 44, 34, 0.6),
+    inset 0 0 20px rgba(0, 0, 0, 0.5),
+    inset -8px -10px 16px rgba(0, 0, 0, 0.35);
+}
+
+.third-eye__pupil {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 42%;
+  aspect-ratio: 1;
+  display: block;
+  border-radius: 9999px;
+  transform: translate(-50%, -50%);
+  background: radial-gradient(circle at 42% 38%, #ecfdf5 0%, #6ee7b7 42%, #047857 100%);
+  box-shadow:
+    inset 0 0 10px rgba(4, 120, 87, 0.55),
+    0 0 14px rgba(52, 211, 153, 0.55);
+}
+
+.third-eye__highlight {
+  position: absolute;
+  top: 17%;
+  left: 21%;
+  width: 17%;
+  aspect-ratio: 1;
+  display: block;
+  border-radius: 9999px;
+  background: rgba(255, 255, 255, 0.95);
+  box-shadow: 0 0 8px rgba(255, 255, 255, 0.65);
+}
+
+.third-eye__highlight::after {
+  content: "";
+  position: absolute;
+  top: 190%;
+  left: 185%;
+  width: 42%;
+  aspect-ratio: 1;
+  border-radius: 9999px;
+  background: rgba(255, 255, 255, 0.45);
+}
+
+/* 3D eye: the lazy Three.js canvas covers the CSS eye only after a
+   live WebGL context exists (data-eye="webgl"). Until then, and on any
+   failure, the layered-gradient CSS eye above stays fully visible. */
+.third-eye__canvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  display: block;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 450ms ease;
+}
+
+.third-eye__ball {
+  transition: opacity 300ms ease;
+}
+
+.third-eye[data-eye="webgl"] .third-eye__canvas {
+  opacity: 1;
+}
+
+.third-eye[data-eye="webgl"] .third-eye__ball {
+  opacity: 0;
+}
+
+.third-eye[data-eye="webgl"]::before,
+.third-eye[data-eye="webgl"]::after {
+  visibility: hidden;
+}
+
+.third-eye__lid {
+  position: absolute;
+  inset: -3% -4% auto -4%;
+  height: 106%;
+  display: block;
+  border-radius: 0 0 50% 50% / 0 0 26% 26%;
+  border-bottom: 3px solid #08080a;
+  background:
+    radial-gradient(circle at 50% 0%, #2c2c32 0%, #1b1b1f 58%, #131316 100%);
+  box-shadow: 0 10px 18px rgba(19, 19, 22, 0.35);
+  transform: translateY(-106%);
+  animation: third-eye-blink 6s ease-in-out infinite;
+}
+
+@keyframes third-eye-blink {
+  0%,
+  91% {
+    transform: translateY(-106%);
+  }
+
+  93.5% {
+    transform: translateY(0);
+  }
+
+  96%,
+  100% {
+    transform: translateY(-106%);
+  }
+}
+
+@keyframes third-eye-glow {
+  0%,
+  100% {
+    opacity: 0.45;
+    transform: scale(0.97);
+  }
+
+  50% {
+    opacity: 0.85;
+    transform: scale(1.05);
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   html {
     scroll-behavior: auto;
@@ -140,5 +327,36 @@ details[open ] summary {
   *::before,
   *::after {
     transition: none;
+  }
+
+  /* Third eye: no blink, no glow pulse. The lid stays parked above the
+     ball, so the mark rests as a calm open eye. */
+  .third-eye,
+  .third-eye::before,
+  .third-eye::after,
+  .third-eye__ball,
+  .third-eye__iris,
+  .third-eye__pupil,
+  .third-eye__highlight,
+  .third-eye__highlight::after,
+  .third-eye__lid {
+    animation: none !important;
+    transition: none !important;
+  }
+
+  .third-eye::before {
+    opacity: 0.55;
+    transform: none;
+  }
+
+  .third-eye__lid {
+    transform: translateY(-106%);
+  }
+
+  /* The 3D canvas never runs under reduced motion (the loader checks
+     the media query first); hide it here as a second guard so the
+     calm open CSS eye is the only render. */
+  .third-eye__canvas {
+    display: none !important;
   }
 }
