@@ -14,12 +14,12 @@ Community/Most Viral counts X engagement through Nov 8.
 
 ## Human-only (in order)
 
-1. Record the demo video (script: docs/demo-script.md; description copy in
-   docs/marketing/launch-kit.md). Refund loop leads; cancellations vision.
-2. Register settleye.com (verified free via RDAP Oct 27; fallback
+1. Record the demo video (script: docs/demo-script.md, description copy in
+   docs/marketing/launch-kit.md). Refund loop leads. Cancellations stay vision.
+2. Register settleye.com (verified free via RDAP Oct 27, fallback
    getsettleye.com). Do this before the video bakes in links.
 3. Submit on the hackathon platform by noon ET Nov 4 with the blurb.
-4. Post the X launch post at submission; next day reply with the eval
+4. Post the X launch post at submission. Next day reply with the eval
    stat (12/12 verdicts, 0 non-binding drifts). Engagement counts to Nov 8.
 5. Attend Agents 102 (verifiable agents, Oct 28) and Agents 101 if not done.
 6. Optional: Bogus-gateway order for a gateway-paid (non-manual) refund proof.

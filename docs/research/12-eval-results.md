@@ -39,4 +39,4 @@ plus per-case audit for scoring. Deterministic gating pins live in
 - The daemon sweep total ($285.50) equaled the manifest sum exactly:
   45 + 120 + 30 + 45 + 45.50.
 - Nothing here touches real money. The mock ledger mirrors Stripe
-  test-mode shapes; live-store proof is recorded separately.
+  test-mode shapes. Live-store proof is recorded separately.

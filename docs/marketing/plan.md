@@ -6,8 +6,8 @@ Designed to be copied per launch, per channel, per merchant segment. Cadence sur
 
 1. X (Most Viral $20k + community vote halo). Daily during judging week, 3x weekly after.
 2. Hackathon gallery plus Discord (votes, feedback, design partners).
-3. Shopify/e-commerce communities (merchant pain threads; never spam, answer refund questions with the phantom pattern and link the eval).
-4. Email outreach to mid-market ops leads (design partners, not blasts; 5 per week).
+3. Shopify and e-commerce communities (merchant pain threads, never spam, answer refund questions with the phantom pattern and link the eval).
+4. Email outreach to mid-market ops leads (design partners, not blasts, 5 per week).
 
 ## Content pillars (rotate, never repeat twice in a row)
 

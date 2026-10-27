@@ -8,7 +8,7 @@
 >
 > Demo + repo below. Judges and merchants welcome. [video link] [repo link]
 
-Follow-up reply (same thread, next day): post the single most surprising drift figure from testing ("12/12 eval verdicts correct, and 0 non-binding commitments ever reached drift"). Numbers travel.
+Follow-up reply (same thread, next day): post the top drift figure from testing. Use "12/12 eval verdicts correct, and 0 non-binding commitments ever reached drift". Numbers travel.
 
 ## Demo video description (YouTube, unlisted)
 
@@ -18,7 +18,7 @@ Chapters: 0:00 the $45 phantom refund. 0:45 live extraction. 1:30 the fix. 2:15 
 
 ## Submission blurb (hackathon platform, short)
 
-Settleye verifies AI support agents keep their money promises. It extracts binding commitments from transcripts with a Meta model, reconciles each against live Stripe/Shopify state, and surfaces mismatches in a money-sorted exception inbox with one-click idempotent remediation. Push the Frontier: deterministic verification for non-deterministic agents.
+Settleye verifies AI support agents keep their money promises. It extracts binding commitments from transcripts with a Meta model. It reconciles each against live Stripe and Shopify state. It surfaces mismatches in a money-sorted exception inbox with one-click idempotent remediation. Push the Frontier means deterministic verification for non-deterministic agents.
 
 ## Design-partner outreach (DM or email, copy and customize)
 

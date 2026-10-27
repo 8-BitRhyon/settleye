@@ -25,11 +25,12 @@ Footnote: chatbot promises already create liability (Air Canada tribunal, 2024).
 2. We backfill 90 days. Every AI-resolved ticket reconciled against settlement records. You get the leakage ledger: dollars promised vs dollars moved.
 3. Fix in one click. Each drift carries its evidence chain and an idempotent remediation. Retry-safe by construction.
 
-## Proof bar
+## Proof bar (measured Oct 27, 2026, not targets)
 
-- False-all-clear rate at most 0.5% on broken promises (target, measured on our open eval).
-- Inbox precision at least 98% (verify loop before any human sees a flag).
+- 12 of 12 eval verdicts correct on the open 12-case set (`docs/research/12-eval-results.md`).
+- Zero non-binding commitments ever reached drift in four chances. Failures never report success.
 - Ledger state 100% deterministic: zero LLM guessing on money movement.
+- Live Shopify run: $44.00 at risk found on order #1001 in 4.07 seconds.
 
 ## Pricing teaser
 
