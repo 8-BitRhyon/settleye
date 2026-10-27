@@ -48,6 +48,14 @@ ORDER_CLEAN = {
                         "id": "gid://shopify/Order/2",
                         "name": "#1042",
                         "refunds": [],
+                        "transactions": [
+                            {
+                                "id": "gid://shopify/OrderTransaction/20",
+                                "gateway": "manual",
+                                "kind": "SALE",
+                                "status": "SUCCESS",
+                            }
+                        ],
                     }
                 }
             ]
@@ -123,9 +131,24 @@ def test_create_carries_idempotency_and_returns_id() -> None:
     seen: list[httpx.Request] = []
     adapter = make_adapter(ORDER_CLEAN, seen)
     receipt = adapter.record_refund(order_id="992", amount_usd=45.00)
-    assert "@idempotent" in seen[-1].content.decode()
+    body = seen[-1].content.decode()
+    assert "@idempotent" in body
+    assert "refundCreate(input: $input) @idempotent" in body
+    assert "gid://shopify/Order/2" in body
+    assert "gid://shopify/OrderTransaction/20" in body
     assert receipt["refunded_usd"] == 45.00
     assert "Refund/9" in receipt["id"]
+
+
+def test_create_raises_on_unknown_order() -> None:
+    seen: list[httpx.Request] = []
+    adapter = make_adapter(ORDER_MISS, seen)
+    try:
+        adapter.record_refund(order_id="0000", amount_usd=5.00)
+    except ShopifyError as exc:
+        assert "No order matches" in str(exc)
+    else:
+        raise AssertionError("expected ShopifyError")
 
 
 def test_user_errors_raise() -> None:

@@ -1,10 +1,10 @@
 """Shopify dev-store ledger adapter.
 
 Read path is order refunds via the GraphQL Admin API. Write path is
-refundCreate guarded by the @idempotent directive (required since 2026-04)
-plus userErrors inspection: a rejected mutation raises, never pretends.
-The exact mutation shape gets live verification against a dev store once
-its custom-app token lands; until then the wire format is pinned by tests.
+refundCreate with the @idempotent directive on the field plus userErrors
+inspection: a rejected mutation raises, never pretends. Wire shape is
+live-verified against the dev store (order GID plus SALE-parented
+transaction, manual gateway, field-level directive).
 """
 
 from typing import Any
@@ -93,20 +93,76 @@ class ShopifyAdapter:
         return round(total, 2)
 
     def record_refund(self, order_id: str, amount_usd: float) -> dict[str, Any]:
-        """Execute a dev-store refund. Idempotent by directive key."""
+        """Execute a dev-store refund. Idempotent by field-level directive key.
+
+        Live-verified shape: RefundInput takes the order GID plus one
+        transaction (parent SALE id, order GID, formatted amount, REFUND
+        kind, sale gateway). The @idempotent directive sits on the
+        refundCreate field, not the mutation operation.
+        """
         name = order_id if order_id.startswith("#") else f"#{order_id}"
         key = f"refund:{order_id.lstrip('#')}:{amount_usd:.2f}"
+        lookup = self._call(
+            """
+            query OrderForRefund($name: String!) {
+              orders(first: 1, query: $name) {
+                edges {
+                  node {
+                    id
+                    transactions(first: 10) {
+                      id
+                      gateway
+                      kind
+                      status
+                    }
+                  }
+                }
+              }
+            }
+            """,
+            {"name": f"name:{name}"},
+        )
+        edges = lookup.get("orders", {}).get("edges", [])
+        if not edges:
+            raise ShopifyError(f"No order matches {name}.")
+        node = edges[0].get("node", {})
+        order_gid = node.get("id")
+        sale = next(
+            (
+                t
+                for t in node.get("transactions", [])
+                if t.get("kind") == "SALE" and t.get("id")
+            ),
+            None,
+        )
+        if not order_gid or not sale:
+            raise ShopifyError(
+                f"Order {name} has no refundable SALE transaction."
+            )
         data = self._call(
             """
-            mutation RefundCreate($input: RefundInput!, $key: String!) @idempotent(key: $key) {
-              refundCreate(input: $input) {
+            mutation RefundCreate($input: RefundInput!, $key: String!) {
+              refundCreate(input: $input) @idempotent(key: $key) {
                 refund { id }
                 userErrors { field message }
               }
             }
             """,
             {
-                "input": {"orderName": name, "notify": False},
+                "input": {
+                    "orderId": order_gid,
+                    "notify": False,
+                    "note": f"Settleye refund {name} ${amount_usd:.2f}",
+                    "transactions": [
+                        {
+                            "parentId": sale["id"],
+                            "orderId": order_gid,
+                            "amount": f"{amount_usd:.2f}",
+                            "kind": "REFUND",
+                            "gateway": sale.get("gateway") or "manual",
+                        }
+                    ],
+                },
                 "key": key,
             },
         )
