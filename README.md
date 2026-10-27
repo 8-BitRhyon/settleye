@@ -1,8 +1,8 @@
-# PromiseCheck
+# Settleye
 
 **Autonomous state-reconciliation and execution auditor for AI support agents.** Built for the Meta Global AI Developer Hackathon (Indie Developer Track, Oct 26 - Nov 4, 2026).
 
-AI agents promise ledger actions in natural language ("I have processed your $50 refund") while the underlying tool call silently fails or never happens. PromiseCheck extracts structured promise entities from transcripts with a Meta model, diffs them against live Stripe/Shopify state, and surfaces mismatches in an exception inbox with one-click remediation.
+AI agents promise ledger actions in natural language ("I have processed your $50 refund") while the underlying tool call silently fails or never happens. Settleye extracts structured promise entities from transcripts with a Meta model, diffs them against live Stripe/Shopify state, and surfaces mismatches in an exception inbox with one-click remediation.
 
 ## Quickstart (under 5 minutes)
 

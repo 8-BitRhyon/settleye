@@ -4,7 +4,7 @@ Operating contract for agents working in this repository. Read before writing.
 
 ## Purpose
 
-PromiseCheck is an execution auditor for AI support agents: it extracts promised actions from transcripts and reconciles them against Stripe/Shopify ledger state. Built for the Meta Global AI Developer Hackathon (Indie track, Oct-Nov 2026).
+Settleye is an execution auditor for AI support agents: it extracts promised actions from transcripts and reconciles them against Stripe/Shopify ledger state. Built for the Meta Global AI Developer Hackathon (Indie track, Oct-Nov 2026).
 
 ## Stack
 

@@ -5,6 +5,8 @@ The loader bridges the two: explicit path or auto-found repo-root file,
 never overriding real environment variables, silent when absent.
 """
 
+from pathlib import Path
+
 from app.extract.live_check import load_dotenv_file, repo_env_path
 
 
@@ -50,5 +52,10 @@ def test_comments_and_exports_ignored(tmp_path, monkeypatch) -> None:
 
 
 def test_repo_env_path_points_at_repo_root() -> None:
-    assert repo_env_path().name == ".env"
-    assert repo_env_path().parent.name == "promise-check"
+    from pathlib import Path
+
+    path = repo_env_path()
+    assert path.name == ".env"
+    # Repo root holds both stacks, whatever the checkout directory is named.
+    assert (path.parent / "backend" / "pyproject.toml").is_file()
+    assert (path.parent / "frontend" / "package.json").is_file()

@@ -4,12 +4,12 @@ One-page architecture note. Update when structure changes. This is the owner of 
 
 ## Purpose
 
-PromiseCheck catches silent execution drift: AI support agents promise ledger actions (refunds, cancellations) that never settle. It extracts structured promise entities from transcripts with a Meta model, diffs them against live Stripe/Shopify state, and surfaces mismatches in an exception inbox with one-click remediation.
+Settleye catches silent execution drift: AI support agents promise ledger actions (refunds, cancellations) that never settle. It extracts structured promise entities from transcripts with a Meta model, diffs them against live Stripe/Shopify state, and surfaces mismatches in an exception inbox with one-click remediation.
 
 ## Structure
 
 ```
-promise-check/
+settleye/
   backend/            FastAPI service (uv, Python 3.12)
     app/main.py       App entry, /healthz, router wiring
     app/models.py     Promise entity + reconciliation result schemas (Pydantic v2)

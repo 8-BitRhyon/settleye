@@ -1,4 +1,4 @@
-/** Typed client for the PromiseCheck API. Base URL comes from the environment. */
+/** Typed client for the Settleye API. Base URL comes from the environment. */
 
 const BASE_URL =
   import.meta.env.VITE_API_URL?.replace(/\/$/, "") ?? "http://localhost:8000";

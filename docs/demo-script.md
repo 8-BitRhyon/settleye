@@ -4,7 +4,7 @@ Read verbatim on camera. Every claim below is already true in the repo.
 
 ## 0:00-0:20 The hook (Impact)
 
-> "Every AI support agent, yours, mine, Grok, Atlas, any of them, will eventually tell a customer 'your refund is processed' when nothing was processed. The agent is not lying. It just never checks. Each phantom refund costs $45, plus a $128 chargeback when the customer gives up waiting. I'm [name], and this is PromiseCheck: the auditor for AI agents."
+> "Every AI support agent, yours, mine, Grok, Atlas, any of them, will eventually tell a customer 'your refund is processed' when nothing was processed. The agent is not lying. It just never checks. Each phantom refund costs $45, plus a $128 chargeback when the customer gives up waiting. I'm [name], and this is Settleye: the auditor for AI agents."
 
 Why this opening: it preempts the biggest judge objection (why not just use another bot?) in the first twenty seconds. Those tools ARE agents. Every agent drifts. Switching agents changes which agent you verify, never whether verification is needed.
 
@@ -42,7 +42,7 @@ End card: GitHub URL, model ID, `uv run pytest` plus `npm run build` green.
 
 ## Judge objections, one line each
 
-- Why not just use Grok, Atlas, or Hermes instead? Those are agents. The premise, proven by Air Canada and Priceline, is that every agent drifts. PromiseCheck audits all of them.
+- Why not just use Grok, Atlas, or Hermes instead? Those are agents. The premise, proven by Air Canada and Priceline, is that every agent drifts. Settleye audits all of them.
 - Why not Gorgias guardrails or Decagon audit trails? Guardrails prevent before send for one vendor; trails log tool calls without checking ledger truth. We verify after execution, across vendors.
 - What stops Shopify or Stripe building it? They verify their own rails and never read transcripts. Neutrality is the product.
 - Is the model decorative? The video shows raw transcript to raw model JSON to diff with no cuts, model ID on screen, plus a wire-level test pinning the ID on every request.

@@ -1,4 +1,4 @@
-"""PromiseCheck API entry point."""
+"""Settleye API entry point."""
 
 import json
 import os
@@ -15,7 +15,7 @@ from app.models import AuditReport, PromiseEntity, RemediationReceipt
 from app.remediate.service import RemediationError, RemediationService
 from app.value import ValueLedger, summarize
 
-app = FastAPI(title="PromiseCheck", version="0.1.0")
+app = FastAPI(title="Settleye", version="0.1.0")
 
 # The judging demo runs the dashboard (Vite dev or static hosting) on a
 # different origin than the API. Extra origins come from ALLOWED_ORIGINS

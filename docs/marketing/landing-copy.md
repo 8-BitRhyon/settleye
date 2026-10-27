@@ -6,7 +6,7 @@ Drop-in copy for the marketing page. Voice: plain, dollar-denominated, no hype a
 
 Headline: Your AI agent promised a refund. Did the money move?
 
-Subhead: PromiseCheck reads support transcripts, pulls every binding promise, and reconciles each one against Stripe and Shopify. Mismatches land in one inbox with a one-click fix.
+Subhead: Settleye reads support transcripts, pulls every binding promise, and reconciles each one against Stripe and Shopify. Mismatches land in one inbox with a one-click fix.
 
 Primary CTA: Run a free 14-day shadow audit
 Secondary CTA: Watch the 3-minute demo

@@ -88,7 +88,7 @@ export default function App() {
         <header className="flex items-end justify-between gap-4">
           <div>
             <p className="text-xs font-semibold tracking-widest text-emerald-400 uppercase">
-              PromiseCheck exception inbox
+              Settleye exception inbox
             </p>
             <h1 className="mt-1 text-2xl font-bold">
               {value === null

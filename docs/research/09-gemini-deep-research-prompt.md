@@ -1,10 +1,10 @@
-# Gemini Deep Research Prompt: The Reducto Play for PromiseCheck (v3)
+# Gemini Deep Research Prompt: The Reducto Play for Settleye (v3)
 
 Foundation research completed by our team (Oct 27-28): Reducto/Collar/Global Citizens surface work, plus round-2 tracks on adjacent vendors, complaint data, eval benchmarks, BNPL/dispute rails, incident UX, and regulation. This prompt asks Gemini only what surface work could NOT answer. Paste everything below the line into Gemini Deep Research.
 
 ---
 
-Research the following for a startup called PromiseCheck: an execution auditor for AI customer-support agents. It reads support transcripts, extracts binding promises the agent made (refunds, cancellations, reships: action, amount, order ID, evidence quote), and reconciles each promise against live Stripe/Shopify ledger state, flagging mismatches in an exception inbox with one-click remediation. Stack: `meta-models/muse-spark-open-1026` via Baseten for extraction, Pydantic validation plus bounded retry, FastAPI backend, React dashboard. Target buyers: e-commerce merchants and support ops leads running AI agents.
+Research the following for a startup called Settleye: an execution auditor for AI customer-support agents. It reads support transcripts, extracts binding promises the agent made (refunds, cancellations, reships: action, amount, order ID, evidence quote), and reconciles each promise against live Stripe/Shopify ledger state, flagging mismatches in an exception inbox with one-click remediation. Stack: `meta-models/muse-spark-open-1026` via Baseten for extraction, Pydantic validation plus bounded retry, FastAPI backend, React dashboard. Target buyers: e-commerce merchants and support ops leads running AI agents.
 
 ## What we already know (do not re-research; build on it)
 
@@ -14,7 +14,7 @@ Research the following for a startup called PromiseCheck: an execution auditor f
 
 ## Core strategic question
 
-Reducto won enterprise deals by doing ONE narrow function extremely well and expanding into everything around it. For PromiseCheck:
+Reducto won enterprise deals by doing ONE narrow function extremely well and expanding into everything around it. For Settleye:
 
 1. What is our equivalent "one function"? Candidates: (a) extracting structured promises from messy multi-turn support dialogue with near-perfect precision/recall, (b) the transcript-to-ledger reconciliation join itself, (c) something else. Which one, and what accuracy bar makes it enterprise-grade?
 2. Build vs borrow: should we fine-tune an open-weight model for this narrow extraction task, or keep prompting a frontier model? Compare on expected accuracy lift with numbers from published fine-tuning studies on structured extraction, training and serving cost, latency, and whether a fine-tuned model is a real moat or a feature. Budget frame: under $5k compute, under 3 months.

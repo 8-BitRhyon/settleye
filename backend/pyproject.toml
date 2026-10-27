@@ -1,5 +1,5 @@
 [project]
-name = "promise-check"
+name = "settleye"
 version = "0.1.0"
 description = "Execution auditor for AI support agents: reconcile promised actions against ledger state"
 requires-python = ">=3.12"
