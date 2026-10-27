@@ -28,6 +28,7 @@ promise-check/
 - Baseten does NOT enforce JSON schema for Muse Spark Open: always validate + bounded retry (max 2), never unbounded.
 - Remediation writes go through one service with idempotency keys; Stripe and Shopify are separate refund rails that must never double-refund.
 - Test-mode keys only (`sk_test_`, `shp_...` on dev stores). Live keys never enter the repo or the demo.
+- Data minimization: never ingest, log, or store raw PAN. Pull only charge/refund IDs, amounts, and timestamps over read-only restricted keys, or inherit full PCI DSS scope. Same minimization for transcript PII.
 - `main` is always green: CI runs backend tests, frontend typecheck+build, and secret scan.
 
 ## Boundaries

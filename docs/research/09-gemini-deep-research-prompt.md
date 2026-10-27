@@ -1,6 +1,6 @@
-# Gemini Deep Research Prompt: The Reducto Play for PromiseCheck (v2)
+# Gemini Deep Research Prompt: The Reducto Play for PromiseCheck (v3)
 
-Foundation research already completed by our team (Oct 27): Reducto product/pricing/evals mapped, Global Citizens hybrid model mapped, Collar surface mapped. This prompt asks Gemini to answer what surface research could NOT, and to rule on the build-vs-borrow model question. Paste everything below the line into Gemini Deep Research.
+Foundation research completed by our team (Oct 27-28): Reducto/Collar/Global Citizens surface work, plus round-2 tracks on adjacent vendors, complaint data, eval benchmarks, BNPL/dispute rails, incident UX, and regulation. This prompt asks Gemini only what surface work could NOT answer. Paste everything below the line into Gemini Deep Research.
 
 ---
 
@@ -21,12 +21,22 @@ Reducto won enterprise deals by doing ONE narrow function extremely well and exp
 3. What is technically replicable from Reducto's r-1 approach (single-pass vision-language parsing, agentic verify-and-correct loops like their Deep Extract) for OUR input type (dialogue transcripts, not PDFs)? What is not transferable?
 4. What transfers from Global Citizens' hybrid model (fixed-scope packages, human sign-off ritual, SLA dashboard) to selling an auditor to support ops?
 
-## Questions our surface research could not answer (priority)
+## What we already know, round 2 (do not re-research; build on it)
+
+- Adjacent vendors mapped: Loop/Redo/Corso/Extend/Appriss decide claims pre-money; Klaus/MaestroQA/EvaluAgent score chats. None reconciles promises against ledgers. Boundary: they decide claims or score chats; we prove money moved. Steals adopted: money-sorted queue, cited-factors trail, performance pricing, promised-but-unsettled flag.
+- Pain quantified: FTC Sentinel $12.5B fraud losses 2024 (+25%), 38% of reporters lost money; negative-option complaints 42 to ~70/day 2021-2024. CFPB narratives FROZE Aug 14, 2026 (pin the FOIA archive now). No published promised-but-unissued refund rate exists.
+- Eval gap confirmed: tau-bench grounds actions against DB state (copy its DB-plus-verifier pattern, not frozen tasks); AgentDojo is the adversarial template; ABCD is the best dialogue seed; nothing extracts promises AND reconciles them against ledgers. Our harness: 300-500 cases, deterministic-first grader, false-all-clear rate as the lead metric, open dataset plus leaderboard.
+- Rails ranked: Affirm, Adyen, PayPal, Klarna, Afterpay last. Merchant eats phantom refunds on every BNPL rail. Visa CE3.0 exact field bar known; export schema specified.
+- Inbox rules adopted from incident.io/Rootly/PagerDuty: money sort, fixed card order, Open/Acked/Resolved only, ack and resolve timers, triage hold, append-only export pack.
+- Regulation: EU AI Act Art 50 live Aug 2026 (fines to EUR 15M/3%); CA AB 2863 live; click-to-cancel dead but UDAP alive; Air Canada persuasive-not-binding; SOC 2 budget $25-60k first year. Trap noted: no PAN, minimization only.
+
+## Questions our surface research could not answer (priority, updated)
 
 5. Reducto: what are r-1's actual training data, failure modes, unit economics per page, real ACVs and discount curves, and how defensible is it vs hyperscalers and Docling/Unstructured once single-pass parsing commoditizes?
 6. Global Citizens: what is Loki technically (models, retrieval corpus, generation vs templates), what are measured error controls, is there any paying law-firm software customer, and how is privilege handled across vendors and offshore staff?
 7. Collar: what is the real commercial model, who are the design partners behind the "$300B market cap" claim, what grounds the teleprompter ("never invents a number" is unproven), and does their reconciliation engine persist an auditable trail or is it ephemeral?
-8. Buyer research: for e-commerce merchants ($10K+/mo GMV), what evidence do they require before paying (pilot structure, ROI proof format, SOC 2)? How do chargeback representment teams evaluate evidence packs today? Name 5-10 merchant profiles that feel phantom-refund pain most acutely, with reasons.
+8. Buyer research: for e-commerce merchants ($10K+/mo GMV), what evidence do they require before paying (pilot structure, ROI proof format, SOC 2)? How do chargeback representment teams evaluate evidence packs today, field by field against Visa CE3.0? Name 5-10 merchant profiles that feel phantom-refund pain most acutely, with reasons. Note our constraint: CFPB narratives froze Aug 2026, so where should fresh promise-failure evidence come from?
+9. BNPL adjudication: who eats phantom refunds on Klarna/Affirm/Afterpay rails in practice, and what would a cross-rail auditor need to prove for a merchant to trust it over the lender's own dashboard?
 
 ## Deliverable format
 
