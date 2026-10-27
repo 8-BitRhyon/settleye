@@ -18,21 +18,20 @@ ORDER_WITH_REFUNDS = {
                     "node": {
                         "id": "gid://shopify/Order/1",
                         "name": "#992",
-                        "refunds": {
-                            "edges": [
-                                {
-                                    "node": {
-                                        "id": "gid://shopify/Refund/1",
-                                        "transactions": {
-                                            "edges": [
-                                                {"node": {"amount": {"amount": "20.00"}}},
-                                                {"node": {"amount": {"amount": "25.00"}}},
-                                            ]
-                                        },
-                                    }
-                                }
-                            ]
-                        },
+                        "refunds": [
+                            {
+                                "id": "gid://shopify/Refund/1",
+                                "totalRefundedSet": {
+                                    "shopMoney": {"amount": "20.00"}
+                                },
+                            },
+                            {
+                                "id": "gid://shopify/Refund/2",
+                                "totalRefundedSet": {
+                                    "shopMoney": {"amount": "25.00"}
+                                },
+                            },
+                        ],
                     }
                 }
             ]
@@ -48,7 +47,7 @@ ORDER_CLEAN = {
                     "node": {
                         "id": "gid://shopify/Order/2",
                         "name": "#1042",
-                        "refunds": {"edges": []},
+                        "refunds": [],
                     }
                 }
             ]

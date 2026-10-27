@@ -54,6 +54,12 @@ def test_partial_refund_is_drift_for_remainder() -> None:
     assert result.amount_at_risk_usd == 25.00
 
 
+def test_hash_prefixed_order_id_still_reconciles() -> None:
+    promise = refund_promise(120.00, "#1043")
+    result = reconcile(promise, ledger())
+    assert result.verdict == "verified"
+
+
 def test_missing_order_id_is_unverifiable() -> None:
     result = reconcile(refund_promise(45.00, None), ledger())
     assert result.verdict == "unverifiable"

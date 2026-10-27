@@ -23,13 +23,16 @@ def reconcile(promise: PromiseEntity, ledger: LedgerAdapter) -> ReconciliationRe
                 "nothing is owed unless stated again."
             ),
         )
-    if promise.action != "refund" or promise.amount is None or not promise.order_id:
+    # Models quote order numbers as spoken ("#992"); ledgers key them bare.
+    # Normalize once here so every adapter sees the same identifier.
+    order_id = (promise.order_id or "").strip().lstrip("#")
+    if promise.action != "refund" or promise.amount is None or not order_id:
         return ReconciliationResult(
             promise=promise,
             verdict="unverifiable",
             ledger_summary="Only refunds with an amount and order can be reconciled.",
         )
-    settled = ledger.refunded_usd(promise.order_id)
+    settled = ledger.refunded_usd(order_id)
     if settled is None:
         return ReconciliationResult(
             promise=promise,

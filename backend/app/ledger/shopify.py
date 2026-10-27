@@ -66,13 +66,10 @@ class ShopifyAdapter:
                 edges {
                   node {
                     id
-                    refunds(first: 20) {
-                      edges {
-                        node {
-                          transactions(first: 10) {
-                            edges { node { amount { amount } } }
-                          }
-                        }
+                    refunds {
+                      id
+                      totalRefundedSet {
+                        shopMoney { amount }
                       }
                     }
                   }
@@ -86,14 +83,13 @@ class ShopifyAdapter:
         if not edges:
             return None
         total = 0.0
-        for refund in edges[0].get("node", {}).get("refunds", {}).get("edges", []):
-            for txn in (
-                refund.get("node", {}).get("transactions", {}).get("edges", [])
-            ):
-                try:
-                    total += float(txn["node"]["amount"]["amount"])
-                except (KeyError, TypeError, ValueError):
-                    continue
+        for refund in edges[0].get("node", {}).get("refunds", []):
+            try:
+                total += float(
+                    refund["totalRefundedSet"]["shopMoney"]["amount"]
+                )
+            except (KeyError, TypeError, ValueError):
+                continue
         return round(total, 2)
 
     def record_refund(self, order_id: str, amount_usd: float) -> dict[str, Any]:
