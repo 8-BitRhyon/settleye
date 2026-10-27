@@ -32,7 +32,7 @@ On screen: receipt, flipped card, updated totals.
 
 ## 2:15-2:45 The numbers (Impact)
 
-> "This inbox pays for itself the first time it fires in a month. Mid-market math: about $494 of monthly value against a $99 plan, six-day payback. Our open eval scores 12 of 12 verdicts correct, and no retracted promise ever reported drift. And every save is itemized, not vibes."
+> "This inbox pays for itself the first time it fires in a month. Mid-market math: about $494 of monthly value against a $99 plan, six-day payback. Every $1 of dispute loss costs merchants $4.61 all-in. Our open eval scores 12 of 12 verdicts correct, and no retracted promise ever reported drift. And every save is itemized, not vibes."
 
 ## 2:45-3:00 Vision plus compliance (end card on screen)
 

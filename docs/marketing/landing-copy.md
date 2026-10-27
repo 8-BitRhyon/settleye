@@ -17,7 +17,7 @@ Secondary CTA: Watch the 3-minute demo
 2. Policy breaches. Full refunds on final-sale items, over-limit amounts, duplicate credits. Found at month-end close, if ever.
 3. Silent cancellations. "Cancelled" in chat, still billing in Stripe. Next cycle triggers the dispute.
 
-Footnote: chatbot promises already create liability (Air Canada tribunal, 2024). EU transparency duties live since August 2026.
+Footnote: chatbot promises already create liability (Air Canada tribunal, 2024). EU transparency duties live since August 2026. Every $1 of fraud costs merchants $4.61 all-in (LexisNexis 2025).
 
 ## How it works (three steps)
 
