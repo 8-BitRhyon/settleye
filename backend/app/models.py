@@ -41,6 +41,15 @@ class RemediationReceipt(BaseModel):
     status: Literal["executed", "already_executed"]
 
 
+class RepeatOrder(BaseModel):
+    """One order promised across several transcripts: memory, not model."""
+
+    order_id: str = Field(description="Normalized ledger key, no # prefix")
+    sources: list[str] = Field(default_factory=list)
+    occurrences: int = 0
+    total_at_risk_usd: float = 0.0
+
+
 class AuditReport(BaseModel):
     """One transcript audited end to end: promises, drifts, totals."""
 
@@ -64,6 +73,7 @@ class BatchReport(BaseModel):
 
     items: list[BatchItemReport] = Field(default_factory=list)
     drifts: list[ReconciliationResult] = Field(default_factory=list)
+    repeat_orders: list[RepeatOrder] = Field(default_factory=list)
     total_at_risk_usd: float = 0.0
     remediated: int = 0
     remediation_errors: list[str] = Field(default_factory=list)

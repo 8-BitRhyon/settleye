@@ -196,3 +196,40 @@ def test_empty_batch_is_green() -> None:
     )
     assert report.verdict == "verified_green"
     assert report.items == []
+
+
+def test_repeat_order_flagged_across_sources() -> None:
+    ledger, service, value = fresh()
+    report = asyncio.run(
+        run_batch(
+            {
+                "a.json": "transcript ORDER992 here",
+                "b.json": "transcript ORDER992 here",
+                "c.json": "transcript ORDER1042 here",
+            },
+            routing_client(),
+            ledger,
+            service,
+            value,
+        )
+    )
+    assert len(report.repeat_orders) == 1
+    repeat = report.repeat_orders[0]
+    assert repeat.order_id == "992"
+    assert sorted(repeat.sources) == ["a.json", "b.json"]
+    assert repeat.occurrences == 2
+    assert repeat.total_at_risk_usd == 90.00
+
+
+def test_single_source_is_not_a_repeat() -> None:
+    ledger, service, value = fresh()
+    report = asyncio.run(
+        run_batch(
+            {"only.json": "transcript ORDER992 here"},
+            routing_client(),
+            ledger,
+            service,
+            value,
+        )
+    )
+    assert report.repeat_orders == []

@@ -36,9 +36,44 @@ from app.extract.live_check import load_dotenv_file, load_transcript
 from app.extract.pipeline import ExtractionError
 from app.ledger.base import LedgerAdapter
 from app.ledger.mock import MockLedgerAdapter
-from app.models import BatchItemReport, BatchReport
+from app.models import BatchItemReport, BatchReport, RepeatOrder
 from app.remediate.service import RemediationError, RemediationService
 from app.value import ValueLedger
+
+
+def find_repeat_orders(
+    items: list[BatchItemReport], drifts: list
+) -> list[RepeatOrder]:
+    """Group drift by normalized order across sources. Two-plus wins.
+
+    Pure code over reconciled results, zero model calls: the daemon's
+    memory of which orders keep getting promised refunds.
+    """
+    by_order: dict[str, dict] = {}
+    for item in items:
+        if item.report is None:
+            continue
+        for drift in item.report.drifts:
+            key = (drift.promise.order_id or "").strip().lstrip("#")
+            if not key:
+                continue
+            bucket = by_order.setdefault(key, {"sources": [], "total": 0.0})
+            bucket["sources"].append(item.source)
+            bucket["total"] += drift.amount_at_risk_usd
+    repeats = []
+    for order_id in sorted(by_order):
+        bucket = by_order[order_id]
+        sources = sorted(set(bucket["sources"]))
+        if len(sources) >= 2:
+            repeats.append(
+                RepeatOrder(
+                    order_id=order_id,
+                    sources=sources,
+                    occurrences=len(sources),
+                    total_at_risk_usd=round(bucket["total"], 2),
+                )
+            )
+    return repeats
 
 
 async def run_batch(
@@ -73,6 +108,7 @@ async def run_batch(
                     remediation_errors.append(f"{source}: {exc}")
     drifts.sort(key=lambda d: d.amount_at_risk_usd, reverse=True)
     total = round(sum(d.amount_at_risk_usd for d in drifts), 2)
+    repeat_orders = find_repeat_orders(items, drifts)
     has_hard_error = bool(items) and all(
         item.error and item.report is None for item in items
     )
@@ -85,6 +121,7 @@ async def run_batch(
     return BatchReport(
         items=items,
         drifts=drifts,
+        repeat_orders=repeat_orders,
         total_at_risk_usd=total,
         remediated=remediated,
         remediation_errors=remediation_errors,
@@ -106,6 +143,12 @@ def format_batch(report: BatchReport, elapsed_seconds: float) -> str:
         lines.append(
             f"- ${drift.amount_at_risk_usd:.2f} {promise.action} "
             f"order #{promise.order_id or '?'} [{promise.target_system}]"
+        )
+    for repeat in report.repeat_orders:
+        lines.append(
+            f"! repeat: order #{repeat.order_id} promised in "
+            f"{repeat.occurrences} transcripts "
+            f"(${repeat.total_at_risk_usd:.2f} at risk)"
         )
     for item in report.items:
         if item.error:

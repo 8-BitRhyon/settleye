@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useState } from "react";
 import {
   auditTranscript,
+  explainDrift,
   fetchValue,
   remediate,
   type AuditReport,
@@ -16,6 +17,7 @@ import {
 } from "./format";
 
 type RemediateState = Record<string, "idle" | "sending" | "done" | string>;
+type ExplainState = Record<string, string | undefined>;
 
 export default function App() {
   const [transcript, setTranscript] = useState(SAMPLE_PHANTOM_TRANSCRIPT);
@@ -24,6 +26,7 @@ export default function App() {
   const [auditing, setAuditing] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [fixes, setFixes] = useState<RemediateState>({});
+  const [explanations, setExplanations] = useState<ExplainState>({});
 
   const refreshValue = useCallback(() => {
     fetchValue().then(setValue).catch(() => {});
@@ -40,10 +43,29 @@ export default function App() {
       const next = await auditTranscript(transcript);
       setReport(next);
       setFixes({});
+      setExplanations({});
     } catch (err) {
       setError(err instanceof Error ? err.message : "Audit failed.");
     } finally {
       setAuditing(false);
+    }
+  }
+
+  async function onExplain(drift: DriftResult) {
+    const key = `${drift.promise.order_id}:${drift.amount_at_risk_usd}`;
+    setExplanations((prev) => ({ ...prev, [key]: "…" }));
+    try {
+      const text = await explainDrift(
+        drift.promise,
+        drift.ledger_summary,
+        drift.amount_at_risk_usd,
+      );
+      setExplanations((prev) => ({ ...prev, [key]: text }));
+    } catch (err) {
+      setExplanations((prev) => ({
+        ...prev,
+        [key]: err instanceof Error ? `Explain failed: ${err.message}` : "Explain failed.",
+      }));
     }
   }
 
@@ -173,6 +195,23 @@ export default function App() {
                   <p className="mt-2 text-xs text-zinc-400">
                     {result.ledger_summary}
                   </p>
+                  {result.verdict === "drift" && (
+                    <div className="mt-2">
+                      {explanations[fixKey] === undefined ? (
+                        <button
+                          type="button"
+                          onClick={() => onExplain(result)}
+                          className="text-xs font-semibold text-emerald-400 underline underline-offset-2"
+                        >
+                          Why does this matter?
+                        </button>
+                      ) : (
+                        <p className="text-xs text-emerald-200">
+                          {explanations[fixKey]}
+                        </p>
+                      )}
+                    </div>
+                  )}
                   {result.verdict === "drift" && (
                     <div className="mt-3 flex items-center gap-3">
                       <button

@@ -77,3 +77,15 @@ export function remediate(
 export function fetchValue(): Promise<ValueSummary> {
   return request<ValueSummary>("/value");
 }
+
+export async function explainDrift(
+  promise: PromiseEntity,
+  ledger_summary: string,
+  amount_usd: number,
+): Promise<string> {
+  const body = await request<{ explanation: string }>("/explain", {
+    method: "POST",
+    body: JSON.stringify({ promise, ledger_summary, amount_usd }),
+  });
+  return body.explanation;
+}

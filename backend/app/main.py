@@ -42,6 +42,12 @@ class RemediateRequest(BaseModel):
     amount_usd: float
 
 
+class ExplainRequest(BaseModel):
+    promise: PromiseEntity
+    ledger_summary: str = ""
+    amount_usd: float
+
+
 def fixture_path() -> Path:
     return Path(__file__).resolve().parents[2] / "fixtures" / "mock_ledger.json"
 
@@ -134,3 +140,23 @@ def remediate(request: RemediateRequest) -> RemediationReceipt:
 @app.get("/value")
 def value() -> dict[str, float | int]:
     return summarize(get_value())
+
+
+class ExplainResponse(BaseModel):
+    explanation: str
+
+
+@app.post("/explain", response_model=ExplainResponse)
+async def explain(request: ExplainRequest) -> ExplainResponse:
+    from app.explain import ExplainError, explain_drift
+
+    try:
+        text = await explain_drift(
+            request.promise,
+            request.ledger_summary,
+            request.amount_usd,
+            build_client(),
+        )
+    except ExplainError as exc:
+        raise HTTPException(status_code=422, detail=str(exc))
+    return ExplainResponse(explanation=text)
