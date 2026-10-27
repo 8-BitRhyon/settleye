@@ -18,7 +18,7 @@ import sys
 import time
 from pathlib import Path
 
-from app.extract.client import BASE_URL_DEFAULT, MODEL_ID, MetaModelClient
+from app.extract.client import BASE_URL_DEFAULT, MetaModelClient, model_id
 from app.extract.pipeline import ExtractionError, extract_promises
 from app.models import PromiseEntity
 
@@ -74,7 +74,7 @@ async def _run(args: argparse.Namespace) -> int:
         )
         return 2
     client = MetaModelClient(
-        api_key=api_key, base_url=args.base_url, model=args.model
+        api_key=api_key, base_url=args.base_url, model=args.model or model_id()
     )
     if not await client.health_check():
         print(
@@ -91,7 +91,7 @@ async def _run(args: argparse.Namespace) -> int:
         print(f"Model output never validated: {exc}", file=sys.stderr)
         return 4
     elapsed = time.monotonic() - started
-    print(format_report(args.model, elapsed, entities))
+    print(format_report(args.model or model_id(), elapsed, entities))
     return 0
 
 
@@ -102,7 +102,7 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("transcript", help="Fixture JSON or raw text file.")
     parser.add_argument("--api-key", default=None, help="Baseten key (or env).")
     parser.add_argument("--base-url", default=BASE_URL_DEFAULT)
-    parser.add_argument("--model", default=MODEL_ID)
+    parser.add_argument("--model", default=None)
     args = parser.parse_args(argv)
     import asyncio
 

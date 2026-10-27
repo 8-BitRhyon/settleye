@@ -6,10 +6,22 @@ else. The ID lives in exactly one constant so a typo breaks loudly at the
 wire level instead of silently at demo time.
 """
 
+import os
+
 import httpx
 
 MODEL_ID = "meta-models/muse-spark-open"
 BASE_URL_DEFAULT = "https://inference.baseten.co/v1"
+
+
+def model_id() -> str:
+    """Active model ID: MODEL_ID override wins, canonical default otherwise.
+
+    The hackathon FAQ instructs `meta-models/muse-spark-open-1026`, which
+    exists on no public provider listing as of 2026-10-26. If the event
+    endpoint answers at the suffixed ID, set MODEL_ID and move on.
+    """
+    return os.environ.get("MODEL_ID", MODEL_ID)
 
 
 class MetaModelClient:

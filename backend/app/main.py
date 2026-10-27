@@ -9,7 +9,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 
 from app.audit import audit_transcript
-from app.extract.client import MODEL_ID, MetaModelClient
+from app.extract.client import MODEL_ID, MetaModelClient, model_id
 from app.ledger.mock import MockLedgerAdapter
 from app.models import AuditReport, PromiseEntity, RemediationReceipt
 from app.remediate.service import RemediationError, RemediationService
@@ -52,7 +52,7 @@ def build_client() -> MetaModelClient:
         raise HTTPException(
             status_code=503, detail="BASETEN_API_KEY is not configured."
         )
-    return MetaModelClient(api_key=api_key, model=MODEL_ID)
+    return MetaModelClient(api_key=api_key, model=model_id())
 
 
 def get_ledger() -> MockLedgerAdapter:
