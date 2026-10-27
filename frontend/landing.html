@@ -18,7 +18,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=Inter:wght@400;500;600;700;800&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap"
       rel="stylesheet"
     />
     <link
@@ -30,20 +30,25 @@
   <body>
     <a
       href="#main"
-      class="sr-only focus:not-sr-only focus:absolute focus:top-2 focus:left-2 focus:rounded focus:bg-ink-900 focus:px-3 focus:py-1 focus:text-sm focus:font-bold focus:text-white"
+      class="sr-only focus:not-sr-only focus:absolute focus:top-2 focus:left-2 focus:z-50 focus:rounded focus:bg-ink-900 focus:px-3 focus:py-1 focus:text-sm focus:font-bold focus:text-white"
     >
       Skip to content
     </a>
 
-    <header class="border-b border-line-200">
-      <div class="mx-auto flex max-w-6xl items-center justify-between gap-4 px-6 py-4">
-        <p class="text-base font-extrabold tracking-tight">Settleye</p>
-        <nav aria-label="Page" class="hidden items-center gap-6 text-sm text-ink-600 sm:flex">
-          <a class="hover:text-ink-900" href="#demo">Demo</a>
-          <a class="hover:text-ink-900" href="#proof">Proof</a>
-          <a class="hover:text-ink-900" href="#pricing">Pricing</a>
+    <header class="sticky top-0 z-40 border-b border-line-200/80 bg-cream-50/85 backdrop-blur-md">
+      <div class="mx-auto flex max-w-6xl items-center justify-between gap-4 px-6 py-3.5">
+        <p class="flex items-center gap-2.5 text-base font-extrabold tracking-tight">
+          <span aria-hidden="true" class="grid h-8 w-8 place-items-center rounded-lg bg-ink-900 shadow-sm">
+            <span class="h-3 w-3 rounded-full border-[3px] border-pine-700 bg-cream-50"></span>
+          </span>
+          Settleye
+        </p>
+        <nav aria-label="Page" class="hidden items-center gap-1 text-sm text-ink-600 sm:flex">
+          <a class="rounded-full px-3 py-1.5 transition hover:bg-card-white hover:text-ink-900" href="#demo">Demo</a>
+          <a class="rounded-full px-3 py-1.5 transition hover:bg-card-white hover:text-ink-900" href="#proof">Proof</a>
+          <a class="rounded-full px-3 py-1.5 transition hover:bg-card-white hover:text-ink-900" href="#pricing">Pricing</a>
           <a
-            class="hover:text-ink-900"
+            class="rounded-full px-3 py-1.5 transition hover:bg-card-white hover:text-ink-900"
             href="https://github.com/8-BitRhyon/settleye"
             rel="noopener"
           >
@@ -52,7 +57,7 @@
         </nav>
         <a
           href="#audit"
-          class="rounded-full bg-ink-900 px-4 py-1.5 text-sm font-bold text-white hover:bg-black"
+          class="rounded-full bg-ink-900 px-3.5 py-1.5 text-xs font-bold whitespace-nowrap text-white shadow-sm transition hover:bg-black hover:shadow-md sm:px-4 sm:text-sm"
         >
           Run a free 14-day shadow audit
         </a>
@@ -60,118 +65,169 @@
     </header>
 
     <main id="main">
-      <section aria-labelledby="hero-heading" class="mx-auto max-w-6xl px-6 py-16 sm:py-24">
-        <div class="grid items-center gap-12 lg:grid-cols-2">
-          <div>
-            <h1
-              id="hero-heading"
-              class="max-w-xl text-5xl font-extrabold tracking-tight text-balance sm:text-6xl"
-            >
-              Your AI agent promised a refund. Did the money move?
-            </h1>
-            <p class="mt-5 max-w-xl text-lg text-ink-600">
-              Settleye reads support transcripts, pulls every binding promise,
-              and reconciles each one against Stripe and Shopify. Mismatches
-              land in one inbox with a one-click fix.
-            </p>
-            <div class="mt-8 flex flex-wrap items-center gap-4">
-              <a
-                href="#audit"
-                class="rounded-full bg-ink-900 px-6 py-2.5 text-sm font-bold text-white hover:bg-black"
+      <section aria-labelledby="hero-heading" class="relative overflow-hidden">
+        <div aria-hidden="true" class="hero-glow absolute inset-0"></div>
+        <div class="relative mx-auto max-w-6xl px-6 py-16 sm:py-24">
+          <div class="grid items-center gap-14 lg:grid-cols-2">
+            <div>
+              <p class="inline-flex items-center gap-2 rounded-full border border-line-200 bg-card-white px-3 py-1 text-xs font-bold tracking-widest text-ink-600 uppercase shadow-sm">
+                <span aria-hidden="true" class="h-1.5 w-1.5 rounded-full bg-pine-700"></span>
+                Execution auditor for AI support agents
+              </p>
+              <h1
+                id="hero-heading"
+                class="font-display mt-6 max-w-xl text-5xl leading-[1.04] font-bold tracking-tight text-balance sm:text-6xl"
               >
-                Run a free 14-day shadow audit
-              </a>
-              <a href="#demo" class="text-sm font-semibold text-ink-600 underline underline-offset-4 hover:text-ink-900">
-                Watch the 3-minute demo
-              </a>
+                Your AI agent promised a refund. <span class="hero-accent">Did the money move?</span>
+              </h1>
+              <p class="mt-5 max-w-xl text-lg leading-relaxed text-ink-600 sm:text-xl">
+                Settleye reads support transcripts, pulls every binding promise,
+                and reconciles each one against Stripe and Shopify. Mismatches
+                land in one inbox with a one-click fix.
+              </p>
+              <div class="mt-8 flex flex-wrap items-center gap-4">
+                <a
+                  href="#audit"
+                  class="rounded-full bg-ink-900 px-6 py-3 text-sm font-bold text-white shadow-md transition hover:bg-black hover:shadow-lg"
+                >
+                  Run a free 14-day shadow audit
+                </a>
+                <a
+                  href="#demo"
+                  class="rounded-full border border-line-200 bg-card-white px-6 py-3 text-sm font-semibold text-ink-600 shadow-sm transition hover:border-ink-900 hover:text-ink-900"
+                >
+                  Watch the 3-minute demo
+                </a>
+              </div>
+              <p class="money mt-7 text-xs tracking-wide text-ink-500">
+                Read-only pilot - zero write permissions
+              </p>
             </div>
-          </div>
-          <div
-            class="rounded-2xl border border-line-200 bg-card-white p-6 shadow-[0_24px_60px_-24px_rgba(19,19,22,0.25)]"
-            role="img"
-            aria-label="Illustration of a Settleye drift card showing a $44.00 refund at risk on order 1001"
-          >
-            <div class="flex items-center justify-between gap-3">
-              <span class="rounded-full bg-alarm-50 px-2.5 py-0.5 text-xs font-bold text-alarm-700">
-                State drift
-              </span>
-              <span class="font-mono text-xs text-ink-500">
-                refund · order #1001 · $50.00
-              </span>
+            <div class="relative">
+              <div aria-hidden="true" class="absolute inset-0 translate-x-4 translate-y-4 rounded-[1.75rem] border border-pine-700/20 bg-pine-700/5"></div>
+              <div aria-hidden="true" class="absolute -top-6 -right-4 h-28 w-28 rounded-full bg-gold-700/10 blur-2xl"></div>
+              <div
+                class="relative rounded-[1.75rem] border border-line-200 bg-card-white p-6 shadow-[0_32px_70px_-28px_rgba(19,19,22,0.35)] sm:p-7"
+                role="img"
+                aria-label="Illustration of a Settleye drift card showing a $44.00 refund at risk on order 1001"
+              >
+                <div class="flex items-center gap-2 border-b border-line-200 pb-4">
+                  <span aria-hidden="true" class="flex gap-1.5">
+                    <span class="h-2.5 w-2.5 rounded-full bg-line-200"></span>
+                    <span class="h-2.5 w-2.5 rounded-full bg-line-200"></span>
+                    <span class="h-2.5 w-2.5 rounded-full bg-pine-700"></span>
+                  </span>
+                  <span class="font-mono text-xs text-ink-500">settleye / drift inbox</span>
+                </div>
+                <div class="mt-5 flex flex-wrap items-center justify-between gap-3">
+                  <span class="rounded-full bg-alarm-50 px-2.5 py-0.5 text-xs font-bold text-alarm-700 ring-1 ring-alarm-700/20">
+                    State drift
+                  </span>
+                  <span class="font-mono text-xs text-ink-500">
+                    refund · order #1001 · $50.00
+                  </span>
+                </div>
+                <blockquote class="mt-4 rounded-r-xl border-l-2 border-alarm-700 bg-alarm-50/60 px-4 py-3 font-mono text-xs leading-relaxed text-ink-600">
+                  “I have processed a full $50 refund for order #1001.”
+                </blockquote>
+                <dl class="mt-5 space-y-2.5 text-sm">
+                  <div class="flex items-baseline justify-between gap-4">
+                    <dt class="text-ink-600">Promised</dt>
+                    <dd class="money font-semibold">$50.00</dd>
+                  </div>
+                  <div class="flex items-baseline justify-between gap-4">
+                    <dt class="text-ink-600">Settled in the ledger</dt>
+                    <dd class="money font-semibold text-pine-700">$6.00</dd>
+                  </div>
+                </dl>
+                <div aria-hidden="true" class="mt-3 h-2 overflow-hidden rounded-full bg-line-200">
+                  <div class="h-full w-[12%] rounded-full bg-pine-700"></div>
+                </div>
+                <p class="mt-3 text-xs text-ink-600">
+                  Order #1001: $6.00 settled of $50.00 promised.
+                </p>
+                <div class="mt-4 flex flex-wrap items-end justify-between gap-3 border-t border-dashed border-line-200 pt-4">
+                  <p class="text-xs font-bold tracking-widest text-ink-500 uppercase">At risk</p>
+                  <p class="stat money text-4xl font-semibold text-alarm-700">$44.00 at risk</p>
+                </div>
+                <p class="mt-5 rounded-full bg-ink-900 px-4 py-2.5 text-center text-sm font-bold text-white shadow-md">
+                  Issue $44.00 refund
+                </p>
+                <p class="money mt-3 text-center text-[11px] text-ink-500">
+                  Idempotent remediation - retry-safe by construction
+                </p>
+              </div>
             </div>
-            <blockquote class="mt-3 border-l-2 border-line-200 pl-3 font-mono text-xs text-ink-600">
-              “I have processed a full $50 refund for order #1001.”
-            </blockquote>
-            <p class="mt-3 text-xs text-ink-600">
-              Order #1001: $6.00 settled of $50.00 promised.
-            </p>
-            <p class="stat money mt-1 text-3xl font-semibold text-alarm-700">$44.00 at risk</p>
-            <p class="mt-4 rounded-full bg-ink-900 px-4 py-1.5 text-center text-xs font-bold text-white">
-              Issue $44.00 refund
-            </p>
           </div>
         </div>
       </section>
 
-      <section aria-labelledby="problem-heading" class="mx-auto max-w-6xl border-t border-line-200 px-6 py-14">
-        <h2 id="problem-heading" class="text-xs font-bold tracking-widest text-ink-500 uppercase">
-          The problem
-        </h2>
-        <div class="mt-6 grid gap-4 md:grid-cols-3">
-          <article class="rounded-2xl border border-line-200 bg-card-white p-6">
-            <h3 class="text-lg font-bold">Phantom refunds</h3>
-            <p class="mt-2 text-sm text-ink-600">
-              The agent says “refund processed.” The ledger says
-              <span class="money">$0.00</span>. The customer waits ten days,
-              then chargebacks.
-            </p>
-          </article>
-          <article class="rounded-2xl border border-line-200 bg-card-white p-6">
-            <h3 class="text-lg font-bold">Policy breaches</h3>
-            <p class="mt-2 text-sm text-ink-600">
-              Full refunds on final-sale items, over-limit amounts, duplicate
-              credits. Found at month-end close, if ever.
-            </p>
-          </article>
-          <article class="rounded-2xl border border-line-200 bg-card-white p-6">
-            <h3 class="text-lg font-bold">Silent cancellations</h3>
-            <p class="mt-2 text-sm text-ink-600">
-              “Cancelled” in chat, still billing in Stripe. Next cycle triggers
-              the dispute.
-            </p>
-          </article>
+      <section aria-labelledby="problem-heading" class="border-y border-line-200 bg-card-white">
+        <div class="mx-auto max-w-6xl px-6 py-16 sm:py-20">
+          <h2 id="problem-heading" class="font-display flex items-center gap-3 text-xs font-bold tracking-widest text-ink-500 uppercase">
+            <span aria-hidden="true" class="h-px w-8 bg-alarm-700"></span>
+            The problem
+          </h2>
+          <div class="mt-8 grid gap-4 md:grid-cols-3">
+            <article class="card-lift rounded-2xl border border-line-200 bg-cream-50 p-6">
+              <span aria-hidden="true" class="block h-1 w-10 rounded-full bg-alarm-700"></span>
+              <h3 class="font-display mt-4 text-lg font-bold">Phantom refunds</h3>
+              <p class="mt-2 text-sm leading-relaxed text-ink-600">
+                The agent says “refund processed.” The ledger says
+                <span class="money">$0.00</span>. The customer waits ten days,
+                then chargebacks.
+              </p>
+            </article>
+            <article class="card-lift rounded-2xl border border-line-200 bg-cream-50 p-6">
+              <span aria-hidden="true" class="block h-1 w-10 rounded-full bg-gold-700"></span>
+              <h3 class="font-display mt-4 text-lg font-bold">Policy breaches</h3>
+              <p class="mt-2 text-sm leading-relaxed text-ink-600">
+                Full refunds on final-sale items, over-limit amounts, duplicate
+                credits. Found at month-end close, if ever.
+              </p>
+            </article>
+            <article class="card-lift rounded-2xl border border-line-200 bg-cream-50 p-6">
+              <span aria-hidden="true" class="block h-1 w-10 rounded-full bg-pine-700"></span>
+              <h3 class="font-display mt-4 text-lg font-bold">Silent cancellations</h3>
+              <p class="mt-2 text-sm leading-relaxed text-ink-600">
+                “Cancelled” in chat, still billing in Stripe. Next cycle triggers
+                the dispute.
+              </p>
+            </article>
+          </div>
+          <p class="mt-6 border-l-2 border-line-200 pl-3 text-xs leading-relaxed text-ink-500">
+            Footnote: chatbot promises already create liability (Air Canada
+            tribunal, 2024). EU transparency duties live since August 2026.
+          </p>
         </div>
-        <p class="mt-5 text-xs text-ink-500">
-          Footnote: chatbot promises already create liability (Air Canada
-          tribunal, 2024). EU transparency duties live since August 2026.
-        </p>
       </section>
 
-      <section aria-labelledby="how-heading" class="mx-auto max-w-6xl border-t border-line-200 px-6 py-14">
-        <h2 id="how-heading" class="text-xs font-bold tracking-widest text-ink-500 uppercase">
+      <section aria-labelledby="how-heading" class="mx-auto max-w-6xl px-6 py-16 sm:py-20">
+        <h2 id="how-heading" class="font-display flex items-center gap-3 text-xs font-bold tracking-widest text-ink-500 uppercase">
+          <span aria-hidden="true" class="h-px w-8 bg-pine-700"></span>
           How it works
         </h2>
-        <ol class="mt-6 grid gap-4 md:grid-cols-3">
-          <li class="rounded-2xl border border-line-200 bg-card-white p-6">
-            <p class="money text-sm font-semibold text-pine-700">01</p>
-            <h3 class="mt-2 text-lg font-bold">Connect read-only</h3>
-            <p class="mt-2 text-sm text-ink-600">
+        <ol class="steps mt-8 grid gap-4 md:grid-cols-3">
+          <li class="card-lift relative rounded-2xl border border-line-200 bg-card-white p-6 shadow-sm">
+            <p class="money text-3xl font-semibold text-pine-700">01</p>
+            <h3 class="font-display mt-3 text-lg font-bold">Connect read-only</h3>
+            <p class="mt-2 text-sm leading-relaxed text-ink-600">
               Shopify, Stripe, and your helpdesk. Zero write permissions during
               the pilot, so nothing can break.
             </p>
           </li>
-          <li class="rounded-2xl border border-line-200 bg-card-white p-6">
-            <p class="money text-sm font-semibold text-pine-700">02</p>
-            <h3 class="mt-2 text-lg font-bold">We backfill 90 days</h3>
-            <p class="mt-2 text-sm text-ink-600">
+          <li class="card-lift relative rounded-2xl border border-line-200 bg-card-white p-6 shadow-sm">
+            <p class="money text-3xl font-semibold text-pine-700">02</p>
+            <h3 class="font-display mt-3 text-lg font-bold">We backfill 90 days</h3>
+            <p class="mt-2 text-sm leading-relaxed text-ink-600">
               Every AI-resolved ticket reconciled against settlement records.
               You get the leakage ledger: dollars promised vs dollars moved.
             </p>
           </li>
-          <li class="rounded-2xl border border-line-200 bg-card-white p-6">
-            <p class="money text-sm font-semibold text-pine-700">03</p>
-            <h3 class="mt-2 text-lg font-bold">Fix in one click</h3>
-            <p class="mt-2 text-sm text-ink-600">
+          <li class="card-lift relative rounded-2xl border border-line-200 bg-card-white p-6 shadow-sm">
+            <p class="money text-3xl font-semibold text-pine-700">03</p>
+            <h3 class="font-display mt-3 text-lg font-bold">Fix in one click</h3>
+            <p class="mt-2 text-sm leading-relaxed text-ink-600">
               Each drift carries its evidence chain and an idempotent
               remediation. Retry-safe by construction.
             </p>
@@ -179,33 +235,52 @@
         </ol>
       </section>
 
-      <section id="demo" aria-labelledby="demo-heading" class="mx-auto max-w-6xl border-t border-line-200 px-6 py-14">
-        <h2 id="demo-heading" class="text-xs font-bold tracking-widest text-ink-500 uppercase">
-          Demo
-        </h2>
-        <div class="mt-6 rounded-2xl border border-dashed border-line-200 bg-card-white p-10 text-center">
-          <p class="text-lg font-bold">3-minute demo (recording in progress)</p>
-          <ul class="mx-auto mt-4 max-w-md space-y-1 text-left text-sm text-ink-600">
-            <li>0:00 the $45 phantom refund.</li>
-            <li>0:45 live extraction.</li>
-            <li>1:30 the fix.</li>
-            <li>2:15 the math.</li>
-            <li>2:45 vision.</li>
-          </ul>
+      <section id="demo" aria-labelledby="demo-heading" class="border-y border-line-200 bg-card-white">
+        <div class="mx-auto max-w-6xl px-6 py-16 sm:py-20">
+          <h2 id="demo-heading" class="font-display flex items-center gap-3 text-xs font-bold tracking-widest text-ink-500 uppercase">
+            <span aria-hidden="true" class="h-px w-8 bg-gold-700"></span>
+            Demo
+          </h2>
+          <div class="mt-8 rounded-[1.75rem] border border-dashed border-line-200 bg-cream-50 px-6 py-10 sm:px-10">
+            <p class="font-display text-center text-xl font-bold">3-minute demo (recording in progress)</p>
+            <ul class="mx-auto mt-7 max-w-md space-y-3 text-sm text-ink-600">
+              <li class="flex items-center gap-3">
+                <span class="money w-12 shrink-0 rounded-full bg-card-white px-2 py-1 text-center text-xs font-semibold text-pine-700 ring-1 ring-line-200">0:00</span>
+                the $45 phantom refund.
+              </li>
+              <li class="flex items-center gap-3">
+                <span class="money w-12 shrink-0 rounded-full bg-card-white px-2 py-1 text-center text-xs font-semibold text-pine-700 ring-1 ring-line-200">0:45</span>
+                live extraction.
+              </li>
+              <li class="flex items-center gap-3">
+                <span class="money w-12 shrink-0 rounded-full bg-card-white px-2 py-1 text-center text-xs font-semibold text-pine-700 ring-1 ring-line-200">1:30</span>
+                the fix.
+              </li>
+              <li class="flex items-center gap-3">
+                <span class="money w-12 shrink-0 rounded-full bg-card-white px-2 py-1 text-center text-xs font-semibold text-pine-700 ring-1 ring-line-200">2:15</span>
+                the math.
+              </li>
+              <li class="flex items-center gap-3">
+                <span class="money w-12 shrink-0 rounded-full bg-card-white px-2 py-1 text-center text-xs font-semibold text-pine-700 ring-1 ring-line-200">2:45</span>
+                vision.
+              </li>
+            </ul>
+          </div>
         </div>
       </section>
 
-      <section id="proof" aria-labelledby="proof-heading" class="mx-auto max-w-6xl border-t border-line-200 px-6 py-14">
-        <h2 id="proof-heading" class="text-xs font-bold tracking-widest text-ink-500 uppercase">
+      <section id="proof" aria-labelledby="proof-heading" class="mx-auto max-w-6xl px-6 py-16 sm:py-20">
+        <h2 id="proof-heading" class="font-display flex items-center gap-3 text-xs font-bold tracking-widest text-ink-500 uppercase">
+          <span aria-hidden="true" class="h-px w-8 bg-gold-700"></span>
           Proof (measured Oct 27, 2026, not targets)
         </h2>
-        <ul class="mt-6 grid gap-4 sm:grid-cols-2">
-          <li class="rounded-2xl border border-line-200 bg-card-white p-6">
+        <ul class="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+          <li class="card-lift rounded-2xl border border-line-200 border-t-4 border-t-gold-700 bg-card-white p-6 shadow-sm">
             <p class="stat text-4xl font-semibold text-gold-700">12 of 12</p>
-            <p class="mt-2 text-sm text-ink-600">
+            <p class="mt-3 text-sm leading-relaxed text-ink-600">
               eval verdicts correct on the open 12-case set.
               <a
-                class="font-semibold underline underline-offset-2 hover:text-ink-900"
+                class="font-semibold whitespace-nowrap underline underline-offset-2 hover:text-ink-900"
                 href="https://github.com/8-BitRhyon/settleye/blob/main/docs/research/12-eval-results.md"
                 rel="noopener"
               >
@@ -213,25 +288,25 @@
               </a>
             </p>
           </li>
-          <li class="rounded-2xl border border-line-200 bg-card-white p-6">
+          <li class="card-lift rounded-2xl border border-line-200 border-t-4 border-t-gold-700 bg-card-white p-6 shadow-sm">
             <p class="stat text-4xl font-semibold text-gold-700">Zero</p>
-            <p class="mt-2 text-sm text-ink-600">
+            <p class="mt-3 text-sm leading-relaxed text-ink-600">
               non-binding commitments ever reached drift in four chances.
               Failures never report success.
             </p>
           </li>
-          <li class="rounded-2xl border border-line-200 bg-card-white p-6">
+          <li class="card-lift rounded-2xl border border-line-200 border-t-4 border-t-gold-700 bg-card-white p-6 shadow-sm">
             <p class="stat text-4xl font-semibold text-gold-700">100%</p>
-            <p class="mt-2 text-sm text-ink-600">
+            <p class="mt-3 text-sm leading-relaxed text-ink-600">
               deterministic ledger state: zero LLM guessing on money movement.
             </p>
           </li>
-          <li class="rounded-2xl border border-line-200 bg-card-white p-6">
+          <li class="card-lift rounded-2xl border border-line-200 border-t-4 border-t-gold-700 bg-card-white p-6 shadow-sm">
             <p class="stat money text-4xl font-semibold text-gold-700">$44.00</p>
-            <p class="mt-2 text-sm text-ink-600">
+            <p class="mt-3 text-sm leading-relaxed text-ink-600">
               at risk found live on order #1001 in 4.07 seconds.
               <a
-                class="font-semibold underline underline-offset-2 hover:text-ink-900"
+                class="font-semibold whitespace-nowrap underline underline-offset-2 hover:text-ink-900"
                 href="https://github.com/8-BitRhyon/settleye"
                 rel="noopener"
               >
@@ -242,112 +317,130 @@
         </ul>
       </section>
 
-      <section aria-labelledby="objections-heading" class="mx-auto max-w-6xl border-t border-line-200 px-6 py-14">
-        <h2 id="objections-heading" class="text-xs font-bold tracking-widest text-ink-500 uppercase">
-          Objections, answered
-        </h2>
-        <div class="mt-6 space-y-3">
-          <details class="rounded-2xl border border-line-200 bg-card-white p-5">
-            <summary class="cursor-pointer font-bold">
-              Why not just switch to a better agent?
-            </summary>
-            <p class="mt-2 text-sm text-ink-600">
-              Every agent drifts. Air Canada and Priceline proved the premise.
-              Switching agents changes which agent you verify, never whether
-              verification is needed.
-            </p>
-          </details>
-          <details class="rounded-2xl border border-line-200 bg-card-white p-5">
-            <summary class="cursor-pointer font-bold">
-              Why not vendor guardrails or audit trails?
-            </summary>
-            <p class="mt-2 text-sm text-ink-600">
-              Guardrails prevent before send for one vendor. Trails log tool
-              calls without checking ledger truth. Settleye verifies after
-              execution, across vendors.
-            </p>
-          </details>
-          <details class="rounded-2xl border border-line-200 bg-card-white p-5">
-            <summary class="cursor-pointer font-bold">
-              What stops Shopify or Stripe from building it?
-            </summary>
-            <p class="mt-2 text-sm text-ink-600">
-              They verify their own rails and never read transcripts.
-              Neutrality is the product.
-            </p>
-          </details>
-          <details class="rounded-2xl border border-line-200 bg-card-white p-5">
-            <summary class="cursor-pointer font-bold">
-              Is the model decorative?
-            </summary>
-            <p class="mt-2 text-sm text-ink-600">
-              No. The demo shows raw transcript to raw model JSON to diff with
-              no cuts. A wire-level test pins the model ID on every request.
-            </p>
-          </details>
+      <section aria-labelledby="objections-heading" class="border-y border-line-200 bg-card-white">
+        <div class="mx-auto max-w-6xl px-6 py-16 sm:py-20">
+          <h2 id="objections-heading" class="font-display flex items-center gap-3 text-xs font-bold tracking-widest text-ink-500 uppercase">
+            <span aria-hidden="true" class="h-px w-8 bg-pine-700"></span>
+            Objections, answered
+          </h2>
+          <div class="mx-auto mt-8 max-w-3xl space-y-3">
+            <details class="rounded-2xl border border-line-200 bg-cream-50 px-6 py-5 transition hover:border-pine-700/40">
+              <summary class="cursor-pointer font-bold">
+                Why not just switch to a better agent?
+              </summary>
+              <p class="mt-3 text-sm leading-relaxed text-ink-600">
+                Every agent drifts. Air Canada and Priceline proved the premise.
+                Switching agents changes which agent you verify, never whether
+                verification is needed.
+              </p>
+            </details>
+            <details class="rounded-2xl border border-line-200 bg-cream-50 px-6 py-5 transition hover:border-pine-700/40">
+              <summary class="cursor-pointer font-bold">
+                Why not vendor guardrails or audit trails?
+              </summary>
+              <p class="mt-3 text-sm leading-relaxed text-ink-600">
+                Guardrails prevent before send for one vendor. Trails log tool
+                calls without checking ledger truth. Settleye verifies after
+                execution, across vendors.
+              </p>
+            </details>
+            <details class="rounded-2xl border border-line-200 bg-cream-50 px-6 py-5 transition hover:border-pine-700/40">
+              <summary class="cursor-pointer font-bold">
+                What stops Shopify or Stripe from building it?
+              </summary>
+              <p class="mt-3 text-sm leading-relaxed text-ink-600">
+                They verify their own rails and never read transcripts.
+                Neutrality is the product.
+              </p>
+            </details>
+            <details class="rounded-2xl border border-line-200 bg-cream-50 px-6 py-5 transition hover:border-pine-700/40">
+              <summary class="cursor-pointer font-bold">
+                Is the model decorative?
+              </summary>
+              <p class="mt-3 text-sm leading-relaxed text-ink-600">
+                No. The demo shows raw transcript to raw model JSON to diff with
+                no cuts. A wire-level test pins the model ID on every request.
+              </p>
+            </details>
+          </div>
         </div>
       </section>
 
-      <section id="pricing" aria-labelledby="pricing-heading" class="mx-auto max-w-6xl border-t border-line-200 px-6 py-14">
-        <h2 id="pricing-heading" class="text-xs font-bold tracking-widest text-ink-500 uppercase">
+      <section id="pricing" aria-labelledby="pricing-heading" class="mx-auto max-w-6xl px-6 py-16 sm:py-20">
+        <h2 id="pricing-heading" class="font-display flex items-center gap-3 text-xs font-bold tracking-widest text-ink-500 uppercase">
+          <span aria-hidden="true" class="h-px w-8 bg-gold-700"></span>
           Pricing
         </h2>
-        <p class="mt-6 max-w-3xl text-xl text-ink-600">
-          Free 14-day shadow audit over your last 90 days. Starter
-          <span class="money">$299/mo</span> to 5,000 tickets. Growth
-          <span class="money">$999/mo</span> cross-rail with one-click fix.
-          Enterprise custom with SOC 2.
-        </p>
-        <a
-          href="#audit"
-          class="mt-6 inline-block rounded-full bg-ink-900 px-6 py-2.5 text-sm font-bold text-white hover:bg-black"
-        >
-          Run a free 14-day shadow audit
-        </a>
+        <div class="card-lift mt-8 rounded-[1.75rem] border border-line-200 bg-card-white p-8 shadow-sm sm:p-10">
+          <div class="flex flex-wrap items-center justify-between gap-8">
+            <p class="max-w-2xl text-xl leading-relaxed text-ink-600">
+              Free 14-day shadow audit over your last 90 days. Starter
+              <span class="money font-semibold text-ink-900">$299/mo</span> to 5,000 tickets. Growth
+              <span class="money font-semibold text-ink-900">$999/mo</span> cross-rail with one-click fix.
+              Enterprise custom with SOC 2.
+            </p>
+            <a
+              href="#audit"
+              class="shrink-0 rounded-full bg-ink-900 px-6 py-3 text-sm font-bold text-white shadow-md transition hover:bg-black hover:shadow-lg"
+            >
+              Run a free 14-day shadow audit
+            </a>
+          </div>
+        </div>
       </section>
 
-      <section id="audit" aria-labelledby="audit-heading" class="mx-auto max-w-6xl px-6 pb-14">
-        <div class="rounded-3xl bg-ink-900 px-8 py-12 sm:px-12">
-          <h2 id="audit-heading" class="max-w-xl text-3xl font-extrabold tracking-tight text-white">
-            Stop finding phantom refunds in chargebacks.
-          </h2>
-          <p class="mt-3 max-w-xl text-white/70">
-            Run the free shadow audit. Clone the repo and reconcile your own
-            transcripts in under five minutes, or write to
-            <a class="underline underline-offset-2 hover:text-white" href="mailto:pilot@settleye.com">
-              pilot@settleye.com
-            </a>
-            for a managed audit.
-          </p>
-          <div class="mt-6">
-            <a
-              href="https://github.com/8-BitRhyon/settleye"
-              rel="noopener"
-              class="inline-block rounded-full bg-white px-6 py-2.5 text-sm font-bold text-ink-900 hover:bg-cream-50"
-            >
-              Open the repo
-            </a>
+      <section id="audit" aria-labelledby="audit-heading" class="mx-auto max-w-6xl px-6 pb-16 sm:pb-20">
+        <div class="cta-card relative overflow-hidden rounded-[2rem] px-8 py-12 shadow-[0_32px_70px_-28px_rgba(19,19,22,0.5)] sm:px-12 sm:py-14">
+          <div aria-hidden="true" class="absolute -top-20 -right-20 h-64 w-64 rounded-full border-[28px] border-white/5"></div>
+          <div aria-hidden="true" class="absolute -right-6 -bottom-24 h-56 w-56 rounded-full border-[22px] border-pine-700/20"></div>
+          <div class="relative">
+            <h2 id="audit-heading" class="font-display max-w-xl text-3xl leading-tight font-bold tracking-tight text-white sm:text-4xl">
+              Stop finding phantom refunds in chargebacks.
+            </h2>
+            <p class="mt-4 max-w-xl leading-relaxed text-white/70">
+              Run the free shadow audit. Clone the repo and reconcile your own
+              transcripts in under five minutes, or write to
+              <a class="underline underline-offset-2 hover:text-white" href="mailto:pilot@settleye.com">
+                pilot@settleye.com
+              </a>
+              for a managed audit.
+            </p>
+            <div class="mt-8">
+              <a
+                href="https://github.com/8-BitRhyon/settleye"
+                rel="noopener"
+                class="inline-block rounded-full bg-white px-6 py-3 text-sm font-bold text-ink-900 shadow-md transition hover:bg-cream-50 hover:shadow-lg"
+              >
+                Open the repo
+              </a>
+            </div>
           </div>
         </div>
       </section>
     </main>
 
-    <footer class="border-t border-line-200">
-      <div class="mx-auto max-w-6xl px-6 py-6 text-xs text-ink-500">
-        <p>
-          Built with Muse Spark Open
-          (<span class="money">meta-models/muse-spark-open-1026</span>).
-          Synthetic demo data. Test ledgers only.
-        </p>
-        <p class="mt-1">
-          <a
-            class="underline underline-offset-2 hover:text-ink-900"
-            href="https://github.com/8-BitRhyon/settleye"
-            rel="noopener"
-          >
-            github.com/8-BitRhyon/settleye
-          </a>
-        </p>
+    <footer class="border-t border-line-200 bg-card-white">
+      <div class="mx-auto flex max-w-6xl flex-wrap items-start justify-between gap-4 px-6 py-8 text-xs leading-relaxed text-ink-500">
+        <div>
+          <p class="flex items-center gap-2 text-sm font-extrabold tracking-tight text-ink-900">
+            <span aria-hidden="true" class="grid h-6 w-6 place-items-center rounded-md bg-ink-900">
+              <span class="h-2 w-2 rounded-full border-2 border-pine-700 bg-cream-50"></span>
+            </span>
+            Settleye
+          </p>
+          <p class="mt-3">
+            Built with Muse Spark Open
+            (<span class="money">meta-models/muse-spark-open-1026</span>).
+            Synthetic demo data. Test ledgers only.
+          </p>
+        </div>
+        <a
+          class="money underline underline-offset-2 hover:text-ink-900"
+          href="https://github.com/8-BitRhyon/settleye"
+          rel="noopener"
+        >
+          github.com/8-BitRhyon/settleye
+        </a>
       </div>
     </footer>
   </body>
