@@ -11,7 +11,7 @@ PromiseCheck is an execution auditor for AI support agents: it extracts promised
 - Backend: Python 3.12 + FastAPI (package manager: `uv`, test runner: `pytest`)
 - Frontend: Vite + React + TypeScript + Tailwind CSS (`npm`, `vitest`/`tsc`)
 - Deploy target: Modal serverless (backend cron + API), static frontend
-- Model: `meta-models/muse-spark-open` via Baseten (OpenAI-compatible). Never use the `-1026` suffixed ID; it does not exist.
+- Model: `meta-models/muse-spark-open-1026` via Baseten (OpenAI-compatible, event-instructed ID; `MODEL_ID` env overrides). Never hardcode a different ID.
 
 ## Commands
 

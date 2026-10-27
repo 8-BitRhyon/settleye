@@ -69,7 +69,7 @@ timeout usually means a cold start, wait and retry once.
 
 ## Compliance notes
 
-- Intelligence core is Meta models (`meta-models/muse-spark-open` default; `MODEL_ID` env override selects the event-instructed ID). See `design.md` for the verified model ID.
+- Intelligence core is Meta models (`meta-models/muse-spark-open-1026` per event guide; `MODEL_ID` env overrides). See `design.md`.
 - Challenge track: Push the Frontier (new capability for real-world agent systems).
 - Test-mode and dev-store credentials only. No live payments, no real customer data. All fixtures are synthetic.
 - Repository is public and greenfield: created for this event, every commit timestamped here. Demo opens with the required pre-existing-vs-built line (nothing pre-existed: repo did not exist before Oct 26).

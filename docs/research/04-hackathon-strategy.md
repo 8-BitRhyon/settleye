@@ -1,6 +1,32 @@
 # Hackathon Win Strategy
 
-Researched 2026-10-26. Judges score Impact, Meta AI Tooling, Technical Depth, Demo Quality equally.
+Researched 2026-10-26, corrected 2026-10-27 against the official participant guide.
+
+## Authoritative weights (guide, not the FAQ)
+
+Impact 30%, Meta AI Tooling 25%, Demo 25%, Technical Depth 20%. Impact is the biggest lever: lead every pitch with dollars and liability.
+
+## Problem statement
+
+Push the Frontier: an execution-verification layer for the agent economy is a new machine capability, not a personal workflow fix.
+
+## Bonus targets
+
+- Best Agentic Use-Case ($5k): frame the detect-decide-remediate-audit loop as an autonomous agent; keep bounded retries and idempotent writes as the autonomy evidence.
+- Best Build on Meta Open Weight Models ($10k): Baseten path plus model string in logs, README, and captions keeps us eligible; flagged in round one automatically.
+- Most Viral ($20k): post the demo on X at submission; engagement counts through Nov 8 EOD.
+- Community Vote ($10k): gallery opens Nov 9, one vote per verified account, winner Nov 16.
+
+## Calendar
+
+- Oct 27 noon ET: Agents 101. Oct 28 noon ET: Agents 102 (verifiable agents, directly relevant). Oct 30 noon ET: Fireworks inference/training.
+- Office hours weekdays 10-11am ET (no weekends) for card/credit issues.
+- Nov 3: last day for submission questions. Nov 4 9pm ET: hard submission stop. Submit by noon.
+- Nov 5-8 judging; Nov 9 noon closing ceremony plus live finals (top 5 per track).
+
+## Originality disclosure
+
+Repo is greenfield and public; every commit timestamped here. Demo opens with the required line: nothing pre-existed, everything shown was built for this event. Submission lists all contributors; one representative submits.
 
 ## What past Meta winners did
 

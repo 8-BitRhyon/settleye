@@ -14,7 +14,7 @@ from app.extract.client import MODEL_ID, MetaModelClient
 from app.extract.pipeline import ExtractionError, extract_promises
 from app.models import PromiseEntity
 
-CANONICAL_MODEL_ID = "meta-models/muse-spark-open"
+CANONICAL_MODEL_ID = "meta-models/muse-spark-open-1026"
 
 PHANTOM_JSON = json.dumps([
     {
@@ -46,7 +46,7 @@ def make_client(replies: list[str], seen: list[dict]) -> MetaModelClient:
 
 def test_model_id_is_canonical() -> None:
     assert MODEL_ID == CANONICAL_MODEL_ID
-    assert not MODEL_ID.endswith("-1026")
+    assert MODEL_ID == "meta-models/muse-spark-open-1026"
 
 
 async def test_wire_sends_canonical_model_id() -> None:

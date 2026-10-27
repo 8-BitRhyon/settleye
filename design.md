@@ -39,8 +39,7 @@ promise-check/
 
 | Decision | Reason | Date |
 |---|---|---|
-| Model ID `meta-models/muse-spark-open` (no `-1026` suffix) | Suffixed ID exists on no provider listing as of 2026-10-26 | 2026-10-26 |
-| MODEL_ID env override for the hackathon ID | Event FAQ instructs the suffixed ID; one env var flips it with zero code changes | 2026-10-27 |
+| Model ID `meta-models/muse-spark-open-1026` (event-instructed) | Event guide overrides the public catalog ID; MODEL_ID env selects anything else | 2026-10-27 |
 | Challenge track: Push the Frontier | Execution-verification layer for the agent economy is a new capability, not a personal workflow fix | 2026-10-27 |
 | Validate-then-retry extraction, not constrained decoding | Baseten accepts but does not enforce `json_schema` for this model | 2026-10-26 |
 | Mock ledger adapter behind interface from day one | Shopify auth/idempotency friction is the top integration risk | 2026-10-26 |

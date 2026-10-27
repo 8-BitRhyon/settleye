@@ -10,16 +10,16 @@ import os
 
 import httpx
 
-MODEL_ID = "meta-models/muse-spark-open"
+MODEL_ID = "meta-models/muse-spark-open-1026"
 BASE_URL_DEFAULT = "https://inference.baseten.co/v1"
 
 
 def model_id() -> str:
-    """Active model ID: MODEL_ID override wins, canonical default otherwise.
+    """Active model ID: MODEL_ID override wins, event default otherwise.
 
-    The hackathon FAQ instructs `meta-models/muse-spark-open-1026`, which
-    exists on no public provider listing as of 2026-10-26. If the event
-    endpoint answers at the suffixed ID, set MODEL_ID and move on.
+    The event guide instructs `meta-models/muse-spark-open-1026` for this
+    hackathon (a pinned event deployment), overriding the public catalog
+    ID `meta-models/muse-spark-open`. Either works through MODEL_ID.
     """
     return os.environ.get("MODEL_ID", MODEL_ID)
 
