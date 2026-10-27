@@ -201,6 +201,13 @@ export default function App() {
             })}
           </section>
         )}
+
+        <footer className="mt-8 border-t border-zinc-800 pt-3">
+          <p className="text-[11px] text-zinc-500">
+            Built with Muse Spark Open. Extraction by Meta open-weight model
+            via Baseten; fixtures are synthetic, test ledgers only.
+          </p>
+        </footer>
       </div>
     </main>
   );

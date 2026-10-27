@@ -15,13 +15,19 @@ class PromiseEntity(BaseModel):
     asserted_state: str = Field(description="What the agent claimed is now true")
     confidence: float = Field(default=0.0, ge=0.0, le=1.0)
     evidence_span: str = Field(default="", description="Verbatim transcript quote")
+    terminal_status: Literal[
+        "binding", "conditional", "superseded", "retracted", "info_only"
+    ] = Field(
+        default="binding",
+        description="Dialogue end-state of the commitment. Only binding reaches the ledger join.",
+    )
 
 
 class ReconciliationResult(BaseModel):
     """Outcome of diffing one promise against ledger state."""
 
     promise: PromiseEntity
-    verdict: Literal["verified", "drift", "unverifiable"]
+    verdict: Literal["verified", "drift", "unverifiable", "not_binding"]
     ledger_summary: str = ""
     amount_at_risk_usd: float = 0.0
 

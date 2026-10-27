@@ -5,6 +5,7 @@ unknown ledger row reports `unverifiable`: the engine never fabricates a
 verdict it cannot prove from ledger state.
 """
 
+from app.commitment import is_binding
 from app.ledger.base import LedgerAdapter
 from app.models import PromiseEntity, ReconciliationResult
 
@@ -13,6 +14,15 @@ _HALF_CENT_USD = 0.005
 
 def reconcile(promise: PromiseEntity, ledger: LedgerAdapter) -> ReconciliationResult:
     """Diff one extracted promise against settled ledger state."""
+    if not is_binding(promise):
+        return ReconciliationResult(
+            promise=promise,
+            verdict="not_binding",
+            ledger_summary=(
+                f"Commitment ended as {promise.terminal_status}; "
+                "nothing is owed unless stated again."
+            ),
+        )
     if promise.action != "refund" or promise.amount is None or not promise.order_id:
         return ReconciliationResult(
             promise=promise,

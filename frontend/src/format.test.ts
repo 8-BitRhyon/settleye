@@ -19,12 +19,14 @@ describe("verdict labels", () => {
     expect(verdictLabel("verified")).toBe("Verified");
     expect(verdictLabel("drift")).toBe("State drift");
     expect(verdictLabel("unverifiable")).toBe("Needs review");
+    expect(verdictLabel("not_binding")).toBe("Not binding");
   });
 
   it("drift is the only red verdict", () => {
     expect(verdictClasses("drift")).toContain("red");
     expect(verdictClasses("verified")).not.toContain("red");
     expect(verdictClasses("unverifiable")).not.toContain("red");
+    expect(verdictClasses("not_binding")).not.toContain("red");
   });
 });
 

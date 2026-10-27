@@ -76,3 +76,34 @@ def test_non_refund_action_is_unverifiable_not_faked() -> None:
     )
     result = reconcile(promise, ledger())
     assert result.verdict == "unverifiable"
+
+
+def test_conditional_promise_is_not_binding() -> None:
+    promise = PromiseEntity(
+        action="refund",
+        amount=45.00,
+        order_id="992",
+        target_system="stripe",
+        asserted_state="refund once the carrier scans",
+        confidence=0.7,
+        evidence_span="once the carrier scans it",
+        terminal_status="conditional",
+    )
+    result = reconcile(promise, ledger())
+    assert result.verdict == "not_binding"
+    assert result.amount_at_risk_usd == 0.0
+
+
+def test_retracted_promise_is_not_binding() -> None:
+    promise = PromiseEntity(
+        action="refund",
+        amount=45.00,
+        order_id="992",
+        target_system="stripe",
+        asserted_state="retracted, final sale",
+        confidence=0.9,
+        evidence_span="final sale",
+        terminal_status="retracted",
+    )
+    result = reconcile(promise, ledger())
+    assert result.verdict == "not_binding"

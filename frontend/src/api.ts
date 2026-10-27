@@ -15,7 +15,7 @@ export interface PromiseEntity {
 
 export interface DriftResult {
   promise: PromiseEntity;
-  verdict: "verified" | "drift" | "unverifiable";
+  verdict: "verified" | "drift" | "unverifiable" | "not_binding";
   ledger_summary: string;
   amount_at_risk_usd: number;
 }

@@ -1,6 +1,6 @@
 /** Pure display helpers for the exception inbox. No DOM, fully tested. */
 
-export type Verdict = "verified" | "drift" | "unverifiable";
+export type Verdict = "verified" | "drift" | "unverifiable" | "not_binding";
 
 export function formatUSD(amount: number): string {
   return `$${amount.toFixed(2)}`;
@@ -14,6 +14,8 @@ export function verdictLabel(verdict: Verdict): string {
       return "State drift";
     case "unverifiable":
       return "Needs review";
+    case "not_binding":
+      return "Not binding";
   }
 }
 
@@ -25,6 +27,8 @@ export function verdictClasses(verdict: Verdict): string {
       return "bg-red-500/15 text-red-300";
     case "unverifiable":
       return "bg-amber-500/15 text-amber-300";
+    case "not_binding":
+      return "bg-zinc-500/15 text-zinc-300";
   }
 }
 

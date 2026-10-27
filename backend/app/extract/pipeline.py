@@ -26,6 +26,11 @@ Reply with a JSON array only, no prose, no code fences. Each item has:
 - asserted_state: what the agent claimed is now true
 - confidence: number 0.0 to 1.0
 - evidence_span: verbatim quote from the transcript
+- terminal_status: one of binding, conditional, superseded, retracted, info_only.
+  binding means an unconditional commitment that still stands at the end of the
+  transcript. conditional means it depends on a future customer action. superseded
+  means a later turn replaced it. retracted means it was taken back. info_only
+  means policy explanation, never a commitment.
 If the transcript contains no promises, reply with []."""
 
 
