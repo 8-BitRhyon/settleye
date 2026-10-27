@@ -18,6 +18,7 @@ Settleye is an execution auditor for AI support agents: it extracts promised act
 - Backend install: `cd backend && uv sync`
 - Backend test: `cd backend && uv run pytest`
 - Backend dev: `cd backend && uv run uvicorn app.main:app --reload`
+- Daemon sweep: `cd backend && uv run python -m app.daemon --dir <transcripts> --ledger mock|shopify` (audit-only; `--auto-remediate` mock only)
 - Frontend install: `cd frontend && npm install`
 - Frontend test: `cd frontend && npm test`
 - Frontend test/typecheck: `cd frontend && npm run typecheck`

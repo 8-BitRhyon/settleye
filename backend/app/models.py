@@ -49,3 +49,24 @@ class AuditReport(BaseModel):
     drifts: list[ReconciliationResult] = Field(default_factory=list)
     total_at_risk_usd: float = 0.0
     verdict: Literal["verified_green", "drift_found"] = "verified_green"
+
+
+class BatchItemReport(BaseModel):
+    """One transcript inside a daemon sweep: report or isolated error."""
+
+    source: str = Field(description="Transcript filename or feed identifier")
+    report: AuditReport | None = None
+    error: str | None = None
+
+
+class BatchReport(BaseModel):
+    """A whole daemon sweep: every item plus money-sorted drift."""
+
+    items: list[BatchItemReport] = Field(default_factory=list)
+    drifts: list[ReconciliationResult] = Field(default_factory=list)
+    total_at_risk_usd: float = 0.0
+    remediated: int = 0
+    remediation_errors: list[str] = Field(default_factory=list)
+    verdict: Literal["verified_green", "drift_found", "batch_error"] = (
+        "verified_green"
+    )
