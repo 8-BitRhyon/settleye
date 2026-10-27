@@ -21,6 +21,12 @@ Sources: https://decagon.ai/glossary/what-is-an-ai-audit-trail, https://support.
 
 Context raising urgency: Air Canada 2024 plus May 2026 German appeals rulings make chatbot promises legally binding; EU AI Act disclosure deadline Aug 2026.
 
+## Adjacent validator: Collar (YC F26)
+
+Collar (https://www.ycombinator.com/companies/collar, https://usecollarai.com) builds AI-native investor relations: earnings prep, investor targeting, citation-backed live teleprompters, Q&A bots, and cross-department reconciliation ("reconciles conflicting information, checks freshness, so management can use an answer without manually verifying it"). Founders Kazel Koh En Yang (CEO) and Jamie Yau (COO), Singaporean, second-time founders ex-GIC/military intelligence; 7-figure ARR, 8 paying clients.
+
+Relationship to PromiseCheck: adjacent, not overlapping. Different buyer (IR teams and CFOs at public companies vs e-commerce support ops), different ledger (filings and consensus vs Stripe/Shopify money movement), no remediation loop. What it validates: citation-backed verification plus a live answer surface is fundable product language, and a teleprompter surfacing a wrong figure is the same drift liability in another domain. A warm founder connection here is a design-pattern reference (evidence spans, freshness checks) and a potential future design partner, not a competitor to outrun.
+
 ## White-space verdict
 
 Agent platforms own prevention, recon tools own ledger-to-ledger, eval tools own text quality. The named failure ("promising actions the system never takes") has no vendor owning detection plus remediation. PromiseCheck sits above the agent platforms and beside Stripe/Shopify: integration partners, not direct competitors.
