@@ -1,0 +1,1 @@
+{"case": "EVAL09", "description": "Refund promised with no order number anywhere. Expect unverifiable, green.", "turns": [{"role": "customer", "text": "EVAL09: My headset broke after a week. I want a refund of $60."}, {"role": "agent", "text": "Sorry to hear that. I have processed a full $60 refund for you."}, {"role": "customer", "text": "Thanks!"}]}

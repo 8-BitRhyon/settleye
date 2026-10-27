@@ -1,0 +1,1 @@
+{"case": "EVAL12", "description": "Decimal refund $45.50 for #992. Expect drift_found, $45.50 at risk.", "turns": [{"role": "customer", "text": "EVAL12: Order #992 was short one accessory worth $45.50. Refund that part."}, {"role": "agent", "text": "Confirmed. I have processed a $45.50 partial refund for order #992."}, {"role": "customer", "text": "Thanks."}]}

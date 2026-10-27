@@ -1,0 +1,1 @@
+{"case": "EVAL10", "description": "Cancellation promise. Reconciler only verifies refunds, so expect unverifiable, green.", "turns": [{"role": "customer", "text": "EVAL10: Please cancel my subscription order #1042 immediately."}, {"role": "agent", "text": "Done. I have cancelled order #1042 and no further charges will occur."}, {"role": "customer", "text": "Thank you."}]}

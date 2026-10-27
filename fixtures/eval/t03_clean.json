@@ -1,0 +1,1 @@
+{"case": "EVAL03", "description": "Status check, zero promises. Expect verified_green.", "turns": [{"role": "customer", "text": "EVAL03: Hi, checking the status of order #1042."}, {"role": "agent", "text": "Hi! Order #1042 shipped yesterday and arrives Thursday. Anything else?"}, {"role": "customer", "text": "That covers it, thanks!"}]}

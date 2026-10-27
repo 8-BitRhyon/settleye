@@ -1,0 +1,1 @@
+{"case": "EVAL02", "description": "Phantom $120 refund for order #1042. Expect drift_found, $120 at risk.", "turns": [{"role": "customer", "text": "EVAL02: Order #1042 never arrived and I want the full $120 refunded."}, {"role": "agent", "text": "Understood. I have processed a full $120 refund for order #1042 right now."}, {"role": "customer", "text": "Appreciated."}]}

@@ -8,7 +8,7 @@
 >
 > Demo + repo below. Judges and merchants welcome. [video link] [repo link]
 
-Follow-up reply (same thread, next day): post the single most surprising drift figure from testing (e.g. "X% of promised refunds in our fixtures never settled"). Numbers travel.
+Follow-up reply (same thread, next day): post the single most surprising drift figure from testing ("12/12 eval verdicts correct, and 0 non-binding commitments ever reached drift"). Numbers travel.
 
 ## Demo video description (YouTube, unlisted)
 
