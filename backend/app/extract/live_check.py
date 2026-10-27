@@ -30,6 +30,33 @@ def resolve_api_key(explicit: str | None) -> str | None:
     return os.environ.get("BASETEN_API_KEY")
 
 
+def repo_env_path() -> Path:
+    """Repo-root `.env`, resolved from this file so CWD never matters."""
+    return Path(__file__).resolve().parents[3] / ".env"
+
+
+def load_dotenv_file(path: Path | str | None = None) -> None:
+    """Minimal `.env` loader: KEY=VALUE lines, `#` comments, `export`
+    prefixes, and single/double quotes handled. Real environment variables
+    always win. Missing files are silent. No dependency."""
+    target = Path(path) if path is not None else repo_env_path()
+    try:
+        text = target.read_text(encoding="utf-8")
+    except OSError:
+        return
+    for raw_line in text.splitlines():
+        line = raw_line.strip()
+        if not line or line.startswith("#") or "=" not in line:
+            continue
+        if line.startswith("export "):
+            line = line[len("export "):].strip()
+        key, _, value = line.partition("=")
+        key = key.strip()
+        value = value.strip().strip("'").strip('"')
+        if key and key not in os.environ:
+            os.environ[key] = value
+
+
 def load_transcript(path: str) -> str:
     """Load a fixture file (JSON with turns) or raw text into one string."""
     text = Path(path).read_text(encoding="utf-8")
@@ -103,7 +130,13 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--api-key", default=None, help="Baseten key (or env).")
     parser.add_argument("--base-url", default=BASE_URL_DEFAULT)
     parser.add_argument("--model", default=None)
+    parser.add_argument(
+        "--env-file",
+        default=None,
+        help="Path to .env (defaults to repo-root .env).",
+    )
     args = parser.parse_args(argv)
+    load_dotenv_file(args.env_file)
     import asyncio
 
     return asyncio.run(_run(args))
