@@ -37,7 +37,7 @@ Rules: CTA pills are ink-900 with white text (reference pattern). Green stays de
 ## Scope (sections in order)
 
 1. Sticky header: wordmark, repo link, one audit button. Anchor links to Demo, Proof, Pricing.
-2. Hero split: hook headline plus subhead plus CTAs on the left, static product mock (drift card with $44.00 at risk) on the right. Full-bleed to max-w-6xl.
+2. Hero split: hook headline plus subhead plus CTAs on the left. Static product mock (drift card with $44.00 at risk) on the right. Full-bleed to max-w-6xl.
 3. Problem strip: three cards verbatim (phantom refunds, policy breaches, silent cancellations) plus the liability footnote.
 4. How it works: three numbered steps (connect read-only, backfill 90 days, fix in one click).
 5. Demo slot: 16:9 placeholder labeled for the 3-minute video. No fake player controls.
