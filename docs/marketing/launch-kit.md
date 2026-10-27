@@ -14,11 +14,11 @@ Follow-up reply (same thread, next day): post the top drift figure from testing.
 
 Use on camera or on X. Every angle carries its qualifier. Never state a number without its scope.
 
-1. ROI hook: "Every $1 of dispute or fraud loss costs US merchants $4.61 to over $5.00. A single chargeback burns $128 before you count the goods." Scope: $4.61 covers goods, fees, and labor across fraud and disputes. $128 is per-incident overhead before goods.
-2. Urgency hook: "Miss a promised Klarna refund writeback by 96 hours and Klarna triggers an automatic chargeback." Scope: applies to agreed Klarna order adjustments.
-3. Defense hook: "Merchants recover just 10.7% of chargeback dollars net. On Visa Credit Not Processed, win rates jump from ~25% to 45% with locked policy and refund-attempt records." Scope: 10.7% is net across all issued chargebacks. The uplift is travel and hospitality benchmarks.
+1. ROI hook: "Every $1 of dispute or fraud loss costs US merchants $4.61 to over $5.00." Add: "A single chargeback burns $128 before you count the goods." Scope: $4.61 covers goods, fees, and labor across fraud and disputes. $128 is per-incident overhead before goods.
+2. Urgency hook: "Miss a promised Klarna refund writeback by 96 hours." Add: "Klarna triggers an automatic chargeback." Scope: applies to agreed Klarna order adjustments.
+3. Defense hook: "Merchants recover just 10.7% of chargeback dollars net." Add: "On Visa Credit Not Processed, win rates jump from ~25% to 45% with locked records." Scope: 10.7% is net across all issued chargebacks. The uplift is travel and hospitality benchmarks.
 4. Ops hook: "77% of e-commerce support tickets fail first contact. 69% of billing inquiries need escalation." Scope: async tickets, not live chat.
-5. Founder hook: "72% of 7- and 8-figure merchants adopted AI, yet revenue growth trails non-adopters 26.7% to 27.8%." Scope: observational survey, not a controlled experiment.
+5. Founder hook: "72% of 7- and 8-figure merchants adopted AI." Add: "Yet revenue growth trails non-adopters 26.7% to 27.8%." Scope: observational survey, not a controlled experiment.
 
 ## Demo video description (YouTube, unlisted)
 
