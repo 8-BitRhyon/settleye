@@ -124,6 +124,70 @@ details[open ] summary {
   color: var(--color-pine-800);
 }
 
+/* Alternating bands: problem, how, demo, and objections alternate the
+   cream page ground and card-white section grounds, with a soft
+   pine-to-gold glow divider along the top edge of each band. Only
+   existing palette tokens at low alpha, so no new hues are introduced.
+   The divider is an absolutely positioned pseudo-element, so it adds
+   no layout and cannot shift content. */
+.band {
+  position: relative;
+}
+
+.band::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  right: 0;
+  left: 0;
+  height: 2px;
+  background: linear-gradient(
+    to right,
+    transparent,
+    rgba(4, 120, 87, 0.22) 30%,
+    rgba(180, 83, 9, 0.16) 70%,
+    transparent
+  );
+  pointer-events: none;
+}
+
+/* Footer watermark: giant outline SETTLEYE set behind the footer
+   content. Absolutely positioned and clipped by the footer, so it
+   never causes horizontal overflow and never shifts layout (no CLS).
+   Transparent fill with a line-200 stroke; falls back to a faint
+   solid wash where text-stroke is unsupported. */
+.footer-mark-wrap {
+  position: relative;
+  overflow: hidden;
+}
+
+.footer-mark {
+  position: absolute;
+  right: 0;
+  bottom: -0.14em;
+  left: 0;
+  display: block;
+  overflow: hidden;
+  max-width: 100%;
+  font-family: var(--font-display);
+  font-size: clamp(4rem, 17vw, 11rem);
+  font-weight: 700;
+  line-height: 1;
+  letter-spacing: 0.01em;
+  white-space: nowrap;
+  text-align: center;
+  color: rgba(231, 229, 224, 0.35);
+  pointer-events: none;
+  user-select: none;
+}
+
+@supports ((-webkit-text-stroke: 1px black) or (text-stroke: 1px black)) {
+  .footer-mark {
+    color: transparent;
+    -webkit-text-stroke: 1.5px var(--color-line-200);
+  }
+}
+
 /* Final CTA: layered ink card with a faint pine glow in one corner. */
 .cta-card {
   background:

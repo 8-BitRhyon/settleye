@@ -162,7 +162,7 @@
         </div>
       </section>
 
-      <section aria-labelledby="problem-heading" class="border-y border-line-200 bg-card-white">
+      <section aria-labelledby="problem-heading" class="band border-y border-line-200 bg-card-white">
         <div class="mx-auto max-w-6xl px-6 py-16 sm:py-20">
           <h2 id="problem-heading" class="font-display flex items-center gap-3 text-xs font-bold tracking-widest text-ink-500 uppercase">
             <span aria-hidden="true" class="h-px w-8 bg-alarm-700"></span>
@@ -202,7 +202,8 @@
         </div>
       </section>
 
-      <section aria-labelledby="how-heading" class="mx-auto max-w-6xl px-6 py-16 sm:py-20">
+      <section aria-labelledby="how-heading" class="band bg-cream-50">
+        <div class="mx-auto max-w-6xl px-6 py-16 sm:py-20">
         <h2 id="how-heading" class="font-display flex items-center gap-3 text-xs font-bold tracking-widest text-ink-500 uppercase">
           <span aria-hidden="true" class="h-px w-8 bg-pine-700"></span>
           How it works
@@ -233,9 +234,10 @@
             </p>
           </li>
         </ol>
+        </div>
       </section>
 
-      <section id="demo" aria-labelledby="demo-heading" class="border-y border-line-200 bg-card-white">
+      <section id="demo" aria-labelledby="demo-heading" class="band border-y border-line-200 bg-card-white">
         <div class="mx-auto max-w-6xl px-6 py-16 sm:py-20">
           <h2 id="demo-heading" class="font-display flex items-center gap-3 text-xs font-bold tracking-widest text-ink-500 uppercase">
             <span aria-hidden="true" class="h-px w-8 bg-gold-700"></span>
@@ -317,7 +319,7 @@
         </ul>
       </section>
 
-      <section aria-labelledby="objections-heading" class="border-y border-line-200 bg-card-white">
+      <section aria-labelledby="objections-heading" class="band border-y border-line-200 bg-card-white">
         <div class="mx-auto max-w-6xl px-6 py-16 sm:py-20">
           <h2 id="objections-heading" class="font-display flex items-center gap-3 text-xs font-bold tracking-widest text-ink-500 uppercase">
             <span aria-hidden="true" class="h-px w-8 bg-pine-700"></span>
@@ -371,21 +373,38 @@
           <span aria-hidden="true" class="h-px w-8 bg-gold-700"></span>
           Pricing
         </h2>
-        <div class="card-lift mt-8 rounded-[1.75rem] border border-line-200 bg-card-white p-8 shadow-sm sm:p-10">
-          <div class="flex flex-wrap items-center justify-between gap-8">
-            <p class="max-w-2xl text-xl leading-relaxed text-ink-600">
-              Free 14-day shadow audit over your last 90 days. Starter
-              <span class="money font-semibold text-ink-900">$299/mo</span> to 5,000 tickets. Growth
-              <span class="money font-semibold text-ink-900">$999/mo</span> cross-rail with one-click fix.
-              Enterprise custom with SOC 2.
+        <div class="mt-8 grid gap-4 md:grid-cols-3">
+          <article class="card-lift rounded-2xl border border-line-200 bg-cream-50 p-6">
+            <h3 class="font-display text-lg font-bold">Free</h3>
+            <p class="mt-2 text-sm leading-relaxed text-ink-600">
+              14-day shadow audit over your last 90 days.
             </p>
-            <a
-              href="#audit"
-              class="shrink-0 rounded-full bg-ink-900 px-6 py-3 text-sm font-bold text-white shadow-md transition hover:bg-black hover:shadow-lg"
-            >
-              Run a free 14-day shadow audit
-            </a>
-          </div>
+          </article>
+          <article class="card-lift rounded-2xl border border-line-200 bg-cream-50 p-6">
+            <h3 class="font-display text-lg font-bold">Starter</h3>
+            <p class="money mt-2 text-3xl font-semibold text-ink-900">$299/mo</p>
+            <p class="mt-2 text-sm leading-relaxed text-ink-600">
+              to 5,000 tickets.
+            </p>
+          </article>
+          <article class="card-lift rounded-2xl border border-line-200 bg-cream-50 p-6">
+            <h3 class="font-display text-lg font-bold">Growth</h3>
+            <p class="money mt-2 text-3xl font-semibold text-ink-900">$999/mo</p>
+            <p class="mt-2 text-sm leading-relaxed text-ink-600">
+              cross-rail with one-click fix.
+            </p>
+          </article>
+        </div>
+        <div class="mt-6 flex flex-wrap items-center justify-between gap-6">
+          <p class="text-sm leading-relaxed text-ink-600">
+            Enterprise custom with SOC 2.
+          </p>
+          <a
+            href="#audit"
+            class="shrink-0 rounded-full bg-ink-900 px-6 py-3 text-sm font-bold text-white shadow-md transition hover:bg-black hover:shadow-lg"
+          >
+            Run a free 14-day shadow audit
+          </a>
         </div>
       </section>
 
@@ -435,8 +454,9 @@
       </section>
     </main>
 
-    <footer class="border-t border-line-200 bg-card-white">
-      <div class="mx-auto flex max-w-6xl flex-wrap items-start justify-between gap-4 px-6 py-8 text-xs leading-relaxed text-ink-500">
+    <footer class="footer-mark-wrap border-t border-line-200 bg-card-white">
+      <span aria-hidden="true" class="footer-mark">SETTLEYE</span>
+      <div class="relative mx-auto flex max-w-6xl flex-wrap items-start justify-between gap-4 px-6 py-8 text-xs leading-relaxed text-ink-500">
         <div>
           <p class="flex items-center gap-2 text-sm font-extrabold tracking-tight text-ink-900">
             <span aria-hidden="true" class="grid h-6 w-6 place-items-center rounded-md bg-ink-900">
