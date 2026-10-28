@@ -51,12 +51,23 @@ body {
   border-radius: 0.375rem;
 }
 
+/* Hero: full-viewport Eclipse composition. The section fills at least
+   one small-viewport height and centers its copy block vertically.
+   The motion background is a canvas-free gradient wash (rewritten;
+   no vendored script): layered pine and gold radials over the cream
+   ground, using only existing palette tokens. */
+.hero-eclipse {
+  min-height: 100svh;
+}
+
 /* Hero: soft pine and gold wash over the cream ground, plus a pine
    highlight swept under the closing words of the headline. */
 .hero-glow {
   background:
+    radial-gradient(44rem 26rem at 50% -6%, rgba(4, 120, 87, 0.12), transparent 62%),
     radial-gradient(36rem 22rem at 82% 8%, rgba(180, 83, 9, 0.1), transparent 65%),
-    radial-gradient(42rem 26rem at 12% 0%, rgba(4, 120, 87, 0.1), transparent 65%);
+    radial-gradient(42rem 26rem at 12% 0%, rgba(4, 120, 87, 0.1), transparent 65%),
+    linear-gradient(to bottom, rgba(255, 255, 255, 0.35), transparent 30%);
 }
 
 .hero-accent {
@@ -118,6 +129,39 @@ body {
   to {
     transform: rotate(-360deg);
   }
+}
+
+/* Eclipse entrance: staggered blur rise-in. Each hero child carries
+   class="rise" with an inline --d delay (0.05s to 0.36s). One shared
+   keyframe keeps the motion cheap: opacity plus transform and filter
+   only, so no layout shift. Content is server-rendered and visible
+   without motion; the animation only enhances. */
+.rise {
+  opacity: 0;
+  animation: rise-in 0.9s cubic-bezier(0.22, 0.61, 0.21, 1) forwards;
+  animation-delay: var(--d, 0s);
+}
+
+@keyframes rise-in {
+  from {
+    opacity: 0;
+    transform: translateY(18px);
+    filter: blur(8px);
+  }
+
+  to {
+    opacity: 1;
+    transform: none;
+    filter: none;
+  }
+}
+
+/* Eclipse countdown position: static mono tabular readout reusing only
+   measured numbers ($44.00 live, 12/12 eval). No timers, no ticking. */
+.hero-readout {
+  font-variant-numeric: tabular-nums;
+  border-top: 1px solid var(--color-line-200);
+  padding-top: 1rem;
 }
 
 /* Cards: quiet lift on hover, removed under reduced motion below. */
@@ -502,6 +546,15 @@ details[open ] summary {
   .hero-ring--pine,
   .hero-ring--gold {
     animation: none !important;
+  }
+
+  /* Eclipse entrance: no rise-in under reduced motion. Items rest at
+     full opacity with no transform and no blur. */
+  .rise {
+    animation: none !important;
+    opacity: 1 !important;
+    transform: none !important;
+    filter: none !important;
   }
 
   /* The 3D canvas never runs under reduced motion (the loader checks

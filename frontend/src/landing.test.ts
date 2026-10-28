@@ -120,4 +120,64 @@ describe("landing page contract", () => {
     expect(reduced).toContain(".hero-ring");
     expect(reduced).toMatch(/animation:\s*none\s*!important/);
   });
+
+  it("renders a full-viewport Eclipse hero with a canvas-free gradient wash", () => {
+    expect(html).toContain("hero-eclipse");
+    expect(html).toContain("min-h-svh");
+    expect(html).not.toContain("data-bg");
+    expect(html).not.toContain("dvklab");
+    expect(html).not.toMatch(/<script[^>]+src="https?:\/\//);
+    expect(css).toContain(".hero-eclipse");
+    expect(css).toMatch(/min-height:\s*100svh/);
+    expect(css).toContain(".hero-glow");
+    expect(css).toMatch(/radial-gradient/);
+  });
+
+  it("staggers a blur rise-in entrance with per-item delays", () => {
+    expect(html).toContain('class="rise');
+    expect(html).toMatch(/style="--d:\s*0\.05s"/);
+    expect(html).toMatch(/style="--d:\s*0\.36s"/);
+    expect(css).toContain(".rise");
+    expect(css).toContain("@keyframes rise-in");
+    expect(css).toMatch(/animation-delay:\s*var\(--d/);
+    expect(css).toContain("blur(8px)");
+    expect(css).toContain("translateY(18px)");
+  });
+
+  it("parks the rise-in at full opacity under reduced motion", () => {
+    const reduced = css.slice(css.indexOf("@media (prefers-reduced-motion: reduce)"));
+    expect(reduced).toContain(".rise");
+    expect(reduced).toMatch(/animation:\s*none\s*!important/);
+    expect(reduced).toMatch(/opacity:\s*1\s*!important/);
+  });
+
+  it("shows a static mono tabular readout with only measured numbers", () => {
+    expect(html).toContain("hero-readout");
+    expect(html).toContain("$44.00 at risk");
+    expect(html).toContain("12/12 verdicts");
+    expect(html).not.toMatch(/setInterval/);
+    expect(html).not.toMatch(/setTimeout/);
+    expect(css).toContain(".hero-readout");
+    expect(css).toMatch(/tabular-nums/);
+  });
+
+  it("keeps our copy, type system, and section order with no foreign fonts", () => {
+    expect(html).toContain("Your AI agent promised a refund.");
+    expect(html).toContain("Did the money move?");
+    expect(html).toContain("Run a free 14-day shadow audit");
+    expect(html).toContain("Watch the 3-minute demo");
+    expect(html).toContain("font-display");
+    expect(html).not.toContain("Fraunces");
+    expect(html).not.toContain("Manrope");
+    expect(css).toContain("Chakra Petch");
+    expect(css).toContain("IBM Plex Mono");
+    const order = ["hero-heading", "problem-heading", "how-heading", "demo", "proof", "objections-heading", "pricing", "audit"];
+    const positions = order.map((id) => html.indexOf(`id="${id}"`));
+    for (const pos of positions) {
+      expect(String(pos)).toMatch(/^[0-9]+$/);
+    }
+    const sorted = [...positions].sort((a, b) => a - b);
+    expect(positions).toHaveLength(sorted.length);
+    expect(positions.join(",")).toContain(sorted.join(","));
+  });
 });

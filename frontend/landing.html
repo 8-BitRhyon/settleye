@@ -65,27 +65,28 @@
     </header>
 
     <main id="main">
-      <section aria-labelledby="hero-heading" class="relative overflow-hidden">
+      <section aria-labelledby="hero-heading" class="hero-eclipse relative flex min-h-svh items-center overflow-hidden">
         <div aria-hidden="true" class="hero-glow absolute inset-0"></div>
         <div class="relative mx-auto max-w-6xl px-6 py-16 sm:py-24">
           <div class="grid items-center gap-14 lg:grid-cols-2">
             <div>
-              <p class="inline-flex items-center gap-2 rounded-full border border-line-200 bg-card-white px-3 py-1 text-xs font-bold tracking-widest text-ink-600 uppercase shadow-sm">
+              <p class="rise inline-flex items-center gap-2 rounded-full border border-line-200 bg-card-white px-3 py-1 text-xs font-bold tracking-widest text-ink-600 uppercase shadow-sm" style="--d: 0.05s">
                 <span aria-hidden="true" class="h-1.5 w-1.5 rounded-full bg-pine-700"></span>
                 Execution auditor for AI support agents
               </p>
               <h1
                 id="hero-heading"
-                class="font-display mt-6 max-w-xl text-5xl leading-[1.04] font-bold tracking-tight text-balance sm:text-6xl"
+                class="rise font-display mt-6 max-w-xl text-5xl leading-[1.04] font-bold tracking-tight text-balance sm:text-6xl"
+                style="--d: 0.12s"
               >
                 Your AI agent promised a refund. <span class="hero-accent">Did the money move?</span>
               </h1>
-              <p class="mt-5 max-w-xl text-lg leading-relaxed text-ink-600 sm:text-xl">
+              <p class="rise mt-5 max-w-xl text-lg leading-relaxed text-ink-600 sm:text-xl" style="--d: 0.2s">
                 Settleye reads support transcripts, pulls every binding promise,
                 and reconciles each one against Stripe and Shopify. Mismatches
                 land in one inbox with a one-click fix.
               </p>
-              <div class="mt-8 flex flex-wrap items-center gap-4">
+              <div class="rise mt-8 flex flex-wrap items-center gap-4" style="--d: 0.28s">
                 <a
                   href="#audit"
                   class="rounded-full bg-ink-900 px-6 py-3 text-sm font-bold text-white shadow-md transition hover:bg-black hover:shadow-lg"
@@ -99,11 +100,21 @@
                   Watch the 3-minute demo
                 </a>
               </div>
-              <p class="money mt-7 text-xs tracking-wide text-ink-500">
+              <dl class="rise hero-readout money mt-8 flex flex-wrap gap-x-8 gap-y-2 text-xs text-ink-600" style="--d: 0.36s" aria-label="Measured results">
+                <div class="flex items-baseline gap-2">
+                  <dt class="font-bold tracking-widest uppercase">Found live</dt>
+                  <dd class="font-semibold text-ink-900 tabular-nums">$44.00 at risk · order #1001</dd>
+                </div>
+                <div class="flex items-baseline gap-2">
+                  <dt class="font-bold tracking-widest uppercase">Eval</dt>
+                  <dd class="font-semibold text-ink-900 tabular-nums">12/12 verdicts</dd>
+                </div>
+              </dl>
+              <p class="money mt-4 text-xs tracking-wide text-ink-500">
                 Read-only pilot - zero write permissions
               </p>
             </div>
-            <div class="relative product-mock">
+            <div class="rise relative product-mock" style="--d: 0.24s">
               <div aria-hidden="true" class="hero-rings">
                 <svg class="hero-ring hero-ring--pine" viewBox="0 0 480 480" focusable="false">
                   <circle cx="240" cy="240" r="216" fill="none" stroke="#047857" stroke-opacity="0.22" stroke-width="1.5" stroke-dasharray="3 12" />
