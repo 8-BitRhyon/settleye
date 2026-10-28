@@ -281,8 +281,11 @@ describe("eclipse variant page contract", () => {
     expect(eclipse).toContain("github.com/8-BitRhyon/settleye");
   });
 
-  it("loads only local scripts", () => {
-    expect(eclipse).not.toMatch(/<script[^>]+src="https?:\/\//);
-    expect(eclipse).toContain('src="vendor/eclipse/bg.js"');
+  it("loads the motion background from its URL with a pinned hash", () => {
+    expect(eclipse).toContain(
+      'src="https://dvklab.vercel.app/templates/eclipse/bg.js"'
+    );
+    expect(eclipse).toMatch(/integrity="sha384-[A-Za-z0-9+/=]+"/);
+    expect(eclipse).not.toMatch(/<script[^>]+src="https?:\/\/(?!dvklab\.vercel\.app)/);
   });
 });
