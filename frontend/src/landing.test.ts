@@ -244,3 +244,45 @@ describe("landing page contract", () => {
     expect(css).toMatch(/\.hero-glow[\s\S]*?at (7\d|8\d)%/);
   });
 });
+
+describe("eclipse variant page contract", () => {
+  const eclipse = readFileSync(resolve(root, "public/eclipse.html"), "utf8");
+
+  it("exists and carries our hook", () => {
+    expect(eclipse).toContain("Did the money move?");
+    expect(eclipse).toContain("Settleye");
+    expect(eclipse).toContain("Run a free 14-day shadow audit");
+    expect(eclipse).toContain("Watch the 3-minute demo");
+  });
+
+  it("contains zero Umbra or climate words", () => {
+    expect(eclipse).not.toMatch(/umbra/i);
+    expect(eclipse).not.toMatch(/climate/i);
+  });
+
+  it("keeps the reference hero mechanics verbatim", () => {
+    expect(eclipse).toContain("canvas data-bg");
+    expect(eclipse).toContain('id="orbit"');
+    expect(eclipse).toContain("@keyframes spin");
+    expect(eclipse).toContain("@keyframes rise");
+    expect(eclipse).toContain("Fraunces");
+    expect(eclipse).toContain("Manrope");
+    expect(eclipse).toContain("JetBrains Mono");
+    expect(eclipse).toContain("Submissions close in");
+    expect(eclipse).toContain('id="clock"');
+    expect(eclipse).toContain("setInterval");
+  });
+
+  it("retargets the countdown to the Nov 4 hackathon deadline", () => {
+    expect(eclipse).toContain("2026-11-04");
+    expect(eclipse).toMatch(/Nov 4/i);
+    expect(eclipse).toContain('id="audit"');
+    expect(eclipse).toContain("pilot@settleye.com");
+    expect(eclipse).toContain("github.com/8-BitRhyon/settleye");
+  });
+
+  it("loads only local scripts", () => {
+    expect(eclipse).not.toMatch(/<script[^>]+src="https?:\/\//);
+    expect(eclipse).toContain('src="vendor/eclipse/bg.js"');
+  });
+});
