@@ -50,6 +50,7 @@ settleye/
 | Daemon is audit-only by default | Scheduled autonomy must never move money. --auto-remediate runs on mock only | 2026-10-27 |
 | Explanations fire per drift on demand | Sweeps keep one model call per transcript. Display text is capped and fact-bound | 2026-10-27 |
 | Third-eye brand mark in final CTA | Presentation beats perf on first view. Lazy Three.js with static fallback. Floor 85, a11y 100 | 2026-10-27 |
+| Jev hybrid evaluated, not adopted pre-judging | No live trial exists, vendor benchmarks unconfirmed, freeze holds. Revisit with metered eval after | 2026-10-28 |
 | Challenge track: Push the Frontier | Execution-verification layer for the agent economy is a new capability, not a personal workflow fix | 2026-10-27 |
 | Validate-then-retry extraction, not constrained decoding | Baseten accepts but does not enforce `json_schema` for this model | 2026-10-26 |
 | Mock ledger adapter behind interface from day one | Shopify auth and idempotency friction is the top integration risk | 2026-10-26 |

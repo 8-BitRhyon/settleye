@@ -81,3 +81,7 @@ No traction rule exists in the criteria. One quotable merchant conversation beat
 ## 20. Credits are supply lines, not strategy
 
 $150 in Meta credits cannot run our extraction model (not API-served) and Wonder costs 10x for a solved job. Product stays. Credits fund experiments. Novelty never overrules numbers.
+
+## 21. File research, freeze building
+
+Gemini returned the Jev plus agentic-commerce deep track. Filed it as `16`, recorded the verdict in design.md: coherent, premature, no key, no metered trial, freeze holds. Research compounds. Code waits.
