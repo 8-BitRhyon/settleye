@@ -292,6 +292,18 @@ details[open ] summary {
     linear-gradient(135deg, #1b1b1f 0%, var(--color-ink-900) 55%);
 }
 
+/* Terminal command bar: the Copy button stays hidden until the inline
+   copy module adds .js-only, so the static clone command renders safely
+   with no JavaScript. No motion involved. */
+[data-copy-btn] {
+  display: none;
+}
+
+[data-copy-btn].js-only {
+  display: inline-flex;
+  align-items: center;
+}
+
 /* Third eye: pure CSS brand mark beside the final CTA. Layered radial
    gradients give the sphere depth; a dark lid sweeps down for one blink
    per 6s cycle and a faint gold halo pulses behind it. Only transform

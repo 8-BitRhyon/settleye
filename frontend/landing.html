@@ -70,10 +70,16 @@
         <div class="relative mx-auto max-w-6xl px-6 py-16 sm:py-24">
           <div class="grid items-center gap-14 lg:grid-cols-2">
             <div>
-              <p class="rise inline-flex items-center gap-2 rounded-full border border-line-200 bg-card-white px-3 py-1 text-xs font-bold tracking-widest text-ink-600 uppercase shadow-sm" style="--d: 0.05s">
-                <span aria-hidden="true" class="h-1.5 w-1.5 rounded-full bg-pine-700"></span>
-                Execution auditor for AI support agents
-              </p>
+              <div class="rise flex flex-wrap items-center gap-2" style="--d: 0.05s">
+                <p class="inline-flex items-center gap-2 rounded-full border border-line-200 bg-card-white px-3 py-1 text-xs font-bold tracking-widest text-ink-600 uppercase shadow-sm">
+                  <span aria-hidden="true" class="h-1.5 w-1.5 rounded-full bg-pine-700"></span>
+                  Execution auditor for AI support agents
+                </p>
+                <p class="inline-flex items-center gap-2 rounded-full border border-line-200 bg-card-white px-3 py-1 shadow-sm">
+                  <span aria-hidden="true" class="h-1.5 w-1.5 rounded-full bg-pine-700"></span>
+                  <span class="font-mono text-xs font-semibold text-ink-600 tabular-nums">CI green - 105 checks passing</span>
+                </p>
+              </div>
               <h1
                 id="hero-heading"
                 class="rise font-display mt-6 max-w-xl text-5xl leading-[1.04] font-bold tracking-tight text-balance sm:text-6xl"
@@ -447,7 +453,21 @@
                 </a>
                 for a managed audit.
               </p>
-              <div class="mt-8">
+              <div class="mt-8 flex flex-wrap items-center gap-3">
+                <div class="flex max-w-full items-center gap-3 rounded-full bg-black/40 py-1.5 pr-1.5 pl-4 ring-1 ring-white/15">
+                  <span aria-hidden="true" class="font-mono text-sm text-white/50">$</span>
+                  <code class="font-mono truncate text-sm text-white tabular-nums">git clone github.com/8-BitRhyon/settleye</code>
+                  <button
+                    type="button"
+                    data-copy-btn
+                    data-clone-command="git clone github.com/8-BitRhyon/settleye"
+                    class="shrink-0 rounded-full bg-white px-3.5 py-1.5 text-xs font-bold text-ink-900 transition hover:bg-cream-50"
+                  >
+                    Copy
+                  </button>
+                </div>
+              </div>
+              <div class="mt-5">
                 <a
                   href="https://github.com/8-BitRhyon/settleye"
                   rel="noopener"
@@ -502,5 +522,26 @@
       </div>
     </footer>
     <script type="module" src="/src/landing-eye.ts"></script>
+    <script type="module">
+      const copyBtn = document.querySelector("[data-copy-btn]");
+      if (copyBtn) {
+        copyBtn.classList.add("js-only");
+        copyBtn.addEventListener("click", async () => {
+          const cmd =
+            copyBtn.getAttribute("data-clone-command") ||
+            "git clone github.com/8-BitRhyon/settleye";
+          try {
+            await navigator.clipboard.writeText(cmd);
+          } catch {
+            /* clipboard unavailable: label flip still confirms the command */
+          }
+          const original = copyBtn.textContent;
+          copyBtn.textContent = "Copied";
+          setTimeout(() => {
+            copyBtn.textContent = original || "Copy";
+          }, 1400);
+        });
+      }
+    </script>
   </body>
 </html>

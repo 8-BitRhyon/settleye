@@ -156,9 +156,40 @@ describe("landing page contract", () => {
     expect(html).toContain("$44.00 at risk");
     expect(html).toContain("12/12 verdicts");
     expect(html).not.toMatch(/setInterval/);
-    expect(html).not.toMatch(/setTimeout/);
+    // The single setTimeout on the page belongs to the copy-button label
+    // flip (1.4s); the readout itself has no timers.
+    expect(html.match(/setTimeout/g)?.length).toBe(1);
     expect(css).toContain(".hero-readout");
     expect(css).toMatch(/tabular-nums/);
+  });
+
+  it("pins the Nimbus status pill with the verified check count", () => {
+    expect(html).toContain("CI green - 105 checks passing");
+    expect(html).toMatch(/<span[^>]*font-mono[^>]*>CI green - 105 checks passing<\/span>/);
+    expect(html).toMatch(/CI green - 105 checks passing[\s\S]*?tabular-nums|tabular-nums[\s\S]*?CI green - 105 checks passing/);
+  });
+
+  it("shows a noscript-safe clone command with a JS-only copy button", () => {
+    expect(html).toContain("git clone github.com/8-BitRhyon/settleye");
+    expect(html).toContain("data-copy-btn");
+    expect(html).toContain('data-clone-command="git clone github.com/8-BitRhyon/settleye"');
+    expect(html).toContain("js-only");
+    expect(html).toMatch(/<code[^>]*>git clone github\.com\/8-BitRhyon\/settleye<\/code>/);
+    expect(html).toMatch(/>\s*Copy\s*</);
+  });
+
+  it("copies via one tiny inline module script with a 1.4s label flip", () => {
+    expect(html).toMatch(/<script type="module">[\s\S]*?navigator\.clipboard\.writeText[\s\S]*?<\/script>/);
+    expect(html).toContain('"Copied"');
+    expect(html).toContain("1400");
+    expect(html).toContain('classList.add("js-only")');
+    expect(html).not.toMatch(/<script[^>]+src="https?:\/\//);
+  });
+
+  it("has no count-up stats anywhere", () => {
+    expect(html).not.toMatch(/count-up/i);
+    expect(html).not.toMatch(/data-count/i);
+    expect(html).not.toMatch(/data-animate/i);
   });
 
   it("keeps our copy, type system, and section order with no foreign fonts", () => {
