@@ -60,22 +60,28 @@ body {
   min-height: 100svh;
 }
 
-/* Hero: soft pine and gold wash over the cream ground, plus a pine
-   highlight swept under the closing words of the headline. */
+/* Hero: eclipse disc glow behind the right side. Layered CSS-only
+   radial gradients suggest a glowing disc edge: a pine corona plus a
+   soft dark disc rim (ink at low alpha) melting into the cream ground,
+   with a faint gold warmth. Only existing palette tokens over the
+   cream page ground. Absolutely positioned with pointer-events off and
+   aria-hidden in markup, so it adds no layout and stays out of AT. */
 .hero-glow {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
   background:
-    radial-gradient(44rem 26rem at 50% -6%, rgba(4, 120, 87, 0.12), transparent 62%),
-    radial-gradient(36rem 22rem at 82% 8%, rgba(180, 83, 9, 0.1), transparent 65%),
-    radial-gradient(42rem 26rem at 12% 0%, rgba(4, 120, 87, 0.1), transparent 65%),
+    radial-gradient(26rem 26rem at 78% 44%, rgba(4, 120, 87, 0.18), transparent 62%),
+    radial-gradient(34rem 34rem at 84% 48%, rgba(19, 19, 22, 0.1), transparent 68%),
+    radial-gradient(20rem 16rem at 70% 34%, rgba(180, 83, 9, 0.1), transparent 65%),
+    radial-gradient(44rem 26rem at 50% -6%, rgba(4, 120, 87, 0.08), transparent 62%),
     linear-gradient(to bottom, rgba(255, 255, 255, 0.35), transparent 30%);
 }
 
 .hero-accent {
-  background-image: linear-gradient(
-    to top,
-    rgba(4, 120, 87, 0.22) 0.32em,
-    transparent 0.32em
-  );
+  font-family: "Instrument Serif", Georgia, "Times New Roman", serif;
+  font-style: italic;
+  font-weight: 400;
 }
 
 /* Hero grain: static inline-SVG feTurbulence noise tiled over the hero

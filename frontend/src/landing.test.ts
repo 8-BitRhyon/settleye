@@ -211,4 +211,36 @@ describe("landing page contract", () => {
     expect(positions).toHaveLength(sorted.length);
     expect(positions.join(",")).toContain(sorted.join(","));
   });
+
+  it("wraps only the accent words in an italic serif em", () => {
+    expect(html).toContain('<em class="hero-accent">Did the money move?</em>');
+    expect(html).not.toContain('<span class="hero-accent">');
+    expect(css).toContain(".hero-accent");
+    expect(css).toContain("Instrument Serif");
+    expect(css).toMatch(/\.hero-accent[\s\S]*?font-style:\s*italic/);
+    expect(css).toMatch(/\.hero-accent[\s\S]*?font-weight:\s*400/);
+    expect(css).toMatch(/\.hero-accent[\s\S]*?Georgia/);
+  });
+
+  it("loads only the single Instrument Serif 400-italic weight", () => {
+    expect(html).toContain("Instrument+Serif");
+    expect(html).toContain("ital,wght@1,400");
+    expect(html.match(/Instrument\+Serif/g)?.length).toBe(1);
+    expect(html).toContain("Chakra+Petch:wght@600;700");
+    expect(html).toContain("IBM+Plex+Mono:wght@400;500;600");
+    expect(html).toContain("display=swap");
+  });
+
+  it("glows an eclipse disc edge behind the right side with no layout shift", () => {
+    expect(html).toContain('<div aria-hidden="true" class="hero-glow absolute inset-0">');
+    expect(css).toContain(".hero-glow");
+    expect(css).toMatch(/\.hero-glow[\s\S]*?position:\s*absolute/);
+    expect(css).toMatch(/\.hero-glow[\s\S]*?inset:\s*0/);
+    expect(css).toMatch(/\.hero-glow[\s\S]*?pointer-events:\s*none/);
+    expect(css).toMatch(/\.hero-glow[\s\S]*?radial-gradient/);
+    expect(css).toContain("rgba(4, 120, 87,");
+    expect(css).toContain("rgba(19, 19, 22,");
+    expect(css).toContain("rgba(180, 83, 9,");
+    expect(css).toMatch(/\.hero-glow[\s\S]*?at (7\d|8\d)%/);
+  });
 });
