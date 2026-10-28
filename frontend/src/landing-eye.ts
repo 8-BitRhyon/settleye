@@ -74,7 +74,7 @@ function makeIrisTexture(THREE: ThreeModule): InstanceType<ThreeModule["CanvasTe
   ctx.shadowColor = "rgba(52, 211, 153, 0.9)";
   ctx.shadowBlur = 5;
   ctx.lineCap = "round";
-  for (let i = 0; i < 46; i += 1) {
+  for (let i = 0; i < 60; i += 1) {
     let x = Math.random() * width;
     let y = Math.random() * height * 0.35;
     ctx.lineWidth = 1.1 + Math.random() * 1.5;
@@ -245,7 +245,7 @@ function createEye(THREE: ThreeModule, host: HTMLElement): EyeHandle | null {
 
   // Iris and pupil are spherical caps hugging the eyeball, so the gaze
   // stays printed on the ball at every parallax angle.
-  const irisGeometry = new THREE.SphereGeometry(1.015, 64, 32, 0, Math.PI * 2, 0, 0.46);
+  const irisGeometry = new THREE.SphereGeometry(1.015, 64, 32, 0, Math.PI * 2, 0, 0.6);
   irisGeometry.rotateX(Math.PI / 2);
   const iris = new THREE.Mesh(
     irisGeometry,
@@ -259,14 +259,14 @@ function createEye(THREE: ThreeModule, host: HTMLElement): EyeHandle | null {
 
   // Luminous mint core in place of a black pupil: pine emissive keeps
   // the glow in the #047857 family at every parallax angle.
-  const pupilGeometry = new THREE.SphereGeometry(1.019, 48, 16, 0, Math.PI * 2, 0, 0.205);
+  const pupilGeometry = new THREE.SphereGeometry(1.019, 48, 16, 0, Math.PI * 2, 0, 0.265);
   pupilGeometry.rotateX(Math.PI / 2);
   const pupil = new THREE.Mesh(
     pupilGeometry,
     new THREE.MeshStandardMaterial({
       color: 0x6ee7b7,
       emissive: 0x047857,
-      emissiveIntensity: 1.35,
+      emissiveIntensity: 1.5,
       roughness: 0.3,
     }),
   );
@@ -280,7 +280,7 @@ function createEye(THREE: ThreeModule, host: HTMLElement): EyeHandle | null {
     depthWrite: false,
   });
   const star = new THREE.Sprite(starMaterial);
-  star.scale.set(0.58, 0.58, 1);
+  star.scale.set(0.66, 0.66, 1);
   star.position.set(0, 0, 1.045);
   lookGroup.add(star);
 
@@ -302,7 +302,7 @@ function createEye(THREE: ThreeModule, host: HTMLElement): EyeHandle | null {
   // blink never clips through the ball.
   // Bold near-black upper lid: parked a touch lower than a full open
   // lid so its edge reads as a dark lash line across the top.
-  const LID_TOP_OPEN = -1.16;
+  const LID_TOP_OPEN = -1.05;
   const lidMaterial = new THREE.MeshStandardMaterial({
     color: 0x08080a,
     roughness: 0.42,
@@ -327,16 +327,25 @@ function createEye(THREE: ThreeModule, host: HTMLElement): EyeHandle | null {
   lidBottomPivot.rotation.x = 1.25;
   blinkGroup.add(lidBottomPivot);
 
-  // Bold upper lash line: a near-black arc hugging the top of the ball.
+  // Bold upper lash line: a near-black tube arc sampled on the ball
+  // surface across the top of the iris, so it hugs the sphere at every
+  // parallax angle instead of sinking into it like a flat torus would.
   // It lives in the blink group (not the look group) so the gaze can
   // drift under a steady lid line, and the blink caps cover it on close.
+  const lashPoints: InstanceType<ThreeModule["Vector3"]>[] = [];
+  for (let i = 0; i <= 16; i += 1) {
+    const t = (i / 16) * 2 - 1;
+    const x = 0.78 * t;
+    const y = 0.58 - 0.28 * t * t;
+    const z = Math.sqrt(Math.max(1.005 * 1.005 - x * x - y * y, 0.01));
+    lashPoints.push(new THREE.Vector3(x, y, z));
+  }
+  const lashCurve = new THREE.CatmullRomCurve3(lashPoints);
   const lash = new THREE.Mesh(
-    new THREE.TorusGeometry(0.94, 0.045, 12, 64, Math.PI * 0.84),
+    new THREE.TubeGeometry(lashCurve, 32, 0.055, 10, false),
     new THREE.MeshBasicMaterial({ color: 0x050506 }),
   );
-  lash.rotation.z = Math.PI * 0.08;
-  lash.rotation.x = -0.22;
-  lash.position.set(0, 0.02, 0.42);
+  lash.renderOrder = 3;
   blinkGroup.add(lash);
 
   const finePointer = window.matchMedia("(pointer: fine)");
@@ -393,7 +402,7 @@ function createEye(THREE: ThreeModule, host: HTMLElement): EyeHandle | null {
         blink = Math.sin(progress * Math.PI);
       }
     }
-    lidTopPivot.rotation.x = LID_TOP_OPEN + blink * 2.74;
+    lidTopPivot.rotation.x = LID_TOP_OPEN + blink * 2.63;
     lidBottomPivot.rotation.x = 1.25 - blink * 2.05;
     blinkGroup.scale.y = 1 - blink * 0.05;
 
@@ -408,7 +417,7 @@ function createEye(THREE: ThreeModule, host: HTMLElement): EyeHandle | null {
     lookGroup.position.x += (lookX - lookGroup.position.x) * 0.08;
     lookGroup.position.y += (lookY - lookGroup.position.y) * 0.08;
     glowMaterial.opacity = 0.4 + Math.sin(t * 0.9) * 0.08;
-    const starPulse = 0.58 + Math.sin(t * 1.6) * 0.025;
+    const starPulse = 0.66 + Math.sin(t * 1.6) * 0.025;
     star.scale.set(starPulse, starPulse, 1);
     starMaterial.opacity = 0.9 + Math.sin(t * 1.6) * 0.08;
 

@@ -79,6 +79,21 @@ describe("landing page contract", () => {
     expect(css).toContain("#047857");
   });
 
+  it("pins the reference restyle: star glint, bold lash, and enlarged iris", () => {
+    expect(eye).toContain("makeStarTexture");
+    expect(eye).toContain("CatmullRomCurve3");
+    expect(eye).toContain("TubeGeometry(lashCurve, 32, 0.055");
+    expect(eye).toContain("0, 0.6)");
+    expect(eye).toContain("0, 0.265)");
+  });
+
+  it("mirrors the star and lash in the calm CSS fallback", () => {
+    expect(css).toContain(".third-eye__pupil::before");
+    expect(css).toContain("clip-path: polygon(");
+    expect(css).toContain(".third-eye__ball::after");
+    expect(css).toContain("border-top: 0.65rem solid #08080a");
+  });
+
   it("kills all third eye animation under reduced motion and leaves it open", () => {
     const reduced = css.slice(css.indexOf("@media (prefers-reduced-motion: reduce)"));
     expect(reduced).toContain(".third-eye");

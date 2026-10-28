@@ -257,6 +257,9 @@ details[open ] summary {
   border-radius: 9999px;
   transform: translate(-50%, -50%);
   background:
+    radial-gradient(circle at 72% 68%, rgba(51, 65, 85, 0.55) 0 18%, transparent 42%),
+    radial-gradient(circle at 24% 74%, rgba(2, 44, 34, 0.6) 0 16%, transparent 40%),
+    radial-gradient(circle at 68% 22%, rgba(100, 116, 139, 0.35) 0 12%, transparent 36%),
     repeating-conic-gradient(
       from 12deg,
       rgba(255, 255, 255, 0.07) 0deg 5deg,
@@ -283,6 +286,27 @@ details[open ] summary {
   box-shadow:
     inset 0 0 10px rgba(4, 120, 87, 0.55),
     0 0 14px rgba(52, 211, 153, 0.55);
+}
+
+/* Fallback star glint: a static 4-point star at the pupil centre, so
+   the CSS eye carries the same mark as the WebGL sprite with no motion. */
+.third-eye__pupil::before {
+  content: "";
+  position: absolute;
+  inset: 16%;
+  background: radial-gradient(circle, #ffffff 0%, #ecfdf5 55%, #a7f3d0 100%);
+  clip-path: polygon(50% 0%, 62% 38%, 100% 50%, 62% 62%, 50% 100%, 38% 62%, 0% 50%, 38% 38%);
+}
+
+/* Fallback upper lash: a bold dark arc along the top of the ball. */
+.third-eye__ball::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  border-radius: 9999px;
+  border-top: 0.65rem solid #08080a;
+  pointer-events: none;
 }
 
 .third-eye__highlight {
@@ -399,8 +423,10 @@ details[open ] summary {
   .third-eye::before,
   .third-eye::after,
   .third-eye__ball,
+  .third-eye__ball::after,
   .third-eye__iris,
   .third-eye__pupil,
+  .third-eye__pupil::before,
   .third-eye__highlight,
   .third-eye__highlight::after,
   .third-eye__lid {
