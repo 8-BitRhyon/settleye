@@ -15,6 +15,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..600;1,9..144,300..600&family=Manrope:wght@400;500;600&family=JetBrains+Mono:wght@400&display=swap" rel="stylesheet" />
+<link rel="preload" as="image" href="vendor/eclipse/scene.jpg" />
 <link
   rel="icon"
   href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%230a1014'/%3E%3Ccircle cx='16' cy='16' r='7' fill='none' stroke='%239fd8c2' stroke-width='3'/%3E%3Ccircle cx='16' cy='16' r='2.5' fill='%239fd8c2'/%3E%3C/svg%3E"
@@ -25,7 +26,12 @@
   body { background:#0a1014; color:var(--ink); font-family:Manrope,system-ui,sans-serif; -webkit-font-smoothing:antialiased; overflow-x:hidden; }
   a { color:inherit; text-decoration:none; }
 
-  .hero { position:relative; min-height:100vh; min-height:100svh; display:flex; flex-direction:column; isolation:isolate; overflow:hidden; }
+  .hero { position:relative; min-height:100vh; min-height:100svh; display:flex; flex-direction:column; isolation:isolate; overflow:hidden;
+    background:
+      radial-gradient(120% 90% at 78% 30%, rgba(233,236,230,.9), rgba(233,236,230,0) 55%),
+      radial-gradient(90% 90% at 85% 40%, rgba(20,26,31,.95), rgba(20,26,31,0) 60%),
+      linear-gradient(115deg, #cfd8d3 0%, #e9ece6 42%, #0a1014 78%);
+  }
   [data-bg] { position:absolute; inset:0; width:100%; height:100%; z-index:-2; display:block; }
   #orbit { position:absolute; inset:0; width:100%; height:100%; z-index:-1; pointer-events:none; }
   #orbit .spin { animation:spin 90s linear infinite; }
@@ -318,7 +324,7 @@
     <a href="https://github.com/8-BitRhyon/settleye" rel="noopener">github.com/8-BitRhyon/settleye</a>
   </div>
 </footer>
-<script src="https://dvklab.vercel.app/templates/eclipse/bg.js" integrity="sha384-RjyCc0CND5uVRPLxK5vOSWUNBSreUIWfHgybrVL+FQkhTWg3mk9JrkOOXrL7oWvE" crossorigin="anonymous"></script>
+<script src="vendor/eclipse/bg.js"></script>
 <script>
 // Orbit rings sit on the photo's dark disc. The circle is measured in image space
 // (centre x = 1.54 x width, y = 1.3 x height from the top, radius = 1.87 x height) and mapped
