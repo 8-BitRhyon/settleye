@@ -56,3 +56,13 @@ Settleye verifies AI support agents keep their money promises. It extracts bindi
 ## Follow-up (one week, no reply)
 
 > Bumping this once: happy to run the shadow audit on a 50-ticket sample instead of 90 days if access is the blocker. Same report, smaller scope.
+
+## Discord intro (post in builders during judging week)
+
+> Solo builder, Push the Frontier. Settleye audits AI support agents: it pulls refund promises from transcripts and reconciles each against live Stripe/Shopify state. Caught $44 live on a dev-store order. Eval 12/12. Repo plus demo in the gallery. Happy to trade feedback.
+
+## X thread (three posts, judging week)
+
+> 1/ Your AI agent promised a refund. Did the money move? I built the auditor that checks. Live Shopify proof inside.
+> 2/ How it works: Meta model extracts the promise. Code reconciles it against settled ledger state. Non-binding words never report drift. One click fixes the rest.
+> 3/ Numbers: 12/12 eval verdicts. $44 found live in 4 seconds. Zero false drifts. Repo below. Merchants running AI support: the shadow audit is free.
