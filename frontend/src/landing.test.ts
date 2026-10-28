@@ -94,10 +94,30 @@ describe("landing page contract", () => {
     expect(css).toContain("border-top: 0.65rem solid #08080a");
   });
 
-  it("kills all third eye animation under reduced motion and leaves it open", () => {
+  it("layers static film grain over the hero only", () => {
+    expect(html).toContain('class="hero-grain"');
+    expect(html).toContain('<div aria-hidden="true" class="hero-grain">');
+    expect(css).toContain(".hero-grain");
+    expect(css).toContain("feTurbulence");
+    expect(css).toMatch(/\.hero-grain[\s\S]*?opacity:\s*0\.0[0-5]/);
+    expect(css).toMatch(/\.hero-grain[\s\S]*?pointer-events:\s*none/);
+  });
+
+  it("centers two slow orbit rings on the product mock in pine and gold", () => {
+    expect(html).toContain('class="hero-rings"');
+    expect(html).toContain("hero-ring--pine");
+    expect(html).toContain("hero-ring--gold");
+    expect(html).toMatch(/<svg[^>]*hero-ring[^>]*>[\s\S]*?<circle[^>]*#047857/);
+    expect(html).toMatch(/<svg[^>]*hero-ring[^>]*>[\s\S]*?<circle[^>]*#b45309/);
+    expect(css).toContain("@keyframes hero-ring-spin");
+    expect(css).toContain("@keyframes hero-ring-spin-reverse");
+    expect(css).toMatch(/90s/);
+    expect(css).toMatch(/140s/);
+  });
+
+  it("stops the orbit rings under reduced motion while grain stays static", () => {
     const reduced = css.slice(css.indexOf("@media (prefers-reduced-motion: reduce)"));
-    expect(reduced).toContain(".third-eye");
+    expect(reduced).toContain(".hero-ring");
     expect(reduced).toMatch(/animation:\s*none\s*!important/);
-    expect(reduced).toContain(".third-eye__lid");
   });
 });

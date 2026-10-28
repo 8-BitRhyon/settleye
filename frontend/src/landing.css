@@ -67,6 +67,59 @@ body {
   );
 }
 
+/* Hero grain: static inline-SVG feTurbulence noise tiled over the hero
+   only. Absolutely positioned, so it adds no layout. Opacity stays under
+   0.06 and pointer-events are off, so content stays fully interactive. */
+.hero-grain {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  opacity: 0.05;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  background-size: 160px 160px;
+  background-repeat: repeat;
+}
+
+/* Hero rings: two slow concentric orbit rings centered on the product
+   mock. Inline SVG circles in pine and gold at low alpha; the dashes
+   plus a single dot per ring make the rotation visible. Absolutely
+   positioned behind the mock card, so no layout shift. CSS keyframes
+   only, no JavaScript. */
+.hero-rings {
+  position: absolute;
+  inset: -3.5rem;
+  pointer-events: none;
+}
+
+.hero-ring {
+  position: absolute;
+  transform-origin: 50% 50%;
+  animation: hero-ring-spin 90s linear infinite;
+}
+
+.hero-ring--pine {
+  inset: 0;
+}
+
+.hero-ring--gold {
+  inset: 13%;
+  animation-name: hero-ring-spin-reverse;
+  animation-duration: 140s;
+}
+
+@keyframes hero-ring-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes hero-ring-spin-reverse {
+  to {
+    transform: rotate(-360deg);
+  }
+}
+
 /* Cards: quiet lift on hover, removed under reduced motion below. */
 .card-lift {
   transition:
@@ -441,6 +494,14 @@ details[open ] summary {
 
   .third-eye__lid {
     transform: translateY(-106%);
+  }
+
+  /* Hero rings: stop both orbit rotations. The static rings and the
+     static grain stay as they are. */
+  .hero-ring,
+  .hero-ring--pine,
+  .hero-ring--gold {
+    animation: none !important;
   }
 
   /* The 3D canvas never runs under reduced motion (the loader checks

@@ -1,0 +1,55 @@
+/* Brand tokens copied from frontend/src/landing.css @theme (values only).
+   Chakra Petch display, system body, IBM Plex Mono for money/figures. */
+:root {
+  --color-cream-50: #f7f6f3;
+  --color-card-white: #ffffff;
+  --color-line-200: #e7e5e0;
+  --color-ink-900: #131316;
+  --color-ink-600: #3f3f46;
+  --color-ink-500: #52525b;
+  --color-pine-700: #047857;
+  --color-pine-800: #065f46;
+  --color-alarm-700: #b91c1c;
+  --color-alarm-50: #fef2f2;
+  --color-gold-700: #b45309;
+  --font-sans: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --font-display: "Chakra Petch", ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --font-mono: "IBM Plex Mono", ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace;
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html, body { width: 1920px; height: 1080px; overflow: hidden; background: var(--color-cream-50); }
+body { font-family: var(--font-sans); color: var(--color-ink-900); -webkit-font-smoothing: antialiased; }
+#stage { position: relative; width: 1920px; height: 1080px; overflow: hidden; background:
+  radial-gradient(36rem 22rem at 82% 8%, rgba(180,83,9,.10), transparent 65%),
+  radial-gradient(42rem 26rem at 12% 0%, rgba(4,120,87,.10), transparent 65%),
+  var(--color-cream-50); }
+.scene { position: absolute; inset: 0; opacity: 0; visibility: hidden; }
+.scene-inner { position: absolute; inset: 0; display: flex; flex-direction: column; justify-content: center; padding: 96px 140px; }
+.kicker { font-family: var(--font-display); font-weight: 700; letter-spacing: .35em; font-size: 34px; color: var(--color-pine-700); text-transform: uppercase; }
+.display { font-family: var(--font-display); font-weight: 700; line-height: 1.02; letter-spacing: .01em; }
+.h-line { font-size: 92px; max-width: 1500px; }
+.h-big { font-size: 150px; }
+.money { font-family: var(--font-mono); font-variant-numeric: tabular-nums; font-weight: 600; }
+.h-money { font-size: 170px; }
+.sub { margin-top: 28px; font-size: 38px; line-height: 1.35; color: var(--color-ink-600); max-width: 1400px; white-space: pre-line; }
+.tone-alarm { color: var(--color-alarm-700); }
+.tone-pine { color: var(--color-pine-700); }
+.tone-gold { color: var(--color-gold-700); }
+.tone-ink { color: var(--color-ink-900); }
+.rule { width: 120px; height: 6px; background: var(--color-pine-700); margin-bottom: 36px; }
+.card { background: var(--color-card-white); border: 2px solid var(--color-line-200); border-radius: 24px; padding: 56px 64px; max-width: 1450px; box-shadow: 0 24px 50px -30px rgba(19,19,22,.30); }
+.card .display { font-size: 84px; }
+.progress { position: absolute; left: 0; right: 0; bottom: 0; height: 8px; background: var(--color-line-200); z-index: 50; }
+.progress-bar { height: 100%; width: 0%; background: var(--color-pine-700); }
+.timecode { position: absolute; right: 36px; bottom: 24px; z-index: 51; font-family: var(--font-mono); font-size: 22px; color: var(--color-ink-500); }
+.caption { position: absolute; left: 64px; right: 64px; bottom: 52px; z-index: 20; background: var(--color-cream-50); border: 2px solid var(--color-line-200); border-left: 10px solid var(--color-pine-700); border-radius: 16px; padding: 26px 34px; }
+.caption .cap-title { font-family: var(--font-display); font-weight: 700; font-size: 40px; line-height: 1.15; }
+.caption .cap-sub { margin-top: 8px; font-size: 26px; line-height: 1.3; color: var(--color-ink-600); }
+.capture-img { position: absolute; inset: 0; width: 1920px; height: 1080px; object-fit: cover; object-position: top center; }
+.capture-frame { position: absolute; inset: 0; overflow: hidden; background: #09090b; }
+.receipt { background: var(--color-ink-900); color: #f4f4f5; border-radius: 24px; padding: 48px 56px; max-width: 1500px; }
+.receipt h3 { font-family: var(--font-display); font-size: 44px; margin-bottom: 24px; }
+.receipt pre { font-family: var(--font-mono); font-size: 27px; line-height: 1.45; white-space: pre-wrap; word-break: break-word; color: #a7f3d0; }
+.receipt .warn { color: #fca5a5; }
+.endcard { text-align: left; }
+.badge { display: inline-block; font-family: var(--font-mono); font-size: 24px; padding: 8px 16px; border-radius: 999px; background: rgba(4,120,87,.12); color: var(--color-pine-800); margin-bottom: 28px; }

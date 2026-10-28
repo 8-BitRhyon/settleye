@@ -1,0 +1,45 @@
+{
+  "note": "Real receipts captured from the live backend during film/capture/capture.mjs. First from the UI click, second from a repeat POST with the identical body.",
+  "first": {
+    "idempotency_key": "refund:992:45.00",
+    "promise": {
+      "action": "refund",
+      "amount": 45,
+      "order_id": "992",
+      "target_system": "unknown",
+      "asserted_state": "full $45 refund has been processed for order #992",
+      "confidence": 0.99,
+      "evidence_span": "I have processed a full $45 refund for order #992.",
+      "terminal_status": "binding"
+    },
+    "amount_usd": 45,
+    "status": "executed"
+  },
+  "second": {
+    "idempotency_key": "refund:992:45.00",
+    "promise": {
+      "action": "refund",
+      "amount": 45,
+      "order_id": "992",
+      "target_system": "unknown",
+      "asserted_state": "full $45 refund has been processed for order #992",
+      "confidence": 0.99,
+      "evidence_span": "I have processed a full $45 refund for order #992.",
+      "terminal_status": "binding"
+    },
+    "amount_usd": 45,
+    "status": "already_executed"
+  },
+  "valueBeforeSecond": {
+    "total_recovered_usd": 45,
+    "disputes_avoided": 0,
+    "dispute_cost_avoided_usd": 0,
+    "grand_total_usd": 45
+  },
+  "valueAfterSecond": {
+    "total_recovered_usd": 45,
+    "disputes_avoided": 0,
+    "dispute_cost_avoided_usd": 0,
+    "grand_total_usd": 45
+  }
+}

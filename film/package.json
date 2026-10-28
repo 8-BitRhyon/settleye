@@ -1,0 +1,20 @@
+{
+  "name": "settleye-film",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "description": "Code-driven 3:00 product film for Settleye. GSAP DOM scenes plus real Playwright captures of the live local stack, frame-stepped to MP4 with ffmpeg. No After Effects.",
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "capture": "node capture/capture.mjs",
+    "render": "npm run build && node render.mjs",
+    "verify": "node verify.mjs"
+  },
+  "dependencies": {
+    "gsap": "^3.12.5",
+    "playwright": "^1.49.1"
+  },
+  "devDependencies": {
+    "typescript": "~5.8.0"
+  }
+}
