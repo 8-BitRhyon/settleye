@@ -1,6 +1,6 @@
 # Landing Design: Brand, Scope, and Build Spec
 
-Single static page for judges and merchant ops leads. It must read as the same product as the zinc inbox. Every claim on it already holds in the repo (rule from `plan.md`).
+Status: the live page follows the Eclipse variant composition (dark photo hero, serif display, countdown to Nov 4). The system below stays as the token reference. Copy rules still hold: every claim already true in the repo.
 
 ## Brand
 
