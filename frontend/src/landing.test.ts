@@ -288,4 +288,109 @@ describe("eclipse variant page contract", () => {
     expect(eclipse).toMatch(/integrity="sha384-[A-Za-z0-9+/=]+"/);
     expect(eclipse).not.toMatch(/<script[^>]+src="https?:\/\/(?!dvklab\.vercel\.app)/);
   });
+
+  it("ships exactly one pinned CDN script", () => {
+    const pinned = eclipse.match(/<script[^>]+src="https?:\/\/[^"]+"/g) ?? [];
+    expect(pinned).toHaveLength(1);
+    expect(pinned[0]).toContain("dvklab.vercel.app/templates/eclipse/bg.js");
+  });
+
+  it("contains zero emoji", () => {
+    expect(eclipse).not.toMatch(/[\u{1F300}-\u{1FAFF}\u{2600}-\u{27BF}]/u);
+  });
+
+  it("ports every section in order below the hero", () => {
+    const order = [
+      'id="problem"',
+      'id="how"',
+      'id="demo"',
+      'id="proof"',
+      'id="objections"',
+      'id="pricing"',
+      'id="audit"',
+    ];
+    const positions = order.map((id) => eclipse.indexOf(id));
+    for (const pos of positions) {
+      expect(pos).toBeGreaterThan(-1);
+    }
+    const sorted = [...positions].sort((a, b) => a - b);
+    expect(positions).toEqual(sorted);
+    for (const heading of [
+      "The problem",
+      "How it works",
+      "Proof (measured Oct 27, 2026, not targets)",
+      "Objections, answered",
+      "Pricing",
+      "Stop finding phantom refunds in chargebacks.",
+    ]) {
+      expect(eclipse).toContain(heading);
+    }
+  });
+
+  it("keeps the problem strip verbatim with the liability footnote", () => {
+    expect(eclipse).toContain("Phantom refunds");
+    expect(eclipse).toContain("Policy breaches");
+    expect(eclipse).toContain("Silent cancellations");
+    expect(eclipse).toContain("chargebacks.");
+    expect(eclipse).toContain(
+      "Footnote: chatbot promises already create liability (Air Canada tribunal, 2024). EU transparency duties live since August 2026."
+    );
+  });
+
+  it("keeps the three how-it-works steps verbatim", () => {
+    expect(eclipse).toContain("Connect read-only");
+    expect(eclipse).toContain("We backfill 90 days");
+    expect(eclipse).toContain("Fix in one click");
+    expect(eclipse).toContain("Retry-safe by construction.");
+  });
+
+  it("keeps the demo placeholder and chapter list verbatim", () => {
+    expect(eclipse).toContain("3-minute demo (recording in progress)");
+    expect(eclipse).toContain("the $45 phantom refund.");
+    expect(eclipse).toContain("live extraction.");
+    expect(eclipse).toContain("the fix.");
+    expect(eclipse).toContain("the math.");
+    expect(eclipse).toContain("vision.");
+  });
+
+  it("keeps the four measured proof stats with repo links", () => {
+    expect(eclipse).toContain("12 of 12");
+    expect(eclipse).toContain("Read the results");
+    expect(eclipse).toContain(
+      "https://github.com/8-BitRhyon/settleye/blob/main/docs/research/12-eval-results.md"
+    );
+    expect(eclipse).toContain("100%");
+    expect(eclipse).toContain("$44.00");
+    expect(eclipse).toContain("4.07 seconds.");
+    expect(eclipse).toContain("See the repo");
+  });
+
+  it("answers all four objections in native accordions", () => {
+    expect(eclipse).toContain("Why not just switch to a better agent?");
+    expect(eclipse).toContain("Why not vendor guardrails or audit trails?");
+    expect(eclipse).toContain("What stops Shopify or Stripe from building it?");
+    expect(eclipse).toContain("Is the model decorative?");
+    expect(eclipse).toContain("Neutrality is the product.");
+    const accordions = eclipse.match(/<details[\s>]/g) ?? [];
+    expect(accordions.length).toBeGreaterThanOrEqual(4);
+  });
+
+  it("keeps the pricing trio and audit CTA verbatim", () => {
+    expect(eclipse).toContain("Free");
+    expect(eclipse).toContain("$299/mo");
+    expect(eclipse).toContain("$999/mo");
+    expect(eclipse).toContain("Enterprise custom with SOC 2.");
+    expect(eclipse).toContain("Run a free 14-day shadow audit");
+    expect(eclipse).toContain("Open the repo");
+    expect(eclipse).toContain("pilot@settleye.com");
+    expect(eclipse).toContain("git clone github.com/8-BitRhyon/settleye");
+    expect(eclipse).toContain("Every promise, reconciled against the ledger.");
+  });
+
+  it("keeps the footer attribution and repo link verbatim", () => {
+    expect(eclipse).toContain("Built with Muse Spark Open");
+    expect(eclipse).toContain("meta-models/muse-spark-open-1026");
+    expect(eclipse).toContain("Synthetic demo data. Test ledgers only.");
+    expect(eclipse).toContain("github.com/8-BitRhyon/settleye");
+  });
 });

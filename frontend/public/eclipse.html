@@ -8,6 +8,9 @@
   name="description"
   content="Settleye audits AI support agents: every refund promise reconciled against Stripe and Shopify, mismatches fixed in one click."
 />
+<meta property="og:title" content="Settleye: Your AI agent promised a refund. Did the money move?" />
+<meta property="og:description" content="Execution auditor for AI support agents. Transcript in, ledger truth out. 12/12 eval verdicts." />
+<meta property="og:type" content="website" />
 <title>Settleye: Your AI agent promised a refund. Did the money move?</title>
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -60,17 +63,63 @@
   @media (prefers-reduced-motion:reduce){ .rv{ animation:none; opacity:1; transform:none; filter:none; } #orbit g{ animation:none; } }
   @media (max-width:820px){ .links{ display:none; } .totality{ display:none; } .content{ max-width:none; } }
 
-  .mini { background:#e9ece6; color:var(--ink); padding:72px clamp(20px,4vw,56px); }
-  .mini .wrap { max-width:820px; }
-  .mini h2 { font-family:Fraunces,serif; font-weight:400; letter-spacing:-.02em; font-size:clamp(28px,3.4vw,44px); line-height:1.05; }
-  .mini p { margin-top:16px; font-size:16px; line-height:1.65; color:var(--ink-soft); max-width:560px; }
-  .mini .row { margin-top:24px; display:flex; gap:14px; flex-wrap:wrap; align-items:center; }
-  .mini code { font-family:"JetBrains Mono",monospace; font-size:13px; background:#0d1b1e; color:#e9ece6; padding:10px 16px; border-radius:999px; }
-  footer { background:#0a1014; color:rgba(233,236,230,.65); padding:26px clamp(20px,4vw,56px); font-size:13px; display:flex; justify-content:space-between; gap:16px; flex-wrap:wrap; }
-  footer a { color:#e9ece6; border-bottom:1px solid rgba(233,236,230,.35); }
+  .skip { position:absolute; left:16px; top:-48px; z-index:50; background:#e9ece6; color:#0a1014; font-weight:700; font-size:14px; padding:10px 16px; border-radius:999px; transition:top .2s; }
+  .skip:focus { top:12px; }
+  :focus-visible { outline:2px solid #9fd8c2; outline-offset:3px; }
+
+  .band { background:#0a1014; color:#e9ece6; border-top:1px solid rgba(233,236,230,.12); padding:88px clamp(20px,4vw,56px); }
+  .band.deep { background:#0e1a1f; }
+  .band.proofband { background:#12272b; }
+  .band-inner { max-width:1120px; margin:0 auto; }
+  .kicker { font-family:"JetBrains Mono",monospace; font-size:11px; letter-spacing:.16em; text-transform:uppercase; color:#9fd8c2; display:flex; align-items:center; gap:12px; }
+  .kicker::before { content:""; width:28px; height:1px; background:currentColor; }
+  .band h2 { margin-top:18px; font-family:Fraunces,serif; font-weight:350; letter-spacing:-.025em; font-size:clamp(30px,3.6vw,48px); line-height:1.04; max-width:20ch; }
+  .band h2 em { font-style:italic; font-weight:300; color:#9fd8c2; }
+  .lede { margin-top:14px; font-size:16px; line-height:1.65; color:rgba(233,236,230,.8); max-width:62ch; }
+  .grid3 { margin-top:36px; display:grid; gap:16px; grid-template-columns:repeat(3,1fr); }
+  @media (max-width:860px){ .grid3 { grid-template-columns:1fr; } }
+  .card { background:rgba(233,236,230,.05); border:1px solid rgba(233,236,230,.14); border-radius:18px; padding:26px; backdrop-filter:blur(12px); }
+  .card h3 { font-family:Fraunces,serif; font-weight:400; font-size:22px; letter-spacing:-.01em; }
+  .card p { margin-top:10px; font-size:15px; line-height:1.65; color:rgba(233,236,230,.8); }
+  .card .n { font-family:"JetBrains Mono",monospace; font-size:12px; letter-spacing:.12em; color:#9fd8c2; }
+  .tick { display:block; width:36px; height:2px; border-radius:2px; background:#9fd8c2; opacity:.8; margin-bottom:16px; }
+  .footnote { margin-top:22px; padding-left:14px; border-left:1px solid rgba(233,236,230,.25); font-size:13px; line-height:1.6; color:rgba(233,236,230,.66); max-width:70ch; }
+  .chapters { margin-top:28px; list-style:none; display:grid; gap:10px; max-width:560px; }
+  .chapters li { display:flex; align-items:center; gap:14px; background:rgba(233,236,230,.05); border:1px solid rgba(233,236,230,.14); border-radius:14px; padding:12px 16px; font-size:15px; color:rgba(233,236,230,.85); backdrop-filter:blur(12px); }
+  .chapters time { font-family:"JetBrains Mono",monospace; font-size:12px; color:#0a1014; background:#9fd8c2; border-radius:999px; padding:4px 10px; min-width:52px; text-align:center; font-variant-numeric:tabular-nums; }
+  .placeholder { margin-top:36px; border:1px dashed rgba(233,236,230,.3); border-radius:20px; padding:40px 28px; text-align:center; background:rgba(233,236,230,.03); }
+  .placeholder p { font-family:Fraunces,serif; font-size:clamp(20px,2.4vw,26px); font-weight:400; }
+  .proofgrid { margin-top:36px; display:grid; gap:16px; grid-template-columns:repeat(4,1fr); list-style:none; }
+  @media (max-width:960px){ .proofgrid { grid-template-columns:repeat(2,1fr); } }
+  @media (max-width:560px){ .proofgrid { grid-template-columns:1fr; } }
+  .proofgrid li { background:rgba(233,236,230,.05); border:1px solid rgba(233,236,230,.14); border-top:3px solid #9fd8c2; border-radius:16px; padding:24px; backdrop-filter:blur(12px); }
+  .stat { font-family:Fraunces,serif; font-size:clamp(30px,3vw,40px); font-weight:400; letter-spacing:-.02em; font-variant-numeric:tabular-nums; }
+  .proofgrid p.desc { margin-top:10px; font-size:14px; line-height:1.6; color:rgba(233,236,230,.8); }
+  .proofgrid a, .band a.u { color:#e9ece6; text-decoration:underline; text-underline-offset:3px; text-decoration-color:rgba(159,216,194,.7); }
+  .proofgrid a:hover, .band a.u:hover { text-decoration-color:#9fd8c2; }
+  details.acc { background:rgba(233,236,230,.05); border:1px solid rgba(233,236,230,.14); border-radius:16px; padding:20px 22px; backdrop-filter:blur(12px); }
+  details.acc + details.acc { margin-top:12px; }
+  details.acc summary { cursor:pointer; font-weight:600; font-size:16px; }
+  details.acc p { margin-top:10px; font-size:15px; line-height:1.65; color:rgba(233,236,230,.8); }
+  .accwrap { margin-top:32px; max-width:760px; }
+  .pricerow { margin-top:32px; display:grid; gap:16px; grid-template-columns:repeat(3,1fr); }
+  @media (max-width:860px){ .pricerow { grid-template-columns:1fr; } }
+  .price { font-family:Fraunces,serif; font-size:34px; margin-top:10px; font-variant-numeric:tabular-nums; }
+  .enterprise { margin-top:20px; display:flex; align-items:center; justify-content:space-between; gap:20px; flex-wrap:wrap; }
+  .enterprise p { font-size:15px; color:rgba(233,236,230,.8); }
+  .btnlight { display:inline-flex; align-items:center; gap:10px; padding:15px 26px; border-radius:999px; background:#e9ece6; color:#0a1014; font-weight:700; font-size:15px; }
+  .btnlight:hover { background:#fff; }
+  .btnlight i { width:8px; height:8px; border-radius:50%; background:#0a1014; }
+  .auditcard { margin-top:36px; background:rgba(233,236,230,.05); border:1px solid rgba(233,236,230,.16); border-radius:24px; padding:clamp(28px,4vw,52px); backdrop-filter:blur(14px); display:grid; gap:12px; }
+  .auditcard code { font-family:"JetBrains Mono",monospace; font-size:13px; background:#0a1014; color:#e9ece6; border:1px solid rgba(233,236,230,.2); padding:12px 18px; border-radius:999px; display:inline-block; }
+  .sitefoot { background:#0a1014; color:rgba(233,236,230,.7); border-top:1px solid rgba(233,236,230,.12); padding:30px clamp(20px,4vw,56px) 40px; font-size:13px; line-height:1.6; }
+  .sitefoot .fin { max-width:1120px; margin:0 auto; display:flex; justify-content:space-between; gap:16px; flex-wrap:wrap; align-items:flex-start; }
+  .sitefoot strong { color:#e9ece6; font-family:Fraunces,serif; font-weight:500; font-size:16px; letter-spacing:-.01em; }
+  .sitefoot a { color:#e9ece6; text-decoration:underline; text-underline-offset:3px; text-decoration-color:rgba(233,236,230,.4); }
 </style>
 </head>
 <body>
+<a class="skip" href="#main">Skip to content</a>
 <section class="hero">
   <canvas data-bg aria-hidden="true"></canvas>
   <svg id="orbit" aria-hidden="true"></svg>
@@ -98,30 +147,176 @@
   </div>
 </section>
 
-<section class="mini" id="audit">
-  <div class="wrap">
-    <h2>Run a free 14-day shadow audit.</h2>
-    <p>Connect read-only and we backfill 90 days of AI-resolved tickets against Stripe and Shopify settlement records. You keep the leakage ledger: dollars promised versus dollars moved.</p>
-    <div class="row">
-      <a class="btn" href="mailto:pilot@settleye.com"><i></i>pilot@settleye.com</a>
-      <code>read-only pilot - zero write permissions</code>
+<main id="main">
+<section class="band" id="problem" aria-labelledby="problem-heading">
+  <div class="band-inner">
+    <p class="kicker">The problem</p>
+    <h2 id="problem-heading">Promises go out. Money never follows.</h2>
+    <div class="grid3">
+      <article class="card">
+        <span class="tick" aria-hidden="true"></span>
+        <h3>Phantom refunds</h3>
+        <p>The agent says “refund processed.” The ledger says $0.00. The customer waits ten days, then chargebacks.</p>
+      </article>
+      <article class="card">
+        <span class="tick" aria-hidden="true"></span>
+        <h3>Policy breaches</h3>
+        <p>Full refunds on final-sale items, over-limit amounts, duplicate credits. Found at month-end close, if ever.</p>
+      </article>
+      <article class="card">
+        <span class="tick" aria-hidden="true"></span>
+        <h3>Silent cancellations</h3>
+        <p>“Cancelled” in chat, still billing in Stripe. Next cycle triggers the dispute.</p>
+      </article>
+    </div>
+    <p class="footnote">Footnote: chatbot promises already create liability (Air Canada tribunal, 2024). EU transparency duties live since August 2026.</p>
+  </div>
+</section>
+
+<section class="band deep" id="how" aria-labelledby="how-heading">
+  <div class="band-inner">
+    <p class="kicker">How it works</p>
+    <h2 id="how-heading">From transcript to ledger truth in three passes.</h2>
+    <ol class="grid3" style="list-style:none">
+      <li class="card">
+        <p class="n">01</p>
+        <h3 style="margin-top:12px">Connect read-only</h3>
+        <p>Shopify, Stripe, and your helpdesk. Zero write permissions during the pilot, so nothing can break.</p>
+      </li>
+      <li class="card">
+        <p class="n">02</p>
+        <h3 style="margin-top:12px">We backfill 90 days</h3>
+        <p>Every AI-resolved ticket reconciled against settlement records. You get the leakage ledger: dollars promised vs dollars moved.</p>
+      </li>
+      <li class="card">
+        <p class="n">03</p>
+        <h3 style="margin-top:12px">Fix in one click</h3>
+        <p>Each drift carries its evidence chain and an idempotent remediation. Retry-safe by construction.</p>
+      </li>
+    </ol>
+  </div>
+</section>
+
+<section class="band" id="demo" aria-labelledby="demo-heading">
+  <div class="band-inner">
+    <p class="kicker">Demo</p>
+    <h2 id="demo-heading">Watch the promise break in 3 minutes.</h2>
+    <div class="placeholder">
+      <p>3-minute demo (recording in progress)</p>
+    </div>
+    <ul class="chapters">
+      <li><time>0:00</time>the $45 phantom refund.</li>
+      <li><time>0:45</time>live extraction.</li>
+      <li><time>1:30</time>the fix.</li>
+      <li><time>2:15</time>the math.</li>
+      <li><time>2:45</time>vision.</li>
+    </ul>
+  </div>
+</section>
+
+<section class="band proofband" id="proof" aria-labelledby="proof-heading">
+  <div class="band-inner">
+    <p class="kicker">Proof</p>
+    <h2 id="proof-heading">Proof (measured Oct 27, 2026, not targets)</h2>
+    <ul class="proofgrid">
+      <li>
+        <p class="stat">12 of 12</p>
+        <p class="desc">eval verdicts correct on the open 12-case set. <a href="https://github.com/8-BitRhyon/settleye/blob/main/docs/research/12-eval-results.md" rel="noopener">Read the results</a></p>
+      </li>
+      <li>
+        <p class="stat">Zero</p>
+        <p class="desc">non-binding commitments ever reached drift in four chances. Failures never report success.</p>
+      </li>
+      <li>
+        <p class="stat">100%</p>
+        <p class="desc">deterministic ledger state: zero LLM guessing on money movement.</p>
+      </li>
+      <li>
+        <p class="stat">$44.00</p>
+        <p class="desc">at risk found live on order #1001 in 4.07 seconds. <a href="https://github.com/8-BitRhyon/settleye" rel="noopener">See the repo</a></p>
+      </li>
+    </ul>
+  </div>
+</section>
+
+<section class="band" id="objections" aria-labelledby="objections-heading">
+  <div class="band-inner">
+    <p class="kicker">Objections</p>
+    <h2 id="objections-heading">Objections, answered</h2>
+    <div class="accwrap">
+      <details class="acc">
+        <summary>Why not just switch to a better agent?</summary>
+        <p>Every agent drifts. Air Canada and Priceline proved the premise. Switching agents changes which agent you verify, never whether verification is needed.</p>
+      </details>
+      <details class="acc">
+        <summary>Why not vendor guardrails or audit trails?</summary>
+        <p>Guardrails prevent before send for one vendor. Trails log tool calls without checking ledger truth. Settleye verifies after execution, across vendors.</p>
+      </details>
+      <details class="acc">
+        <summary>What stops Shopify or Stripe from building it?</summary>
+        <p>They verify their own rails and never read transcripts. Neutrality is the product.</p>
+      </details>
+      <details class="acc">
+        <summary>Is the model decorative?</summary>
+        <p>No. The demo shows raw transcript to raw model JSON to diff with no cuts. A wire-level test pins the model ID on every request.</p>
+      </details>
     </div>
   </div>
 </section>
 
-<section class="mini" id="demo" style="background:#dedfd8">
-  <div class="wrap">
-    <h2>Watch the 3-minute demo.</h2>
-    <p>Transcript in, ledger truth out: the $44.00 phantom refund on order #1001, live extraction, and the one-click fix. Then clone the repo and reconcile your own transcripts in under five minutes.</p>
-    <div class="row">
-      <a class="link" href="https://github.com/8-BitRhyon/settleye" rel="noopener">github.com/8-BitRhyon/settleye</a>
+<section class="band deep" id="pricing" aria-labelledby="pricing-heading">
+  <div class="band-inner">
+    <p class="kicker">Pricing</p>
+    <h2 id="pricing-heading">Pricing</h2>
+    <div class="pricerow">
+      <article class="card">
+        <h3>Free</h3>
+        <p>14-day shadow audit over your last 90 days.</p>
+      </article>
+      <article class="card">
+        <h3>Starter</h3>
+        <p class="price">$299/mo</p>
+        <p>to 5,000 tickets.</p>
+      </article>
+      <article class="card">
+        <h3>Growth</h3>
+        <p class="price">$999/mo</p>
+        <p>cross-rail with one-click fix.</p>
+      </article>
+    </div>
+    <div class="enterprise">
+      <p>Enterprise custom with SOC 2.</p>
+      <a class="btnlight" href="#audit"><i></i>Run a free 14-day shadow audit</a>
     </div>
   </div>
 </section>
 
-<footer>
-  <span>Settleye - execution auditor for AI support agents.</span>
-  <a href="https://github.com/8-BitRhyon/settleye" rel="noopener">github.com/8-BitRhyon/settleye</a>
+<section class="band" id="audit" aria-labelledby="audit-heading">
+  <div class="band-inner">
+    <p class="kicker">Final audit</p>
+    <h2 id="audit-heading">Stop finding phantom refunds in chargebacks.</h2>
+    <p class="lede">Run the free shadow audit. Clone the repo and reconcile your own transcripts in under five minutes, or write to <a class="u" href="mailto:pilot@settleye.com">pilot@settleye.com</a> for a managed audit.</p>
+    <div class="auditcard">
+      <div><code>git clone github.com/8-BitRhyon/settleye</code></div>
+      <div style="display:flex;gap:14px;flex-wrap:wrap;align-items:center">
+        <a class="btnlight" href="https://github.com/8-BitRhyon/settleye" rel="noopener"><i></i>Open the repo</a>
+        <a class="u" href="mailto:pilot@settleye.com" style="font-weight:600">pilot@settleye.com</a>
+      </div>
+      <p style="font-size:14px;color:rgba(233,236,230,.66)">Every promise, reconciled against the ledger.</p>
+    </div>
+  </div>
+</section>
+</main>
+
+<footer class="sitefoot">
+  <div class="fin">
+    <div>
+      <strong>Settleye</strong>
+      <p style="margin-top:8px">Settleye - execution auditor for AI support agents.</p>
+      <p>Built with Muse Spark Open (meta-models/muse-spark-open-1026). Synthetic demo data. Test ledgers only.</p>
+    </div>
+    <a href="https://github.com/8-BitRhyon/settleye" rel="noopener">github.com/8-BitRhyon/settleye</a>
+  </div>
 </footer>
 <script src="https://dvklab.vercel.app/templates/eclipse/bg.js" integrity="sha384-RjyCc0CND5uVRPLxK5vOSWUNBSreUIWfHgybrVL+FQkhTWg3mk9JrkOOXrL7oWvE" crossorigin="anonymous"></script>
 <script>
