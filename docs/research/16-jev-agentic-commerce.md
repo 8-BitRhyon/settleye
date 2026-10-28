@@ -42,4 +42,7 @@ TypeSafe benchmark workflows were authored by TypeSafe. My AskAI ranked its own 
 
 ## Verdict for Settleye (recorded)
 
-Architecturally coherent, commercially premature. No Jev key exists. No figure is independently metered. The freeze holds until judging. Post-hackathon order: (1) live Jev trial on the 12-case eval, metered against our mock-gated baseline, (2) shadow-audit pilot clause from the impact report, (3) BNPL rails only after pull. Sources: typesafe.ai, docs.typesafe.ai, langchain.com Jev harness guide, podcastnotes.org Cheeky Pint summary, stripe.com agentic-commerce docs.
+Architecturally coherent, commercially premature. No Jev key exists. No figure is independently metered. The freeze holds until judging. Post-hackathon order:
+(1) live Jev trial on the 12-case eval, metered against our mock-gated baseline.
+(2) shadow-audit pilot clause from the impact report.
+(3) BNPL rails only after pull. Sources: typesafe.ai, docs.typesafe.ai, langchain.com Jev harness guide, podcastnotes.org Cheeky Pint summary, stripe.com agentic-commerce docs.
