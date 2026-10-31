@@ -9,6 +9,7 @@ import {
   type ValueSummary,
 } from "./api";
 import { EyeIcon, type EyeIconHandle } from "./components/EyeIcon";
+import { SAMPLE_AUDIT_RESPONSE } from "./sample";
 import {
   AUDIT_LOADING_LABEL,
   SAMPLE_PHANTOM_TRANSCRIPT,
@@ -36,6 +37,7 @@ export default function App() {
   const [error, setError] = useState<string | null>(null);
   const [fixes, setFixes] = useState<RemediateState>({});
   const [explanations, setExplanations] = useState<ExplainState>({});
+  const [isSample, setIsSample] = useState(false);
 
   const refreshValue = useCallback(() => {
     fetchValue().then(setValue).catch(() => {});
@@ -48,6 +50,7 @@ export default function App() {
   async function onAudit() {
     setAuditing(true);
     setError(null);
+    setIsSample(false);
     try {
       const next = await auditTranscript(transcript);
       setReport(next);
@@ -58,6 +61,14 @@ export default function App() {
     } finally {
       setAuditing(false);
     }
+  }
+
+  function onSample() {
+    setError(null);
+    setIsSample(true);
+    setReport(SAMPLE_AUDIT_RESPONSE);
+    setFixes({});
+    setExplanations({});
   }
 
   async function onExplain(drift: DriftResult) {
@@ -161,16 +172,33 @@ export default function App() {
             >
               {auditing ? AUDIT_LOADING_LABEL : "Audit transcript"}
             </button>
+            <button
+              type="button"
+              onClick={onSample}
+              className="rounded-full border border-zinc-700 px-5 py-2 text-sm font-bold text-zinc-200"
+            >
+              Load sample result
+            </button>
             {error !== null && (
               <p role="alert" className="text-xs text-red-300">
                 {error}
               </p>
             )}
           </div>
+          <p className="mt-2 text-[11px] text-zinc-500">
+            No backend? Load sample result shows a recorded live audit. Live
+            audits need the API running.
+          </p>
         </section>
 
         {report !== null && (
           <section className="mt-4 space-y-3">
+            {isSample && (
+              <p className="rounded-xl border border-amber-700 bg-zinc-900 p-3 text-xs text-amber-200">
+                Sample data: recorded live audit, not a live result. Run your
+                own audit against the API to verify.
+              </p>
+            )}
             {report.results.length === 0 && (
               <p className="rounded-xl bg-zinc-900 p-4 text-sm text-zinc-400">
                 No promises detected. Nothing to reconcile.
