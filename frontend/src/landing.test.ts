@@ -92,10 +92,11 @@ describe("landing page contract", () => {
     expect(html).toContain("Policy breaches");
     expect(html).toContain("Silent cancellations");
     expect(html).toContain(
-      "Footnote: chatbot promises already create liability (Air Canada tribunal, 2024). EU transparency duties live since August 2026."
+      "Footnote: chatbot promises create liability (Air Canada, BCCRT 2024). EU AI Act Article 50 transparency duties apply from Aug 2, 2026."
     );
-    expect(html).toContain("Connect read-only");
-    expect(html).toContain("We backfill 90 days");
+    expect(html).toContain("Start read-only");
+    expect(html).toContain("We audit your sample");
+    expect(html).toContain("Deterministic ledger reconciliation");
     expect(html).toContain("Fix in one click");
     expect(html).toContain("3-minute demo (recording in progress)");
     expect(html).toContain("12 of 12");
@@ -105,7 +106,7 @@ describe("landing page contract", () => {
     expect(html).toContain("Is the model decorative?");
     expect(html).toContain("$299/mo");
     expect(html).toContain("$999/mo");
-    expect(html).toContain("Enterprise custom with SOC 2.");
+    expect(html).toContain("Enterprise custom. SOC 2 is on the roadmap");
     expect(html).toContain("Stop finding phantom refunds in chargebacks.");
     expect(html).toContain("Built with Muse Spark Open");
     expect(html).toContain("meta-models/muse-spark-open-1026");
