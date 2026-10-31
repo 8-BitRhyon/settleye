@@ -10,7 +10,7 @@ Dataset: bitext/Bitext-customer-support-llm-chatbot-training-dataset (26,872 row
 
 ## Reading
 
-These inputs are templated canned replies ("I am here to provide information"), not real transcripts. Most promise nothing, so near-zero extraction is the correct outcome, not a miss. The run measures two things: false-positive resistance on non-promises (299 of 300 clean, zero false binding drifts) and robustness outside curated fixtures (zero crashes across 300 live calls).
+These inputs are templated canned replies ("I am here to provide information"), not real transcripts. Most promise nothing, so near-zero extraction is the correct outcome, not a miss. The run measures two things. First, false-positive resistance on non-promises (299 of 300 clean, zero false binding drifts). Second, robustness outside curated fixtures (zero crashes across 300 live calls).
 
 ## What this proves and what it does not
 
