@@ -14,14 +14,14 @@ Three parallel tracks: winner traits, loser modes, frontier-ambition signals. So
 
 1. Repo does not run (most common). Missing env sample, failing installs, dead demo links. Mitigation: cold-clone to running in 3 commands. Our status: README quickstart exists; verify from clean clone before filing.
 2. Generic chatbot wrapper. No pipeline, eval, or tool use. We are clear: extraction plus ledger join plus idempotent write.
-3. Video buries the wow in minute two. Judges stop at 60 seconds. Mitigation: payoff inside 20 seconds. Our film opens on the $45 phantom; verify the final cut keeps it there.
+3. Video buries the wow in minute two. Judges stop at 60 seconds. Mitigation: payoff inside 20 seconds. Our film opens on the $45 phantom. Verify the final cut keeps it there.
 4. Scope bloat. Five half-features lose to one sharp loop. Our freeze holds.
 5. Claims without evidence plus late filing. Unverified percentages and 11:59 submissions. Mitigation: 10-case fixtures with output (we have 12), file 2+ hours early, secret scan.
 
 ## What frontier ambition actually scores
 
 1. The machine acts on a real system. Berkeley rule: transactions, not chatbots. We fit: test-mode refunds on live rails.
-2. One loop works live with visible traces. 90-second working demo, request shown, context stated. We fit on video; live link would strengthen.
+2. One loop works live with visible traces. 90-second working demo, request shown, context stated. We fit on video. A live link would strengthen it.
 3. Small honest numbers beat big adjectives. "10 cases, 3 failed" outscores "95% accurate." We fit: 11/12 entities exact is stated, t07 documented.
 4. Novel composition over novel models. Multi-tool systems win edge categories. We fit: model plus ledgers plus idempotency.
 5. Adversarial and self-verifying behavior. Confidence thresholds, fallbacks, handoffs. We fit: gating, fail-loud extraction, audit-only daemon.
