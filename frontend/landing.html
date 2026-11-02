@@ -79,6 +79,24 @@
   .band-inner { max-width:1120px; margin:0 auto; }
   .kicker { font-family:"JetBrains Mono",monospace; font-size:11px; letter-spacing:.16em; text-transform:uppercase; color:#9fd8c2; display:flex; align-items:center; gap:12px; }
   .kicker::before { content:""; width:28px; height:1px; background:currentColor; }
+  .heroproof { margin-top:34px; display:flex; flex-wrap:wrap; gap:10px 28px; list-style:none; font-family:"JetBrains Mono",monospace; font-size:11.5px; letter-spacing:.04em; color:rgba(13,27,30,.7); max-width:70ch; }
+  .heroproof li { display:flex; align-items:baseline; gap:7px; }
+  .heroproof b { font-weight:600; color:#0d1b1e; font-variant-numeric:tabular-nums; }
+  .coststrip { display:grid; gap:16px; grid-template-columns:repeat(3,1fr); margin-top:34px; list-style:none; }
+  .coststrip li { border-top:2px solid rgba(159,216,194,.5); padding-top:16px; }
+  .coststrip b { display:block; font-family:Fraunces,serif; font-size:clamp(26px,2.6vw,34px); font-weight:400; letter-spacing:-.02em; font-variant-numeric:tabular-nums; }
+  .coststrip span { display:block; margin-top:8px; font-size:13.5px; line-height:1.6; color:rgba(233,236,230,.8); }
+  .coststrip em { display:block; margin-top:8px; font-style:normal; font-family:"JetBrains Mono",monospace; font-size:10.5px; letter-spacing:.1em; text-transform:uppercase; color:rgba(233,236,230,.5); }
+  @media (max-width:860px){ .coststrip { grid-template-columns:1fr; } }
+  .cmp { margin-top:34px; width:100%; border-collapse:collapse; font-size:14px; }
+  .cmp th, .cmp td { text-align:left; padding:14px 16px; border-bottom:1px solid rgba(233,236,230,.12); vertical-align:top; }
+  .cmp th { font-family:"JetBrains Mono",monospace; font-size:10.5px; letter-spacing:.12em; text-transform:uppercase; color:rgba(233,236,230,.55); font-weight:400; }
+  .cmp td:first-child { color:rgba(233,236,230,.92); }
+  .cmp td { color:rgba(233,236,230,.72); }
+  .cmp tr.us td { background:rgba(159,216,194,.07); color:#e9ece6; }
+  .cmp tr.us td:first-child { font-weight:600; }
+  .cmpwrap { overflow-x:auto; margin-top:34px; }
+  @media (max-width:720px){ .cmp { font-size:13px; } .cmp th, .cmp td { padding:10px 12px; } }
   .band h2 { margin-top:18px; font-family:Fraunces,serif; font-weight:350; letter-spacing:-.025em; font-size:clamp(30px,3.6vw,48px); line-height:1.04; max-width:20ch; }
   .band h2 em { font-style:italic; font-weight:300; color:#9fd8c2; }
   .lede { margin-top:14px; font-size:16px; line-height:1.65; color:rgba(233,236,230,.8); max-width:62ch; }
@@ -140,11 +158,16 @@
   <div class="content" id="top">
     <span class="eyebrow rv" style="--d:150">Execution auditor for AI support agents</span>
     <h1 class="rv" style="--d:300">Your AI agent promised a refund. <em>Did the money move?</em></h1>
-    <p class="sub rv" style="--d:500">Settleye reads support transcripts, pulls every binding promise, and reconciles each one against Stripe and Shopify. Mismatches land in one inbox with a one-click fix.</p>
+    <p class="sub rv" style="--d:500">Settleye reads support transcripts, pulls every binding promise, and reconciles each one against Stripe and Shopify. Built for merchants running an AI agent on 5,000 or more tickets a month. Mismatches land in one inbox with a one-click fix.</p>
     <div class="ctas rv" style="--d:650">
       <a class="btn" href="#audit"><i></i>Run a free 14-day shadow audit</a>
       <a class="link" href="#demo">Watch the 3-minute demo</a>
     </div>
+    <ul class="heroproof rv" style="--d:800">
+      <li><b>$44.00</b> caught live on a test order</li>
+      <li><b>11 of 12</b> exact matches, replayed from recorded model output</li>
+      <li><b>300</b> wild transcripts, zero false promises</li>
+    </ul>
   </div>
 
   <!-- Hackathon deadline: Nov 4 2026 9pm ET (2026-11-04T21:00:00-05:00 = 2026-11-05T02:00:00Z) -->
@@ -176,7 +199,67 @@
         <p>“Cancelled” in chat, still billing in Stripe. Next cycle triggers the dispute.</p>
       </article>
     </div>
-    <p class="footnote">Footnote: chatbot promises create liability (Air Canada, BCCRT 2024). EU AI Act Article 50 transparency duties apply from Aug 2, 2026. Every $1 of fraud and dispute loss costs US merchants $4.61 in total operational cost (LexisNexis, 2025).</p>
+    <p class="footnote">Footnote: chatbot promises create liability (Air Canada, BCCRT 2024). EU AI Act Article 50 transparency duties apply from Aug 2, 2026.</p>
+    <ul class="coststrip">
+      <li>
+        <b>$128</b>
+        <span>Average US chargeback cost in fees and internal labor, before you count the lost order.</span>
+        <em>Mastercard, 2025</em>
+      </li>
+      <li>
+        <b>$4.61</b>
+        <span>Total operational cost for every $1 of fraud and dispute loss, once goods, fees, and labor are added.</span>
+        <em>LexisNexis, 2025, N=569</em>
+      </li>
+      <li>
+        <b>96 hours</b>
+        <span>Window to settle an agreed Klarna adjustment before the platform files the chargeback for you.</span>
+        <em>Klarna merchant rules</em>
+      </li>
+    </ul>
+    <p class="footnote" style="margin-top:18px">Sources and scope for every number on this page: <a class="u" href="https://github.com/8-BitRhyon/settleye/blob/main/docs/research/20-claims.md" rel="noopener">claim ledger</a>.</p>
+  </div>
+</section>
+
+<section class="band" id="compare" aria-labelledby="compare-heading">
+  <div class="band-inner">
+    <p class="kicker">Compared</p>
+    <h2 id="compare-heading">What actually catches this today.</h2>
+    <p class="lede">Every option below solves part of the problem. None checks whether the money moved.</p>
+    <div class="cmpwrap">
+      <table class="cmp">
+        <thead>
+          <tr><th scope="col">Approach</th><th scope="col">What it sees</th><th scope="col">What it misses</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Do nothing</td>
+            <td>The agent says it worked</td>
+            <td>Everything. The gap surfaces as a chargeback</td>
+          </tr>
+          <tr>
+            <td>Helpdesk guardrails (Gorgias, Zendesk, Intercom)</td>
+            <td>The outgoing message, before send</td>
+            <td>Whether the write ever landed. One vendor only</td>
+          </tr>
+          <tr>
+            <td>QA and eval tools (Klaus, LangSmith, Braintrust)</td>
+            <td>Transcript quality and tone</td>
+            <td>Ledger state. A polite transcript can still be unpaid</td>
+          </tr>
+          <tr>
+            <td>Chargeback services (Chargeflow, Justt)</td>
+            <td>Disputes already filed</td>
+            <td>The 10 to 45 days before the customer gives up</td>
+          </tr>
+          <tr class="us">
+            <td>Settleye</td>
+            <td>Transcript promise, ledger fact, and the gap between them</td>
+            <td>Not a guardrail and not a payment rail. Runs after execution, across vendors</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
   </div>
 </section>
 
@@ -280,7 +363,8 @@
 <section class="band deep" id="pricing" aria-labelledby="pricing-heading">
   <div class="band-inner">
     <p class="kicker">Pricing</p>
-    <h2 id="pricing-heading">Pricing</h2>
+    <h2 id="pricing-heading">Priced below two chargebacks.</h2>
+    <p class="lede">Starter costs $299 a month. Two chargebacks at the average US cost are $256 before you count the goods. The plan pays for itself on the second catch, and the audit is free until then.</p>
     <div class="pricerow">
       <article class="card">
         <h3>Free</h3>
@@ -308,7 +392,24 @@
   <div class="band-inner">
     <p class="kicker">Final audit</p>
     <h2 id="audit-heading">Stop finding phantom refunds in chargebacks.</h2>
-    <p class="lede">Run the free shadow audit. Clone the repo and reconcile your own transcripts in under five minutes. Want a managed audit or a pilot? <a class="u" href="https://github.com/8-BitRhyon/settleye/issues/new?labels=pilot&amp;title=Pilot%20request" rel="noopener">Open a pilot request</a> and we will reply there.</p>
+    <p class="lede">Start with the free audit. Read-only keys, your own transcript export, no write access until you approve a specific fix. You keep the leakage ledger either way, including if you decide not to buy.</p>
+    <ul class="coststrip" style="margin-top:28px">
+      <li>
+        <b>Day 0</b>
+        <span>You export transcripts and add test-mode keys. Nothing touches production.</span>
+        <em>About 10 minutes</em>
+      </li>
+      <li>
+        <b>Day 1 to 3</b>
+        <span>Every refund and cancellation promise in the sample is reconciled to the ledger. Drifts get a quote and a ledger reference.</span>
+        <em>Leakage ledger delivered</em>
+      </li>
+      <li>
+        <b>Day 3</b>
+        <span>You decide. Fix in one click, hand it to your team, or walk away with the numbers.</span>
+        <em>No write access needed to start</em>
+      </li>
+    </ul>
     <div class="auditcard">
       <div><code>git clone github.com/8-BitRhyon/settleye</code></div>
       <div style="display:flex;gap:14px;flex-wrap:wrap;align-items:center">

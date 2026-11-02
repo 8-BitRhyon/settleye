@@ -119,3 +119,47 @@ describe("landing page contract", () => {
     expect(html).toContain("meta-models/muse-spark-open-1026");
   });
 });
+
+describe("conversion path", () => {
+  const page = readFileSync(resolve(root, "landing.html"), "utf8");
+
+  it("names who the product is for above the fold", () => {
+    expect(page).toMatch(/Built for merchants running an AI agent on 5,000 or more tickets/);
+  });
+
+  it("shows live proof before asking for a demo", () => {
+    const heroProof = page.indexOf("heroproof");
+    const demo = page.indexOf('id="demo"');
+    expect(heroProof).toBeGreaterThan(-1);
+    expect(heroProof).toBeLessThan(demo);
+  });
+
+  it("states the cost of doing nothing with sourced qualifiers", () => {
+    expect(page).toContain("$128");
+    expect(page).toContain("Mastercard, 2025");
+    expect(page).toContain("$4.61");
+    expect(page).toContain("LexisNexis, 2025, N=569");
+    expect(page).toContain("96 hours");
+  });
+
+  it("answers the comparison question honestly, including what we are not", () => {
+    expect(page).toContain("What actually catches this today.");
+    expect(page).toContain("Helpdesk guardrails");
+    expect(page).toContain("Chargeback services");
+    expect(page).toContain("Not a guardrail and not a payment rail.");
+  });
+
+  it("frames price against a cost the buyer already pays", () => {
+    expect(page).toContain("Priced below two chargebacks.");
+    expect(page).toContain("Two chargebacks at the average US cost are $256");
+  });
+
+  it("removes risk from the pilot and names the exit", () => {
+    expect(page).toContain("You keep the leakage ledger either way");
+    expect(page).toContain("No write access needed to start");
+  });
+
+  it("links every market number to the claim ledger", () => {
+    expect(page).toContain("docs/research/20-claims.md");
+  });
+});
