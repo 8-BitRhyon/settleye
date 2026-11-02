@@ -183,9 +183,10 @@ describe("frontier model objection", () => {
     expect(frontier).toBeLessThan(better);
   });
 
-  it("states the fail-closed behavior with the measured comparison", () => {
-    expect(page).toContain("both matched 11 of 12 entities");
-    expect(page).toContain("Argon invented an order number");
+  it("puts the comparison on the first screen and the measurement in Proof", () => {
+    expect(page).toContain("Only one of them invented an order id");
+    expect(page).toContain("Gemini 4 Argon invented an order number");
+    expect(page).toContain("We ran the comparison rather than argue it");
     expect(page).toContain("docs/research/21-model-comparison.md");
   });
 
