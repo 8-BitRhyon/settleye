@@ -190,7 +190,7 @@ describe("frontier model objection", () => {
   });
 
   it("puts the comparison on the first screen and the measurement in Proof", () => {
-    expect(page).toContain("Gemini 4 Argon also 11/12, but invented an order id");
+    expect(page).toContain("same as Gemini 4 Argon. It invented an order id");
     expect(page).toContain("Gemini 4 Argon invented an order number");
     expect(page).toContain("We ran the comparison rather than argue it");
     expect(page).toContain("docs/research/21-model-comparison.md");
