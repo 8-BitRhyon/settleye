@@ -191,13 +191,14 @@ export default function App() {
             </button>
             {error !== null && (
               <p role="alert" className="text-xs text-red-300">
-                {error}
+                {error} <span className="text-zinc-400">Live audits run against the local API. Use Load sample result to see a recorded audit.</span>
               </p>
             )}
           </div>
           <p className="mt-2 text-[11px] text-zinc-500">
-            No backend? Load sample result shows a recorded live audit. Live
-            audits need the API running.
+            This public copy is a static demo. Live audits need the API running
+            locally (see README). Load sample result shows a recorded live
+            audit.
           </p>
         </section>
 
