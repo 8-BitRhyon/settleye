@@ -53,14 +53,12 @@ describe("landing page contract", () => {
     expect(html).toContain("Fraunces");
     expect(html).toContain("Manrope");
     expect(html).toContain("JetBrains Mono");
-    expect(html).toContain("Submissions close in");
-    expect(html).toContain('id="clock"');
-    expect(html).toContain("setInterval");
   });
 
-  it("retargets the countdown to the Nov 4 hackathon deadline", () => {
-    expect(html).toContain("2026-11-04");
-    expect(html).toMatch(/Nov 4/i);
+  it("carries no countdown or fake urgency", () => {
+    expect(html).not.toContain("Submissions close in");
+    expect(html).not.toContain('id="clock"');
+    expect(html).not.toMatch(/setInterval/);
   });
 
   it("loads only local scripts and preloads the poster", () => {
@@ -88,6 +86,13 @@ describe("landing page contract", () => {
     expect(positions).toEqual(sorted);
   });
 
+  it("names the model, the frontier comparison, and the anti-customer in Proof", () => {
+    expect(html).toContain("modelbar");
+    expect(html).toContain("meta-models/muse-spark-open-1026");
+    expect(html).toContain("Gemini 4 Argon invented an order number");
+    expect(html).toContain("Who this is not for");
+  });
+
   it("keeps problem, steps, demo, proof, objections, pricing, and footer verbatim", () => {
     expect(html).toContain("Phantom refunds");
     expect(html).toContain("Policy breaches");
@@ -95,10 +100,10 @@ describe("landing page contract", () => {
     expect(html).toContain(
       "Footnote: chatbot promises create liability (Air Canada, BCCRT 2024). EU AI Act Article 50 transparency duties apply from Aug 2, 2026."
     );
-    expect(html).toContain("Start read-only");
-    expect(html).toContain("We audit your sample");
+    expect(html).toContain("Connect with test-mode keys");
+    expect(html).toContain("Reconcile up to 90 days");
     expect(html).toContain("Ledger reconciliation is deterministic code");
-    expect(html).toContain("Fix in one click");
+    expect(html).toContain("Refund the exact shortfall");
     expect(html).toContain("Or open the inbox with the sample loaded");
     expect(html).toContain("releases/download/demo-v1/settleye-film.mp4");
     expect(html).toContain("<video");
