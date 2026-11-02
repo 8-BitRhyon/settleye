@@ -163,3 +163,39 @@ describe("conversion path", () => {
     expect(page).toContain("docs/research/20-claims.md");
   });
 });
+
+describe("frontier model objection", () => {
+  const page = readFileSync(resolve(root, "landing.html"), "utf8");
+  const claims = readFileSync(
+    resolve(root, "../docs/research/20-claims.md"),
+    "utf8",
+  );
+
+  it("answers the frontier objection before any other", () => {
+    const frontier = page.indexOf("Can't a frontier model just do this?");
+    const better = page.indexOf("Why not just switch to a better agent?");
+    expect(frontier).toBeGreaterThan(-1);
+    expect(frontier).toBeLessThan(better);
+  });
+
+  it("states the fail-closed behavior, not just model choice", () => {
+    expect(page).toContain("a missing field raises instead of returning confident JSON");
+    expect(page).toContain("the money math is code");
+  });
+
+  it("quotes a measured per-transcript cost instead of a multiple", () => {
+    expect(page).toContain("$0.0096");
+    expect(page).not.toMatch(/\b\d{2,}x cheaper\b/);
+    expect(page).not.toContain("10x");
+    expect(page).not.toContain("100x");
+  });
+
+  it("concedes that cheaper models drop fields rather than overclaiming", () => {
+    expect(page).toContain("Cheaper models exist. They drop fields.");
+  });
+
+  it("carries the pricing scope and the Haiku inversion in the claim ledger", () => {
+    expect(claims).toContain("Claude Haiku 5.5");
+    expect(claims).toContain("we do not claim to beat them on price");
+  });
+});
