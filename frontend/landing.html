@@ -71,15 +71,31 @@
   .skip:focus { top:12px; }
   :focus-visible { outline:2px solid #9fd8c2; outline-offset:3px; }
 
-  .band { background:#0a1014; color:#e9ece6; border-top:1px solid rgba(233,236,230,.12); padding:88px clamp(20px,4vw,56px); }
+  .band { background:#0a1014; color:#e9ece6; border-top:1px solid rgba(233,236,230,.12); padding:64px clamp(20px,4vw,56px); }
   .band.deep { background:#0e1a1f; }
   .band.proofband { background:#12272b; }
-  .band-inner { max-width:1120px; margin:0 auto; }
+  .band-inner { max-width:960px; margin:0 auto; }
   .kicker { font-family:"JetBrains Mono",monospace; font-size:11px; letter-spacing:.16em; text-transform:uppercase; color:#9fd8c2; display:flex; align-items:center; gap:12px; }
   .kicker::before { content:""; width:28px; height:1px; background:currentColor; }
-  .heroproof { margin-top:30px; display:flex; flex-wrap:wrap; gap:9px 26px; list-style:none; font-family:"JetBrains Mono",monospace; font-size:12.5px; letter-spacing:.03em; color:rgba(13,27,30,.78); max-width:72ch; }
-  .heroproof li { display:block; }
-  .heroproof b { font-weight:700; color:#0d1b1e; font-variant-numeric:tabular-nums; margin-right:7px; }
+  .hero-cmd { display:inline-block; margin-top:22px; padding:9px 14px; border-radius:10px; background:rgba(10,16,20,.09); border:1px solid rgba(10,16,20,.16); font-family:"JetBrains Mono",monospace; font-size:12px; color:rgba(13,27,30,.86); letter-spacing:.02em; }
+  .hero-art { position:absolute; right:clamp(20px,4vw,56px); bottom:clamp(48px,10vh,110px); width:min(430px,34vw); background:rgba(10,16,20,.82); border:1px solid rgba(233,236,230,.22); border-radius:14px; backdrop-filter:blur(10px); box-shadow:0 30px 80px -30px rgba(0,0,0,.7); }
+  .art-bar { display:flex; align-items:center; gap:6px; padding:11px 14px; border-bottom:1px solid rgba(233,236,230,.14); }
+  .art-bar i { width:7px; height:7px; border-radius:50%; background:rgba(233,236,230,.28); }
+  .art-bar span { margin-left:8px; font-family:"JetBrains Mono",monospace; font-size:10.5px; letter-spacing:.1em; text-transform:uppercase; color:rgba(233,236,230,.5); }
+  .art-body { padding:16px 18px 18px; display:grid; gap:11px; }
+  .art-row { display:grid; grid-template-columns:74px 1fr; gap:12px; align-items:baseline; font-family:"JetBrains Mono",monospace; font-size:11.5px; line-height:1.5; }
+  .art-row span { color:rgba(233,236,230,.42); text-transform:uppercase; letter-spacing:.1em; font-size:9.5px; }
+  .art-row b { color:rgba(233,236,230,.92); font-weight:400; }
+  .art-row b.bad { color:#f0837f; }
+  .art-foot { margin-top:2px; font-family:"JetBrains Mono",monospace; font-size:10px; letter-spacing:.04em; color:rgba(233,236,230,.4); }
+  @media (max-width:1180px){ .hero-art { display:none; } }
+  .heroproof { margin-top:28px; display:grid; grid-template-columns:repeat(3,1fr); gap:0; list-style:none; border-top:1px solid rgba(13,27,30,.22); padding-top:15px; max-width:660px; }
+  .heroproof li { padding:0 16px; }
+  .heroproof li:first-child { padding-left:0; }
+  .heroproof li + li { border-left:1px solid rgba(13,27,30,.14); }
+  .heroproof b { display:block; font-family:"JetBrains Mono",monospace; font-weight:700; font-size:15px; color:#0d1b1e; font-variant-numeric:tabular-nums; letter-spacing:-.01em; }
+  .heroproof span { display:block; margin-top:5px; font-size:11px; line-height:1.45; color:rgba(13,27,30,.66); letter-spacing:.01em; }
+  @media (max-width:760px){ .heroproof { grid-template-columns:1fr; gap:12px; } .heroproof li { padding:0; } .heroproof li + li { border-left:0; border-top:1px solid rgba(13,27,30,.12); padding-top:12px; } }
   .coststrip { display:grid; gap:16px; grid-template-columns:repeat(3,1fr); margin-top:34px; list-style:none; }
   .coststrip li { border-top:2px solid rgba(159,216,194,.5); padding-top:16px; }
   .coststrip b { display:block; font-family:"JetBrains Mono",monospace; font-size:clamp(24px,2.4vw,30px); font-weight:600; letter-spacing:-.01em; font-variant-numeric:tabular-nums; color:#9fd8c2; }
@@ -94,6 +110,13 @@
   .cmp tr.us td { background:rgba(159,216,194,.07); color:#e9ece6; }
   .cmp tr.us td:first-child { font-weight:600; }
   .cmpwrap { overflow-x:auto; margin-top:34px; }
+  .frows { margin-top:34px; }
+  .frow { display:grid; grid-template-columns:1fr 1fr; gap:32px; align-items:start; padding:26px 0; border-top:1px solid rgba(233,236,230,.12); }
+  .frow:last-child { border-bottom:1px solid rgba(233,236,230,.12); }
+  .frow h3 { font-family:Fraunces,serif; font-size:22px; font-weight:400; letter-spacing:-.01em; margin-top:10px; }
+  .frow p { margin-top:10px; font-size:14.5px; line-height:1.65; color:rgba(233,236,230,.78); }
+  .snip { margin:0; padding:18px 20px; background:rgba(233,236,230,.045); border:1px solid rgba(233,236,230,.13); border-radius:12px; font-family:"JetBrains Mono",monospace; font-size:11.5px; line-height:1.75; color:rgba(233,236,230,.86); white-space:pre; overflow-x:auto; }
+  @media (max-width:860px){ .frow { grid-template-columns:1fr; gap:16px; padding:20px 0; } }
   .steps { display:grid; gap:14px; grid-template-columns:repeat(3,1fr); margin-top:28px; list-style:none; }
   .steps li { border-left:2px solid rgba(159,216,194,.45); padding:2px 0 2px 16px; }
   .steps b { display:block; font-family:"JetBrains Mono",monospace; font-size:11px; letter-spacing:.1em; text-transform:uppercase; color:#9fd8c2; }
@@ -171,11 +194,22 @@
       <a class="btn" href="#audit"><i></i>Run a free 14-day shadow audit</a>
       <a class="link" href="#demo">Watch the 3-minute demo</a>
     </div>
-    <ul class="heroproof rv" style="--d:800">
-      <li><b>$44.00</b> caught live on a test order</li>
-      <li><b>11 of 12</b> exact on extraction, same as Gemini 4 Argon. Only one of them invented an order id</li>
-      <li><b>300</b> wild transcripts, zero false promises</li>
+    <code class="hero-cmd rv" style="--d:760">git clone github.com/8-BitRhyon/settleye</code>
+    <ul class="heroproof rv" style="--d:820">
+      <li><b>$44.00</b><span>caught live, one test order</span></li>
+      <li><b>11/12</b><span>exact · Gemini 4 Argon also 11/12, but invented an order id</span></li>
+      <li><b>300</b><span>wild transcripts, zero false promises</span></li>
     </ul>
+  </div>
+
+  <div class="hero-art rv" style="--d:900" aria-hidden="true">
+    <div class="art-bar"><i></i><i></i><i></i><span>settleye / drift</span></div>
+    <div class="art-body">
+      <p class="art-row"><span>promise</span><b>"processed a full $45 refund for #992"</b></p>
+      <p class="art-row"><span>ledger</span><b class="bad">$0.00 settled</b></p>
+      <p class="art-row"><span>verdict</span><b class="bad">DRIFT</b></p>
+      <p class="art-foot">transcript span + ledger record attached · 4.07s</p>
+    </div>
   </div>
 
 </section>
@@ -271,25 +305,40 @@
   <div class="band-inner">
     <p class="kicker">How it works</p>
     <h2 id="how-heading">Pull each promised dollar, then show the Stripe record or its absence.</h2>
-    <ol class="grid3" style="list-style:none">
-      <li class="card">
-        <p class="n">01</p>
-        <h3 style="margin-top:12px">Connect with test-mode keys</h3>
-        <p>Bring a transcript export and test-mode Stripe and Shopify keys. Nothing writes until you approve a named order.</p>
-      </li>
-      <li class="card">
-        <p class="n">02</p>
-        <h3 style="margin-top:12px">Reconcile up to 90 days</h3>
-        <p>Every AI-resolved ticket you provide is reconciled into promised dollars against moved dollars. That is the leakage ledger.</p>
-      </li>
-      <li class="card">
-        <p class="n">03</p>
-        <h3 style="margin-top:12px">Refund the exact shortfall</h3>
-        <p>One click retries the shortfall with an idempotent key, so a double click cannot double refund. Each drift carries its transcript quote and the ledger record checked.</p>
-      </li>
-    </ol>
-  </div>
-</section>
+    <div class="frows">
+      <div class="frow">
+        <div>
+          <p class="n">01</p>
+          <h3>Extract the promise, not the sentiment</h3>
+          <p>The transcript goes to a pinned Meta open-weight model. The reply must pass a schema or it fails loudly. No regex, no guessing.</p>
+        </div>
+        <pre class="snip">{ "action": "refund",
+  "amount": 45.0,
+  "order_id": "992",
+  "terminal_status": "binding" }</pre>
+      </div>
+      <div class="frow">
+        <div>
+          <p class="n">02</p>
+          <h3>Join it to settled state</h3>
+          <p>Each binding promise is looked up on the ledger. The diff is the product: dollars promised against dollars moved, per order.</p>
+        </div>
+        <pre class="snip">promised  $45.00  #992
+settled   $ 0.00
+verdict   DRIFT    at risk $45.00</pre>
+      </div>
+      <div class="frow">
+        <div>
+          <p class="n">03</p>
+          <h3>Refund the exact shortfall, once</h3>
+          <p>One click retries the shortfall with an idempotent key. A double click returns the original receipt, never a second refund.</p>
+        </div>
+        <pre class="snip">refund:992:45.00  -> executed
+refund:992:45.00  -> already_executed
+ledger unchanged</pre>
+      </div>
+    </div>
+  </section>
 
 <section class="band" id="demo" aria-labelledby="demo-heading">
   <div class="band-inner">

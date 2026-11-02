@@ -105,10 +105,10 @@ describe("landing page contract", () => {
     expect(html).toContain(
       "Footnote: chatbot promises create liability (Air Canada, BCCRT 2024). EU AI Act Article 50 transparency duties apply from Aug 2, 2026."
     );
-    expect(html).toContain("Connect with test-mode keys");
-    expect(html).toContain("Reconcile up to 90 days");
+    expect(html).toContain("Extract the promise, not the sentiment");
+    expect(html).toContain("Join it to settled state");
     expect(html).toContain("Ledger reconciliation is deterministic code");
-    expect(html).toContain("Refund the exact shortfall");
+    expect(html).toContain("Refund the exact shortfall, once");
     expect(html).toContain("Or open the inbox with the sample loaded");
     expect(html).toContain("releases/download/demo-v1/settleye-film.mp4");
     expect(html).toContain("<video");
@@ -190,7 +190,7 @@ describe("frontier model objection", () => {
   });
 
   it("puts the comparison on the first screen and the measurement in Proof", () => {
-    expect(page).toContain("Only one of them invented an order id");
+    expect(page).toContain("Gemini 4 Argon also 11/12, but invented an order id");
     expect(page).toContain("Gemini 4 Argon invented an order number");
     expect(page).toContain("We ran the comparison rather than argue it");
     expect(page).toContain("docs/research/21-model-comparison.md");
