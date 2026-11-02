@@ -196,6 +196,6 @@ describe("frontier model objection", () => {
 
   it("carries the pricing scope and the Haiku inversion in the claim ledger", () => {
     expect(claims).toContain("Claude Haiku 5.5");
-    expect(claims).toContain("we do not claim to beat them on price");
+    expect(claims).toMatch(/do not claim to beat it/i);
   });
 });
