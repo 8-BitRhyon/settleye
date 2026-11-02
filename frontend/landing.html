@@ -62,11 +62,11 @@
   .link:hover { border-color:var(--ink); }
 
 
-  .rv { transform:translateY(14px); filter:blur(6px); animation:rise .85s cubic-bezier(.2,.7,.2,1) forwards; animation-delay:calc(var(--d,0) * 1ms); }
-  @keyframes rise { to { transform:none; filter:blur(0); } }
+  .rv { transform:translateY(14px); animation:rise .8s cubic-bezier(.2,.7,.2,1) forwards; animation-delay:calc(var(--d,0) * 1ms); }
+  @keyframes rise { to { transform:none; } }
   /* Text is never hidden. Previews, social cards, and slow devices always read. */
   nav.rv { filter:none; }
-  @media (prefers-reduced-motion:reduce){ .rv{ animation:none; opacity:1; transform:none; filter:none; } #orbit g{ animation:none; } }
+  @media (prefers-reduced-motion:reduce){ .rv{ animation:none; transform:none; } #orbit g{ animation:none; } }
   @media (max-width:820px){ .links{ display:none; } .content{ max-width:none; } }
   @media (max-width:860px){ .band{ padding:56px 20px; } }
 
