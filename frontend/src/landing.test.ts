@@ -96,12 +96,16 @@ describe("landing page contract", () => {
     );
     expect(html).toContain("Start read-only");
     expect(html).toContain("We audit your sample");
-    expect(html).toContain("Deterministic ledger reconciliation");
+    expect(html).toContain("Ledger reconciliation is deterministic code");
     expect(html).toContain("Fix in one click");
-    expect(html).toContain("3-minute demo (recording in progress)");
+    expect(html).toContain("Open the inbox with the sample loaded");
+    expect(html).toContain("?sample=1");
     expect(html).toContain("12 of 12");
+    expect(html).toContain("300 / 300");
+    expect(html).toContain("0 of 4");
     expect(html).toContain("$44.00");
     expect(html).toContain("4.07 seconds.");
+    expect(html).toContain("Single order, not a fleet sample.");
     expect(html).toContain("Why not just switch to a better agent?");
     expect(html).toContain("Is the model decorative?");
     expect(html).toContain("$299/mo");

@@ -39,6 +39,16 @@ export default function App() {
   const [explanations, setExplanations] = useState<ExplainState>({});
   const [isSample, setIsSample] = useState(false);
 
+  // Deep link from the landing page: ?sample=1 opens the recorded audit
+  // immediately so a visitor sees a drift without a single click.
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    if (new URLSearchParams(window.location.search).get("sample") === "1") {
+      setReport(SAMPLE_AUDIT_RESPONSE);
+      setIsSample(true);
+    }
+  }, []);
+
   const refreshValue = useCallback(() => {
     fetchValue().then(setValue).catch(() => {});
   }, []);

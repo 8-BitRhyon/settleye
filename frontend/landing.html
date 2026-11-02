@@ -102,6 +102,7 @@
   .stat { font-family:Fraunces,serif; font-size:clamp(30px,3vw,40px); font-weight:400; letter-spacing:-.02em; font-variant-numeric:tabular-nums; }
   .proofgrid p.desc { margin-top:10px; font-size:14px; line-height:1.6; color:rgba(233,236,230,.8); }
   .proofgrid a, .band a.u { color:#e9ece6; text-decoration:underline; text-underline-offset:3px; text-decoration-color:rgba(159,216,194,.7); }
+  .note { margin-top:18px; font-family:"JetBrains Mono",monospace; font-size:11px; line-height:1.7; letter-spacing:.06em; text-transform:uppercase; color:rgba(233,236,230,.55); max-width:70ch; }
   .proofgrid a:hover, .band a.u:hover { text-decoration-color:#9fd8c2; }
   details.acc { background:rgba(233,236,230,.05); border:1px solid rgba(233,236,230,.14); border-radius:16px; padding:20px 22px; backdrop-filter:blur(12px); }
   details.acc + details.acc { margin-top:12px; }
@@ -208,7 +209,8 @@
     <p class="kicker">Demo</p>
     <h2 id="demo-heading">Watch the promise break in 3 minutes.</h2>
     <div class="placeholder">
-      <p>3-minute demo (recording in progress)</p>
+      <p>Demo video in final cut. Until then: open the inbox, press Load sample result, and watch a recorded audit render.</p>
+      <p style="margin-top:14px"><a class="u" href="./index.html?sample=1" rel="noopener">Open the inbox with the sample loaded</a></p>
     </div>
     <ul class="chapters">
       <li><time>0:00</time>the $45 phantom refund.</li>
@@ -227,21 +229,22 @@
     <ul class="proofgrid">
       <li>
         <p class="stat">12 of 12</p>
-        <p class="desc">eval verdicts correct on the open 12-case set. <a href="https://github.com/8-BitRhyon/settleye/blob/main/docs/research/12-eval-results.md" rel="noopener">Read the results</a></p>
+        <p class="desc">verdicts correct on our 12-case set, with 11 of 12 entity matches exact. <a href="https://github.com/8-BitRhyon/settleye/blob/main/docs/research/12-eval-results.md" rel="noopener">Read the results</a></p>
       </li>
       <li>
-        <p class="stat">Zero</p>
-        <p class="desc">non-binding commitments ever reached drift in four chances. Failures never report success.</p>
+        <p class="stat">0 of 4</p>
+        <p class="desc">non-binding cases reached drift: retracted, conditional, superseded, info-only. Failures never report success.</p>
       </li>
       <li>
-        <p class="stat">100%</p>
-        <p class="desc">Deterministic ledger reconciliation: zero LLM guessing on money movement. Extraction is validated and fails loudly.</p>
+        <p class="stat">300 / 300</p>
+        <p class="desc">wild transcripts processed with zero crashes and zero false money promises. <a href="https://github.com/8-BitRhyon/settleye/blob/main/docs/research/19-hf-benchmark.md" rel="noopener">Read the benchmark</a></p>
       </li>
       <li>
         <p class="stat">$44.00</p>
-        <p class="desc">at risk found live on dev-store order #1001 in 4.07 seconds. <a href="https://github.com/8-BitRhyon/settleye" rel="noopener">See the repo</a></p>
+        <p class="desc">at risk on one test-mode dev-store order (#1001), found in 4.07 seconds. Single order, not a fleet sample. <a href="https://github.com/8-BitRhyon/settleye/blob/main/README.md" rel="noopener">See the record</a></p>
       </li>
     </ul>
+    <p class="note">Ledger reconciliation is deterministic code. Extraction is model output, validated and failed loudly on bad JSON.</p>
   </div>
 </section>
 
