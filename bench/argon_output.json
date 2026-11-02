@@ -1,0 +1,44 @@
+{
+  "_meta": {
+    "model": "gemini-4-argon via OpenCode Go subagents",
+    "prompt": "identical production SYSTEM_PROMPT from backend/app/extract/pipeline.py",
+    "scaffolding": "agent system prompt and tool definitions present. This arm measures frontier model plus agent scaffolding, not a bare API baseline.",
+    "collected": "2026-11-02",
+    "cases": 12
+  },
+  "t01_phantom_992.json": [
+    {"action": "refund", "amount": 45.0, "order_id": "992", "target_system": "unknown", "asserted_state": "A full $45 refund for order #992 has been processed.", "confidence": 1.0, "evidence_span": "I have processed a full $45 refund for order #992.", "terminal_status": "binding"}
+  ],
+  "t02_phantom_1042.json": [
+    {"action": "refund", "amount": 120, "order_id": "#1042", "target_system": "unknown", "asserted_state": "Full $120 refund processed for order #1042", "confidence": 1.0, "evidence_span": "I have processed a full $120 refund for order #1042 right now.", "terminal_status": "binding"}
+  ],
+  "t03_clean.json": [],
+  "t04_settled.json": [
+    {"action": "refund", "amount": 120, "order_id": "1043", "target_system": "unknown", "asserted_state": "Full $120 refund for order #1043 is processed and settled", "confidence": 0.99, "evidence_span": "Yes. I processed the full $120 refund for order #1043 and it has settled on our side.", "terminal_status": "binding"}
+  ],
+  "t05_retracted.json": [
+    {"action": "refund", "amount": 45, "order_id": "992", "target_system": "unknown", "asserted_state": "No refund will be issued for order #992 (initial $45 refund promise retracted)", "confidence": 0.98, "evidence_span": "Understood, I take that back: no refund will be issued for order #992.", "terminal_status": "retracted"}
+  ],
+  "t06_conditional.json": [
+    {"action": "refund", "amount": 45, "order_id": "992", "target_system": "unknown", "asserted_state": "Will process a full $45 refund for order #992 once the returned item arrives", "confidence": 0.98, "evidence_span": "If you ship the item back to us, I will process a full $45 refund for order #992 once it arrives.", "terminal_status": "conditional"}
+  ],
+  "t07_info_only.json": [
+    {"action": "refund", "amount": 45.0, "order_id": "992", "target_system": "unknown", "asserted_state": "Refund policy allows up to $45 refund within 30 days of delivery if a return is opened", "confidence": 0.95, "evidence_span": "Our policy allows refunds within 30 days of delivery. If you open a return, a refund of up to $45 can be issued to the original payment method.", "terminal_status": "info_only"}
+  ],
+  "t08_superseded.json": [
+    {"action": "refund", "amount": 45, "order_id": "#992", "target_system": "unknown", "asserted_state": "A $45 refund for order #992 has been processed", "confidence": 0.95, "evidence_span": "I have processed a full $45 refund for order #992.", "terminal_status": "superseded"},
+    {"action": "refund", "amount": 30, "order_id": "#992", "target_system": "unknown", "asserted_state": "A $30 refund for order #992 has been processed, replacing the earlier $45 refund", "confidence": 0.98, "evidence_span": "You are right, correcting that: I have processed a $30 refund for order #992, replacing the earlier amount.", "terminal_status": "binding"}
+  ],
+  "t09_no_order.json": [
+    {"action": "refund", "amount": 60.0, "order_id": "EVAL09", "target_system": "unknown", "asserted_state": "A full $60 refund has been processed", "confidence": 1.0, "evidence_span": "I have processed a full $60 refund for you.", "terminal_status": "binding"}
+  ],
+  "t10_cancel.json": [
+    {"action": "cancel", "amount": null, "order_id": "#1042", "target_system": "unknown", "asserted_state": "Order #1042 is cancelled and no further charges will occur", "confidence": 1.0, "evidence_span": "Done. I have cancelled order #1042 and no further charges will occur.", "terminal_status": "binding"}
+  ],
+  "t11_multi.json": [
+    {"action": "refund", "amount": 45.0, "order_id": "#992", "target_system": "unknown", "asserted_state": "A full $45 refund for order #992 has been processed.", "confidence": 1.0, "evidence_span": "And I have processed a full $45 refund for order #992.", "terminal_status": "binding"}
+  ],
+  "t12_decimal.json": [
+    {"action": "refund", "amount": 45.5, "order_id": "#992", "target_system": "unknown", "asserted_state": "A $45.50 partial refund has been processed for order #992.", "confidence": 1.0, "evidence_span": "Confirmed. I have processed a $45.50 partial refund for order #992.", "terminal_status": "binding"}
+  ]
+}

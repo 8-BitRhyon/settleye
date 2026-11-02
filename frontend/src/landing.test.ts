@@ -178,9 +178,10 @@ describe("frontier model objection", () => {
     expect(frontier).toBeLessThan(better);
   });
 
-  it("states the fail-closed behavior, not just model choice", () => {
-    expect(page).toContain("a missing field raises instead of returning confident JSON");
-    expect(page).toContain("the money math is code");
+  it("states the fail-closed behavior with the measured comparison", () => {
+    expect(page).toContain("both matched 11 of 12 entities");
+    expect(page).toContain("Argon invented an order number");
+    expect(page).toContain("docs/research/21-model-comparison.md");
   });
 
   it("quotes a measured per-transcript cost instead of a multiple", () => {

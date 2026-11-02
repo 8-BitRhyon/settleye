@@ -7,6 +7,8 @@ Every number the landing page shows, where it comes from, and what it does not c
 | Claim | Value | Source | Scope |
 |---|---|---|---|
 | Model cost only. Same shape: Opus $0.034, Sonnet $0.017, Astra $0.085. Claude Haiku 5.5 about $0.00085. We do not claim to beat it |
+| Frontier comparison | 11 of 12 exact, same as ours | `docs/research/21-model-comparison.md`, `bench/score.py` | Single run per case on a 12-case set, Argon arm ran with agent scaffolding, one hallucination observed |
+
 | Eval verdicts | 12 of 12 | `docs/research/12-eval-results.md` | Our own 12-case set, written by us |
 | Exact entity matches | 11 of 12 | `fixtures/eval_live_output.json`, `backend/tests/test_eval_replay.py` | One documented miss: t07 returns an empty list where the manifest holds an info-only entity. Both are green |
 | Non-binding cases that drifted | 0 of 4 | `docs/research/12-eval-results.md` | Retracted, conditional, superseded, info-only |
