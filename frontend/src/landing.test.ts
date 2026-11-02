@@ -86,6 +86,11 @@ describe("landing page contract", () => {
     expect(positions).toEqual(sorted);
   });
 
+  it("offers a managed path with a stated reply time", () => {
+    expect(html).toContain("we run the audit for you");
+    expect(html).toContain("answered within one business day");
+  });
+
   it("names the model, the frontier comparison, and the anti-customer in Proof", () => {
     expect(html).toContain("modelbar");
     expect(html).toContain("meta-models/muse-spark-open-1026");
@@ -110,6 +115,7 @@ describe("landing page contract", () => {
     expect(html).toContain("?sample=1");
     expect(html).toContain("12 of 12");
     expect(html).toContain("300 / 300");
+    expect(html).toContain("zero false binding promises");
     expect(html).toContain("0 of 4");
     expect(html).toContain("$44.00");
     expect(html).toContain("4.07 seconds.");
