@@ -98,7 +98,9 @@ describe("landing page contract", () => {
     expect(html).toContain("We audit your sample");
     expect(html).toContain("Ledger reconciliation is deterministic code");
     expect(html).toContain("Fix in one click");
-    expect(html).toContain("Open the inbox with the sample loaded");
+    expect(html).toContain("Or open the inbox with the sample loaded");
+    expect(html).toContain("releases/download/demo-v1/settleye-film.mp4");
+    expect(html).toContain("<video");
     expect(html).toContain("?sample=1");
     expect(html).toContain("12 of 12");
     expect(html).toContain("300 / 300");
