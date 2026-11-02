@@ -114,7 +114,7 @@ describe("landing page contract", () => {
     expect(html).toContain("<video");
     expect(html).toContain("?sample=1");
     expect(html).toContain("12 of 12");
-    expect(html).toContain("300 / 300");
+    expect(html).toContain("300 of 300");
     expect(html).toContain("zero false binding promises");
     expect(html).toContain("0 of 4");
     expect(html).toContain("$44.00");

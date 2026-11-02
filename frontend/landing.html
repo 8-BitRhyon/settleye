@@ -77,9 +77,9 @@
   .band-inner { max-width:1120px; margin:0 auto; }
   .kicker { font-family:"JetBrains Mono",monospace; font-size:11px; letter-spacing:.16em; text-transform:uppercase; color:#9fd8c2; display:flex; align-items:center; gap:12px; }
   .kicker::before { content:""; width:28px; height:1px; background:currentColor; }
-  .heroproof { margin-top:30px; display:flex; flex-wrap:wrap; gap:9px 26px; list-style:none; font-family:"JetBrains Mono",monospace; font-size:12.5px; letter-spacing:.03em; color:rgba(13,27,30,.62); max-width:72ch; }
-  .heroproof li { display:flex; align-items:baseline; gap:7px; }
-  .heroproof b { font-weight:600; color:#0d1b1e; font-variant-numeric:tabular-nums; }
+  .heroproof { margin-top:30px; display:flex; flex-wrap:wrap; gap:9px 26px; list-style:none; font-family:"JetBrains Mono",monospace; font-size:12.5px; letter-spacing:.03em; color:rgba(13,27,30,.78); max-width:72ch; }
+  .heroproof li { display:block; }
+  .heroproof b { font-weight:700; color:#0d1b1e; font-variant-numeric:tabular-nums; margin-right:7px; }
   .coststrip { display:grid; gap:16px; grid-template-columns:repeat(3,1fr); margin-top:34px; list-style:none; }
   .coststrip li { border-top:2px solid rgba(159,216,194,.5); padding-top:16px; }
   .coststrip b { display:block; font-family:"JetBrains Mono",monospace; font-size:clamp(24px,2.4vw,30px); font-weight:600; letter-spacing:-.01em; font-variant-numeric:tabular-nums; color:#9fd8c2; }
@@ -128,7 +128,7 @@
   .modelbar p { font-size:14.5px; line-height:1.65; color:rgba(233,236,230,.8); max-width:78ch; }
   .modelbar b { color:#e9ece6; font-weight:600; }
   .modelbar .mono { font-family:"JetBrains Mono",monospace; font-size:12.5px; color:#9fd8c2; }
-  .note { margin-top:18px; font-family:"JetBrains Mono",monospace; font-size:11px; line-height:1.7; letter-spacing:.06em; text-transform:uppercase; color:rgba(233,236,230,.55); max-width:70ch; }
+  .note { margin-top:18px; font-family:"JetBrains Mono",monospace; font-size:12px; line-height:1.75; letter-spacing:.03em; color:rgba(233,236,230,.72); max-width:74ch; }
   .proofgrid a:hover, .band a.u:hover { text-decoration-color:#9fd8c2; }
   details.acc { background:rgba(233,236,230,.05); border:1px solid rgba(233,236,230,.14); border-radius:16px; padding:20px 22px; backdrop-filter:blur(12px); }
   details.acc + details.acc { margin-top:12px; }
@@ -296,7 +296,7 @@
     <p class="kicker">Demo</p>
     <h2 id="demo-heading">Watch the promise break in 3 minutes.</h2>
     <div class="placeholder">
-      <video controls preload="metadata" playsinline poster="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 9'%3E%3Crect width='16' height='9' fill='%230a1014'/%3E%3C/svg%3E" style="width:100%;border-radius:14px;display:block">
+      <video controls preload="metadata" playsinline poster="./poster.jpg" style="width:100%;border-radius:14px;display:block">
         <source src="https://github.com/8-BitRhyon/settleye/releases/download/demo-v1/settleye-film.mp4" type="video/mp4" />
         <a class="u" href="https://github.com/8-BitRhyon/settleye/releases/download/demo-v1/settleye-film.mp4" rel="noopener">Download the demo film</a>
       </video>
@@ -327,7 +327,7 @@
         <p class="desc">non-binding cases reached drift: retracted, conditional, superseded, info-only. Failures never report success.</p>
       </li>
       <li>
-        <p class="stat">300 / 300</p>
+        <p class="stat">300 of 300</p>
         <p class="desc">wild transcripts processed with zero crashes and zero false binding promises. <a href="https://github.com/8-BitRhyon/settleye/blob/main/docs/research/19-hf-benchmark.md" rel="noopener">Read the benchmark</a></p>
       </li>
       <li>
@@ -428,8 +428,8 @@
     <div class="auditcard">
       <div><code>git clone github.com/8-BitRhyon/settleye</code></div>
       <div style="display:flex;gap:14px;flex-wrap:wrap;align-items:center">
-        <a class="btnlight" href="https://github.com/8-BitRhyon/settleye" rel="noopener"><i></i>Open the repo</a>
-        <a class="u" href="https://github.com/8-BitRhyon/settleye/issues/new?labels=pilot&amp;title=Pilot%20request" rel="noopener" style="font-weight:600">Request a pilot</a>
+        <a class="btnlight" href="https://github.com/8-BitRhyon/settleye/issues/new?labels=pilot&amp;title=Pilot%20request" rel="noopener"><i></i>Request a pilot</a>
+        <a class="u" href="https://github.com/8-BitRhyon/settleye" rel="noopener" style="font-weight:600">Open the repo</a>
       </div>
       <p style="font-size:14px;color:rgba(233,236,230,.66)">Each drift lists the transcript quote, the promised amount, and the Stripe or Shopify record checked.</p>
     </div>
