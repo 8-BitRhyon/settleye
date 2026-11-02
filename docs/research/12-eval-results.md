@@ -40,3 +40,13 @@ plus per-case audit for scoring. Deterministic gating pins live in
   45 + 120 + 30 + 45 + 45.50.
 - Nothing here touches real money. The mock ledger mirrors Stripe
   test-mode shapes. Live-store proof is recorded separately.
+
+## Verification artifact (added 2026-11-01)
+
+The published number is now backed by recorded model output, not just prose.
+
+- `fixtures/eval_live_output.json` holds what a live model returned for all 12 cases. It records the model ID and per-case latency (re-recorded 2026-11-01 with `meta-models/muse-spark-open-1026`).
+- `backend/tests/test_eval_replay.py` replays that recording and asserts 11 of 12 exact entity matches plus zero unexpected binding promises. It fails if the manifest and the recording ever disagree.
+- `backend/tests/test_eval.py` is scoped as a contract test (canned replies), and says so in its docstring. It proves gating, not accuracy.
+
+Reproduce the recording: any run of `uv run pytest` validates the stored output. Re-capture with a live key when the model ID changes.

@@ -1,0 +1,182 @@
+{
+ "t01_phantom_992.json": {
+  "model": "meta-models/muse-spark-open-1026",
+  "elapsed_s": 5.24,
+  "entities": [
+   {
+    "action": "refund",
+    "amount": 45.0,
+    "order_id": "#992",
+    "target_system": "unknown",
+    "asserted_state": "full $45 refund processed for order #992",
+    "confidence": 1.0,
+    "evidence_span": "I have processed a full $45 refund for order #992. It should appear on your statement within 5 to 10 business days.",
+    "terminal_status": "binding"
+   }
+  ]
+ },
+ "t02_phantom_1042.json": {
+  "model": "meta-models/muse-spark-open-1026",
+  "elapsed_s": 3.53,
+  "entities": [
+   {
+    "action": "refund",
+    "amount": 120.0,
+    "order_id": "1042",
+    "target_system": "unknown",
+    "asserted_state": "full $120 refund for order #1042 has been processed",
+    "confidence": 1.0,
+    "evidence_span": "I have processed a full $120 refund for order #1042 right now.",
+    "terminal_status": "binding"
+   }
+  ]
+ },
+ "t03_clean.json": {
+  "model": "meta-models/muse-spark-open-1026",
+  "elapsed_s": 2.07,
+  "entities": []
+ },
+ "t04_settled.json": {
+  "model": "meta-models/muse-spark-open-1026",
+  "elapsed_s": 6.7,
+  "entities": [
+   {
+    "action": "refund",
+    "amount": 120.0,
+    "order_id": "1043",
+    "target_system": "unknown",
+    "asserted_state": "full $120 refund for order #1043 has been processed and settled on our side",
+    "confidence": 1.0,
+    "evidence_span": "Yes. I processed the full $120 refund for order #1043 and it has settled on our side.",
+    "terminal_status": "binding"
+   }
+  ]
+ },
+ "t05_retracted.json": {
+  "model": "meta-models/muse-spark-open-1026",
+  "elapsed_s": 5.7,
+  "entities": [
+   {
+    "action": "refund",
+    "amount": 45.0,
+    "order_id": "992",
+    "target_system": "unknown",
+    "asserted_state": "a full $45 refund for order #992 has been processed",
+    "confidence": 1.0,
+    "evidence_span": "I have processed a full $45 refund for order #992.",
+    "terminal_status": "retracted"
+   }
+  ]
+ },
+ "t06_conditional.json": {
+  "model": "meta-models/muse-spark-open-1026",
+  "elapsed_s": 3.97,
+  "entities": [
+   {
+    "action": "refund",
+    "amount": 45.0,
+    "order_id": "992",
+    "target_system": "unknown",
+    "asserted_state": "A full $45 refund for order #992 will be processed once the returned item arrives",
+    "confidence": 0.95,
+    "evidence_span": "If you ship the item back to us, I will process a full $45 refund for order #992 once it arrives.",
+    "terminal_status": "conditional"
+   }
+  ]
+ },
+ "t07_info_only.json": {
+  "model": "meta-models/muse-spark-open-1026",
+  "elapsed_s": 6.45,
+  "entities": []
+ },
+ "t08_superseded.json": {
+  "model": "meta-models/muse-spark-open-1026",
+  "elapsed_s": 3.37,
+  "entities": [
+   {
+    "action": "refund",
+    "amount": 45.0,
+    "order_id": "992",
+    "target_system": "unknown",
+    "asserted_state": "A full $45 refund has been processed for order #992",
+    "confidence": 0.96,
+    "evidence_span": "I have processed a full $45 refund for order #992.",
+    "terminal_status": "superseded"
+   },
+   {
+    "action": "refund",
+    "amount": 30.0,
+    "order_id": "992",
+    "target_system": "unknown",
+    "asserted_state": "A $30 refund has been processed for order #992, replacing the earlier amount",
+    "confidence": 0.98,
+    "evidence_span": "I have processed a $30 refund for order #992, replacing the earlier amount.",
+    "terminal_status": "binding"
+   }
+  ]
+ },
+ "t09_no_order.json": {
+  "model": "meta-models/muse-spark-open-1026",
+  "elapsed_s": 4.43,
+  "entities": [
+   {
+    "action": "refund",
+    "amount": 60.0,
+    "order_id": null,
+    "target_system": "unknown",
+    "asserted_state": "full $60 refund has been processed",
+    "confidence": 1.0,
+    "evidence_span": "I have processed a full $60 refund for you.",
+    "terminal_status": "binding"
+   }
+  ]
+ },
+ "t10_cancel.json": {
+  "model": "meta-models/muse-spark-open-1026",
+  "elapsed_s": 2.86,
+  "entities": [
+   {
+    "action": "cancel",
+    "amount": null,
+    "order_id": "1042",
+    "target_system": "unknown",
+    "asserted_state": "order #1042 is cancelled and no further charges will occur",
+    "confidence": 0.99,
+    "evidence_span": "Done. I have cancelled order #1042 and no further charges will occur.",
+    "terminal_status": "binding"
+   }
+  ]
+ },
+ "t11_multi.json": {
+  "model": "meta-models/muse-spark-open-1026",
+  "elapsed_s": 5.2,
+  "entities": [
+   {
+    "action": "refund",
+    "amount": 45.0,
+    "order_id": "#992",
+    "target_system": "unknown",
+    "asserted_state": "a full $45 refund for order #992 has been processed",
+    "confidence": 0.99,
+    "evidence_span": "I have processed a full $45 refund for order #992.",
+    "terminal_status": "binding"
+   }
+  ]
+ },
+ "t12_decimal.json": {
+  "model": "meta-models/muse-spark-open-1026",
+  "elapsed_s": 4.1,
+  "entities": [
+   {
+    "action": "refund",
+    "amount": 45.5,
+    "order_id": "992",
+    "target_system": "unknown",
+    "asserted_state": "A $45.50 partial refund has been processed for order #992",
+    "confidence": 0.99,
+    "evidence_span": "Confirmed. I have processed a $45.50 partial refund for order #992.",
+    "terminal_status": "binding"
+   }
+  ]
+ }
+}

@@ -1,15 +1,17 @@
-"""Deterministic eval: commitment gating and reconcile wiring per case.
+"""Deterministic contract test: commitment gating and reconcile wiring per case.
 
-Each eval transcript carries a marker (EVAL01..EVAL12). The routing mock
-replies with the manifest's expected entities, so these tests prove the
-downstream contract: given these entities, the verdict and totals must be
-exactly X. Retracted, conditional, superseded, and info_only commitments
-must never reach the ledger join; only binding refunds with an order and
-an amount reconcile.
+SCOPE, stated plainly: the routing mock replies with the manifest's expected
+entities, so this file proves the downstream contract (given these entities,
+the verdict and totals must be exactly X). It does not prove model accuracy.
 
-Live-model accuracy (did the model actually extract these entities?) is
-measured separately by sweeping fixtures/eval/ with the daemon against the
-mock ledger; numbers land in docs/research/12-eval-results.md.
+Model accuracy is proven by two other artifacts:
+- `tests/test_eval_replay.py` replays recorded live model output and asserts
+  11 of 12 exact entity matches against the same manifest.
+- `fixtures/eval_live_output.json` holds that recorded output with the model
+  ID and per-case latency.
+
+Retracted, conditional, superseded, and info_only commitments must never reach
+the ledger join. Only binding refunds with an order and an amount reconcile.
 """
 
 import asyncio
