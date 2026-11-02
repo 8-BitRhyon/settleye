@@ -36,7 +36,8 @@ describe("landing page contract", () => {
   it("links every CTA to a real target", () => {
     expect(html).not.toContain('href="#"');
     expect(html).toContain("github.com/8-BitRhyon/settleye");
-    expect(html).toContain("pilot@settleye.com");
+    expect(html).toContain("issues/new");
+    expect(html).not.toContain("mailto:");
   });
 
   it("contains zero Umbra or climate words", () => {
