@@ -52,6 +52,18 @@ cd backend
 uv run python -m app.daemon --dir ../fixtures/eval --ledger mock
 ```
 
+Shopify dev-store check (read-only, needs a dev-store Admin API token):
+
+```bash
+uv run python -m app.ledger.live_check 1001
+uv run python -m app.daemon --dir ../fixtures/live --ledger shopify
+```
+
+The first command reads settled refunds for order #1001. The second replays the
+$50 promise fixture against the dev store and should report $44 at risk. Neither
+writes money. If the check returns 401, regenerate the custom-app token and
+update `SHOPIFY_ADMIN_TOKEN`.
+
 Copy `.env.example` to `.env` and fill in test-mode credentials only. Never commit `.env`.
 
 ## API

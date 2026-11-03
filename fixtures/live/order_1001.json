@@ -1,0 +1,18 @@
+{
+  "case": "LIVE1001",
+  "description": "Live dev-store replay for order #1001. $50 promised, $6 settled, $44 at risk.",
+  "turns": [
+    {
+      "role": "customer",
+      "text": "The jacket I ordered (order #1001) arrived with a torn seam. I want a full refund."
+    },
+    {
+      "role": "agent",
+      "text": "I am sorry about the torn seam. I have processed a full $50 refund for order #1001. It should appear on your statement within 5 to 10 business days."
+    },
+    {
+      "role": "customer",
+      "text": "Thanks for sorting that out."
+    }
+  ]
+}
