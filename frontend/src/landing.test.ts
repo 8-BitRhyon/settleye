@@ -109,7 +109,7 @@ describe("landing page contract", () => {
     expect(html).toContain("Join it to settled state");
     expect(html).toContain("Ledger reconciliation is deterministic code");
     expect(html).toContain("Refund the exact shortfall, once");
-    expect(html).toContain("Or open the inbox with the sample loaded");
+    expect(html).toContain("Open the live drift inbox, no install");
     expect(html).toContain("releases/download/demo-v1/settleye-film.mp4");
     expect(html).toContain("<video");
     expect(html).toContain("?sample=1");
@@ -136,6 +136,15 @@ describe("conversion path", () => {
 
   it("names who the product is for above the fold", () => {
     expect(page).toMatch(/Built for merchants running an AI agent on 5,000 or more tickets/);
+  });
+
+  it("makes the sample inbox the primary call to action", () => {
+    const sampleLinks = page.match(/href="\.\/index\.html\?sample=1"/g) ?? [];
+    expect(sampleLinks.length).toBeGreaterThanOrEqual(2);
+    const sample = page.indexOf("Open the live drift inbox, no install");
+    const video = page.indexOf("<video");
+    expect(sample).toBeGreaterThan(-1);
+    expect(sample).toBeLessThan(video);
   });
 
   it("shows live proof before asking for a demo", () => {
@@ -196,8 +205,12 @@ describe("frontier model objection", () => {
     expect(page).toContain("docs/research/21-model-comparison.md");
   });
 
-  it("quotes a measured per-transcript cost instead of a multiple", () => {
-    expect(page).toContain("$0.0096");
+  it("leads with failing closed instead of a cost multiple", () => {
+    expect(page).toContain("Fails closed:");
+    expect(page).toContain("0 of 4");
+    expect(page).toContain("invent an order number");
+    expect(page).toContain("Cheaper models exist. They drop fields.");
+    expect(page).not.toContain("$0.0096");
     expect(page).not.toMatch(/\b\d{2,}x cheaper\b/);
     expect(page).not.toContain("10x");
     expect(page).not.toContain("100x");

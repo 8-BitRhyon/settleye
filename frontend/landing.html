@@ -92,7 +92,7 @@
   .art-row b { color:rgba(233,236,230,.92); font-weight:400; }
   .art-row b.bad { color:#f0837f; }
   .art-foot { margin-top:2px; font-family:"JetBrains Mono",monospace; font-size:10px; letter-spacing:.04em; color:rgba(233,236,230,.4); }
-  @media (max-width:1180px){ .hero-art { display:none; } }
+  @media (max-width:1180px){ .hero-art { position:static; width:auto; max-width:430px; margin:24px auto 0; } }
   .heroproof { margin-top:28px; display:grid; grid-template-columns:repeat(3,1fr); gap:0; list-style:none; border-top:1px solid rgba(13,27,30,.22); padding-top:15px; max-width:470px; }
   .heroproof li { padding:0 12px; }
   .heroproof li:first-child { padding-left:0; }
@@ -202,7 +202,7 @@
   <nav class="rv">
     <a class="logo" href="#top"><span></span>Settleye</a>
     <div class="links"><a href="#audit">Audit</a><a href="#demo">Demo</a><a href="https://github.com/8-BitRhyon/settleye" rel="noopener">Repo</a></div>
-    <a class="cta" href="#audit"><span class="cta-long">Run a free 14-day shadow audit</span><span class="cta-short">Free audit</span></a>
+    <a class="cta" href="./index.html?sample=1"><span class="cta-long">Open the drift inbox</span><span class="cta-short">Open inbox</span></a>
   </nav>
 
   <div class="content" id="top">
@@ -210,8 +210,8 @@
     <h1 class="rv" style="--d:300">Your AI agent promised a refund. <em>Did the money move?</em></h1>
     <p class="sub rv" style="--d:500">Settleye reads support transcripts, pulls every binding promise, and reconciles each one against Stripe and Shopify. Built for merchants running an AI agent on 5,000 or more tickets a month. Mismatches land in one inbox with a one-click fix.</p>
     <div class="ctas rv" style="--d:650">
-      <a class="btn" href="#audit"><i></i>Run a free 14-day shadow audit</a>
-      <a class="link" href="#demo">Watch the 3-minute demo</a>
+      <a class="btn" href="./index.html?sample=1"><i></i>Open the live drift inbox</a>
+      <a class="link" href="#demo">Watch the 3-minute film</a>
     </div>
     <code class="hero-cmd rv" style="--d:760">git clone github.com/8-BitRhyon/settleye</code>
     <ul class="heroproof rv" style="--d:820">
@@ -362,15 +362,15 @@ ledger unchanged</pre>
 <section class="band" id="demo" aria-labelledby="demo-heading">
   <div class="band-inner">
     <p class="kicker">Demo</p>
-    <h2 id="demo-heading">Watch the promise break in 3 minutes.</h2>
+    <h2 id="demo-heading">Watch the promise break.</h2>
+    <p style="margin:0 0 18px"><a class="btn" href="./index.html?sample=1" rel="noopener"><i></i>Open the live drift inbox, no install</a></p>
     <div class="placeholder">
       <video controls preload="metadata" playsinline poster="./poster.jpg" style="width:100%;border-radius:14px;display:block">
         <source src="https://github.com/8-BitRhyon/settleye/releases/download/demo-v1/settleye-film.mp4" type="video/mp4" />
         <a class="u" href="https://github.com/8-BitRhyon/settleye/releases/download/demo-v1/settleye-film.mp4" rel="noopener">Download the demo film</a>
       </video>
     </div>
-    <p class="note" style="margin-top:12px">Silent cut. Voiceover pending. Every frame is code-rendered scenes plus real captured beats from the running app.</p>
-    <p style="margin-top:14px"><a class="u" href="./index.html?sample=1" rel="noopener">Or open the inbox with the sample loaded</a></p>
+    <p class="note" style="margin-top:12px">The film is the 3-minute cut. The button above opens the same drift with no install; every frame is code-rendered scenes plus real captured beats from the running app.</p>
     <ul class="chapters">
       <li><time>0:00</time>the $45 phantom refund.</li>
       <li><time>0:45</time>live extraction.</li>
@@ -407,7 +407,7 @@ ledger unchanged</pre>
     <div class="modelbar">
       <p><b>Model:</b> <span class="mono">meta-models/muse-spark-open-1026</span> (Meta open weights, served by Baseten).</p>
       <p><b>Measured against a frontier model:</b> same 12 cases, same prompt. Both matched 11 of 12 entities. Gemini 4 Argon invented an order number that appears nowhere in the transcript. Ours returned nothing. <a class="u" href="https://github.com/8-BitRhyon/settleye/blob/main/docs/research/21-model-comparison.md" rel="noopener">Read the comparison</a></p>
-      <p><b>Cost:</b> about $0.0096 per audited transcript, roughly a third of the Opus tier at the same input shape. Cheaper models exist. They drop fields.</p>
+      <p><b>Fails closed:</b> 0 of 4 non-binding cases reached drift, and the model returned nothing rather than invent an order number. Cheaper models exist. They drop fields.</p>
     </div>
 
   </div>
