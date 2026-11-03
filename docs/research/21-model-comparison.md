@@ -78,3 +78,27 @@ Laya is a promising base to fine-tune, not a drop-in gate. Its own card says as 
 3. It gives the write-up an honest negative result next to the positive ones. Two of three models were measured against our task and neither is a free lunch.
 
 Weights: https://huggingface.co/convaiinnovations/laya. Reproduce with the two scripts recorded in this folder.
+
+## Free open decision models, zero-shot (measured 2026-11-03)
+
+The question this answers: can a free local checkpoint replace a paid calibrated model for the gate. Three were tested on the same 12 cases with the same two questions.
+
+| Model | License | Presence agreement | Modality agreement | Wild discard | Notes |
+|---|---|---|---|---|---|
+| Laya (ModernBERT-large, 421M) | Apache 2.0 | 11 of 12 | 8 of 11 | 2 percent of 300 | Runtime warns shipped temperatures are invalid |
+| d1-omni-600M, noul phrasing | LFM1.0 | 8 of 12 | 7 of 11 | not run | Near-zero probability on a transcript that states a refund twice |
+| d1-omni-600M, described choice | LFM1.0 | 9 of 12 | 6 of 11 | not run | Presence improves, modality degrades |
+
+Neither configuration reaches the hosted model's 11 of 12 and 8 of 11, and neither would save meaningful money at the gate. Laya keeps 98 percent of wild transcripts, so the cost saving it promises does not arrive.
+
+### The honest answer on free
+
+There is no free zero-shot option that works on this task. Every open checkpoint tested is near chance on our domain, which both model cards predicted. Free in practice means downloading weights and fine-tuning on labeled promise data, which is the path already costed in the impact research.
+
+That leaves three honest positions, and we should pick one rather than blur them:
+
+1. Ship the gate against a hosted calibrated model, and say it needs an account.
+2. Ship no gate and present the measurements as the finding.
+3. Fine-tune an open checkpoint, which does not fit in the remaining time.
+
+Recorded scripts: `bench/laya/` for Laya. The d1 runs are reproducible from the model card's own example with the two question phrasings above.
