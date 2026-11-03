@@ -181,3 +181,242 @@ def test_routes_reject_over_refund(monkeypatch) -> None:
     )
     assert response.status_code == 422
     assert "mismatch" in response.json()["detail"]
+
+
+class RecordingLedger(MockLedgerAdapter):
+    """Mock ledger that remembers every refund write."""
+
+    def __init__(self, data: dict) -> None:
+        super().__init__(data)
+        self.refunds: list[tuple[str, float]] = []
+
+    def record_refund(self, order_id: str, amount_usd: float) -> dict:
+        self.refunds.append((order_id, amount_usd))
+        return super().record_refund(order_id, amount_usd)
+
+
+def recording_ledger() -> RecordingLedger:
+    return RecordingLedger(json.loads((FIXTURES / "mock_ledger.json").read_text()))
+
+
+def partial_result(promised: float, shortfall: float) -> ReconciliationResult:
+    """A refund promise with a live shortfall that can move after a partial."""
+    return ReconciliationResult(
+        promise=PromiseEntity(
+            action="refund",
+            amount=promised,
+            order_id="992",
+            target_system="stripe",
+            asserted_state="partial refund processed",
+            confidence=0.9,
+            evidence_span="I processed part of the refund.",
+        ),
+        verdict="drift",
+        ledger_summary=(
+            f"Order 992: ${promised - shortfall:.2f} settled of "
+            f"${promised:.2f} promised."
+        ),
+        amount_at_risk_usd=shortfall,
+    )
+
+
+def receipt_lines(path: Path) -> list[str]:
+    return [line for line in path.read_text().splitlines() if line.strip()]
+
+
+def test_receipts_survive_process_restart(tmp_path) -> None:
+    path = tmp_path / "receipts.jsonl"
+    first_ledger = recording_ledger()
+    first = RemediationService(path).remediate(
+        drift_result(), first_ledger, ValueLedger()
+    )
+    assert first.status == "executed"
+    assert first_ledger.refunds == [("992", 45.00)]
+
+    # A new process: fresh service and fresh ledger, same receipt store.
+    second_ledger = recording_ledger()
+    second = RemediationService(path).remediate(
+        drift_result(), second_ledger, ValueLedger()
+    )
+    assert second.status == "already_executed"
+    assert second.idempotency_key == first.idempotency_key
+    assert second_ledger.refunds == []
+    assert len(receipt_lines(path)) == 1
+
+
+def test_partial_refund_never_authorizes_a_second_refund(tmp_path) -> None:
+    path = tmp_path / "receipts.jsonl"
+    ledger = recording_ledger()
+    value = ValueLedger()
+    service = RemediationService(path)
+
+    first = service.remediate(partial_result(50.00, 44.00), ledger, value)
+    second = service.remediate(partial_result(50.00, 30.00), ledger, value)
+
+    assert first.status == "executed"
+    assert first.idempotency_key == "refund:992:stripe:50.00"
+    assert second.status == "already_executed"
+    assert second.idempotency_key == first.idempotency_key
+    assert second.amount_usd == 44.00
+    assert ledger.refunds == [("992", 44.00)]
+    assert len(receipt_lines(path)) == 1
+    assert len(value.recoveries) == 1
+
+
+def test_two_different_promises_append_two_receipts(tmp_path) -> None:
+    path = tmp_path / "receipts.jsonl"
+    ledger = recording_ledger()
+    value = ValueLedger()
+    service = RemediationService(path)
+
+    first = service.remediate(drift_result(), ledger, value)
+    second = service.remediate(partial_result(50.00, 44.00), ledger, value)
+
+    assert first.idempotency_key != second.idempotency_key
+    assert ledger.refunds == [("992", 45.00), ("992", 44.00)]
+    assert len(receipt_lines(path)) == 2
+
+    reloaded = RemediationService(path)
+    assert reloaded.find(first.idempotency_key) is not None
+    assert reloaded.find(second.idempotency_key) is not None
+
+
+def test_non_drift_refuses_and_writes_nothing(tmp_path) -> None:
+    path = tmp_path / "receipts.jsonl"
+    ledger = recording_ledger()
+    verified = drift_result().model_copy(
+        update={"verdict": "verified", "amount_at_risk_usd": 0.0}
+    )
+
+    with pytest.raises(RemediationError):
+        RemediationService(path).remediate(verified, ledger, ValueLedger())
+
+    assert ledger.refunds == []
+    assert not path.exists()
+
+
+def test_corrupt_receipt_file_fails_closed(tmp_path) -> None:
+    path = tmp_path / "receipts.jsonl"
+    path.write_text("this is not json\n")
+
+    with pytest.raises(RemediationError, match="corrupt"):
+        RemediationService(path)
+
+
+def test_wrong_shape_receipt_file_fails_closed(tmp_path) -> None:
+    path = tmp_path / "receipts.jsonl"
+    path.write_text('{"idempotency_key": "refund:992:stripe:45.00"}\n')
+
+    with pytest.raises(RemediationError, match="corrupt"):
+        RemediationService(path)
+
+
+def test_api_receipts_survive_restart(isolated_receipts) -> None:
+    path = isolated_receipts
+    ledger = mock_ledger()
+    main_module.app.state.ledger = ledger
+    main_module.app.state.remediation = RemediationService(path)
+    main_module.app.state.value = ValueLedger()
+    client = TestClient(main_module.app)
+
+    first = client.post(
+        "/remediate",
+        json={
+            "promise": drift_result().promise.model_dump(),
+            "amount_usd": 45.00,
+        },
+    )
+    assert first.status_code == 200
+    assert first.json()["status"] == "executed"
+
+    # Restart the service against the same store; the ledger stays settled.
+    main_module.app.state.remediation = RemediationService(path)
+    second = client.post(
+        "/remediate",
+        json={
+            "promise": drift_result().promise.model_dump(),
+            "amount_usd": 45.00,
+        },
+    )
+    assert second.status_code == 200
+    assert second.json()["status"] == "already_executed"
+    assert ledger.refunded_usd("992") == 45.00
+    assert len(receipt_lines(path)) == 1
+
+
+def test_api_reuses_service_key_after_partial_refund(isolated_receipts) -> None:
+    path = isolated_receipts
+    ledger = mock_ledger()
+
+    # The service already executed the first pass on a $50 promise,
+    # leaving $44 settled and a live shortfall of $6.
+    RemediationService(path).remediate(
+        partial_result(50.00, 44.00), ledger, ValueLedger()
+    )
+    assert ledger.refunded_usd("992") == 44.00
+    main_module.app.state.ledger = ledger
+    main_module.app.state.remediation = RemediationService(path)
+    main_module.app.state.value = ValueLedger()
+
+    # The live shortfall is now $6, but the key must still be the promise.
+    response = TestClient(main_module.app).post(
+        "/remediate",
+        json={
+            "promise": partial_result(50.00, 30.00).promise.model_dump(),
+            "amount_usd": 6.00,
+        },
+    )
+    assert response.status_code == 200
+    assert response.json()["status"] == "already_executed"
+    assert ledger.refunded_usd("992") == 44.00
+    assert len(receipt_lines(path)) == 1
+
+
+def test_tampered_amount_rejected_without_receipt(
+    monkeypatch, isolated_receipts
+) -> None:
+    monkeypatch.setattr(
+        main_module, "build_client", lambda: mock_client(PHANTOM_JSON)
+    )
+    client = fresh_app_state()
+    response = client.post(
+        "/remediate",
+        json={
+            "promise": drift_result().promise.model_dump(),
+            "amount_usd": 999.00,
+        },
+    )
+    assert response.status_code == 422
+    assert "mismatch" in response.json()["detail"]
+    assert not isolated_receipts.exists()
+
+
+def test_tampered_amount_rejected_even_after_execution(isolated_receipts) -> None:
+    path = isolated_receipts
+    ledger = mock_ledger()
+    main_module.app.state.ledger = ledger
+    main_module.app.state.remediation = RemediationService(path)
+    main_module.app.state.value = ValueLedger()
+    client = TestClient(main_module.app)
+
+    first = client.post(
+        "/remediate",
+        json={
+            "promise": drift_result().promise.model_dump(),
+            "amount_usd": 45.00,
+        },
+    )
+    assert first.status_code == 200
+
+    over = client.post(
+        "/remediate",
+        json={
+            "promise": drift_result().promise.model_dump(),
+            "amount_usd": 999.00,
+        },
+    )
+    assert over.status_code == 422
+    assert "mismatch" in over.json()["detail"]
+    assert ledger.refunded_usd("992") == 45.00
+    assert len(receipt_lines(path)) == 1
+
