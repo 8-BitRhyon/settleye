@@ -17,7 +17,7 @@ settleye/
     app/extract/      Meta-model extraction client (validate plus retry)
     app/explain.py    Per-drift plain-English summaries, on demand only
     app/reconcile/    Promise-vs-ledger diff engine with commitment gating
-    app/remediate/    Idempotent one-click settlement service
+    app/remediate/    Durable receipt store plus idempotent settlement
     app/daemon.py     Batch sweep: audit-only default, repeat memory, Modal-ready
     app/value.py      Recovery ledger behind the inbox savings header
     tests/            pytest suite (runs green from clean clone)
@@ -31,7 +31,7 @@ settleye/
 
 - The extraction model output is untrusted text until Pydantic validation passes.
 - Baseten does NOT enforce JSON schema for Muse Spark Open: always validate + bounded retry (max 2), never unbounded.
-- Remediation writes go through one service with idempotency keys. Stripe and Shopify are separate refund rails that must never double-refund.
+- Remediation writes go through one service with durable, promise-keyed idempotency keys. Stripe and Shopify are separate refund rails that must never double-refund. Receipts are append-only JSONL; a corrupt store fails closed.
 - Test-mode keys only (`sk_test_`, `shp_...` on dev stores). Live keys never enter the repo or the demo.
 - Data minimization: never ingest, log, or store raw PAN. Pull only charge/refund IDs, amounts, and timestamps over read-only restricted keys, or inherit full PCI DSS scope. Same minimization for transcript PII.
 - `main` is always green: CI runs backend tests, frontend typecheck plus build, and secret scan.
@@ -53,6 +53,7 @@ settleye/
 | Third-eye brand mark in final CTA | Presentation beats perf on first view. Lazy Three.js with static fallback. Floor 85, a11y 100 | 2026-10-27 |
 | Jev hybrid evaluated, not adopted pre-judging | No live trial exists, vendor benchmarks unconfirmed, freeze holds. Revisit with metered eval after | 2026-10-28 |
 | Free TinyBERT gate measured, kept off the API path | 55 MB, 25 s on M4. 10 of 10 commitments on the 12-case eval. Real ABCD check: 0.9% discard at 0.20, zero false clears in 4 skipped refund threads. Safe but not a cost saver; synthetic data is the bottleneck. Bench-only: 421M Laya path swapped on a 16 GB laptop. See `docs/research/22-free-gate-finetune.md` | 2026-11-03 |
+| Durable promise-keyed remediation receipts | Append-only JSONL keyed by action, order, rail, and promised amount. Survives restarts; a partial refund cannot mint a second key; corrupt state fails closed | 2026-11-03 |
 | Challenge track: Push the Frontier | Execution-verification layer for the agent economy is a new capability, not a personal workflow fix | 2026-10-27 |
 | Validate-then-retry extraction, not constrained decoding | Baseten accepts but does not enforce `json_schema` for this model | 2026-10-26 |
 | Mock ledger adapter behind interface from day one | Shopify auth and idempotency friction is the top integration risk | 2026-10-26 |

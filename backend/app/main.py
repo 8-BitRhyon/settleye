@@ -12,7 +12,11 @@ from app.audit import audit_transcript
 from app.extract.client import MODEL_ID, MetaModelClient, model_id
 from app.ledger.mock import MockLedgerAdapter
 from app.models import AuditReport, PromiseEntity, RemediationReceipt
-from app.remediate.service import RemediationError, RemediationService
+from app.remediate.service import (
+    RemediationError,
+    RemediationService,
+    promise_key,
+)
 from app.value import ValueLedger, summarize
 
 app = FastAPI(title="Settleye", version="0.1.0")
@@ -106,12 +110,24 @@ async def audit(request: AuditRequest) -> AuditReport:
 @app.post("/remediate", response_model=RemediationReceipt)
 def remediate(request: RemediateRequest) -> RemediationReceipt:
     from app.reconcile.engine import reconcile
-    from app.remediate.service import idempotency_key
 
     service = get_remediation()
-    key = idempotency_key(
-        request.promise.action, request.promise.order_id, request.amount_usd
-    )
+    # Same key function as the service: promise identity, never the live
+    # shortfall, so a partial refund cannot mint a second key.
+    key = promise_key(request.promise, request.amount_usd)
+    # Never authorize more than the promise, even on a replay: a tampered
+    # amount must not look settled just because the original receipt exists.
+    if (
+        request.promise.amount is not None
+        and request.amount_usd > request.promise.amount + 0.005
+    ):
+        raise HTTPException(
+            status_code=422,
+            detail=(
+                f"Amount mismatch: promise is ${request.promise.amount:.2f}, "
+                f"request asked ${request.amount_usd:.2f}."
+            ),
+        )
     # Key first: a retried request returns the original receipt without
     # touching the ledger, even though the drift is now settled.
     if (existing := service.find(key)) is not None:

@@ -15,14 +15,14 @@ Built for the Meta Global AI Developer Hackathon (Indie Developer Track, Push th
 3. **Reconcile.** Each binding refund diffs against settled ledger state: verified, drift, unverifiable, or not binding.
 4. **Explain.** Each drift gets a plain-English summary on demand.
 5. **Remember.** A batch daemon flags orders promised across several tickets.
-6. **Remediate.** One click settles drift through an idempotent service. Retries return the original receipt, never a second refund.
+6. **Remediate.** One click settles drift through an idempotent service. Receipts persist to an append-only JSONL store keyed by the promise, so a restart cannot double-refund and a retry returns the original receipt.
 
 ## Measured proof
 
 - Eval set (`fixtures/eval/`, 12 cases): 12 of 12 verdicts correct, 11 of 12 entities exact. Zero non-binding drifts in four chances. See `docs/research/12-eval-results.md`.
 - Live Shopify run: dev-store order #1001 showed $6.00 settled of $50.00 promised. The daemon reported $44.00 at risk in 4.07 seconds.
 - Free gate bench: a 55 MB TinyBERT fine-tune kept 10 of 10 commitments on the 12-case eval. On 10,042 real ABCD support dialogues it discarded only 0.9% at threshold 0.20 and 1.7% at 0.50, with zero false clears in the four skipped refund threads. Safe, but not a cost saver. Bench-only, not wired into the API. See `docs/research/22-free-gate-finetune.md`.
-- Suite: 97 backend checks plus 34 frontend checks, green on every push.
+- Suite: 116 backend checks plus 37 frontend checks, green on every push.
 
 ## Run it yourself (under five minutes)
 
