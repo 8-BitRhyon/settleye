@@ -147,6 +147,14 @@ describe("conversion path", () => {
     expect(sample).toBeLessThan(video);
   });
 
+  it("offers the 15-second proof before the full film", () => {
+    const proof = page.indexOf("Watch the 15-second proof");
+    const video = page.indexOf("<video");
+    expect(proof).toBeGreaterThan(-1);
+    expect(proof).toBeLessThan(video);
+    expect(page).toContain("settleye-proof.mp4");
+  });
+
   it("shows live proof before asking for a demo", () => {
     const heroProof = page.indexOf("heroproof");
     const demo = page.indexOf('id="demo"');
