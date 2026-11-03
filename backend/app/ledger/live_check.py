@@ -22,15 +22,10 @@ def token_hint(token: str) -> str | None:
     """Name the common wrong Shopify credential before sending it anywhere."""
     if token.startswith("shpss_"):
         return (
-            "This is the app's API secret key (shpss_), not an Admin API "
-            "access token. Copy the Admin API access token (shpat_) from the "
-            "app's API credentials."
-        )
-    if token.startswith("shpua_"):
-        return (
-            "This looks like a user or OAuth token (shpua_), not a custom-app "
-            "Admin API access token. Copy the shpat_ token from the app's API "
-            "credentials."
+            "This is the app's API secret key (shpss_), not an access token. "
+            "Exchange it with grant_type=client_credentials at "
+            "/admin/oauth/access_token (see app.ledger.token) and use the "
+            "returned shpua_ token."
         )
     return None
 

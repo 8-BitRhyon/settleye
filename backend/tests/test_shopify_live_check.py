@@ -34,23 +34,22 @@ def no_dotenv(monkeypatch):
     monkeypatch.setattr(live_check, "load_dotenv_file", lambda *args, **kwargs: None)
 
 
-@pytest.mark.parametrize(
-    ("token", "needle"),
-    [
-        ("shpss_secret", "API secret key"),
-        ("shpua_user", "user or OAuth"),
-    ],
-)
-def test_common_wrong_credentials_are_named_before_the_call(
-    monkeypatch, capsys, token, needle
-) -> None:
+def test_shared_secret_is_refused_before_the_call(monkeypatch, capsys) -> None:
     monkeypatch.setenv("SHOPIFY_STORE_DOMAIN", "example.myshopify.com")
-    monkeypatch.setenv("SHOPIFY_ADMIN_TOKEN", token)
+    monkeypatch.setenv("SHOPIFY_ADMIN_TOKEN", "shpss_secret")
     monkeypatch.setattr(live_check, "ShopifyAdapter", pytest.fail)
     assert live_check.main(["1001"]) == 3
     err = capsys.readouterr().err
-    assert needle in err
+    assert "API secret key" in err
     assert "No call was made" in err
+
+
+def test_user_access_token_is_accepted(monkeypatch, capsys) -> None:
+    monkeypatch.setenv("SHOPIFY_STORE_DOMAIN", "example.myshopify.com")
+    monkeypatch.setenv("SHOPIFY_ADMIN_TOKEN", "shpua_token")
+    monkeypatch.setattr(live_check, "ShopifyAdapter", FakeAdapter)
+    assert live_check.main(["1001"]) == 0
+    assert "$6.00 settled" in capsys.readouterr().out
 
 
 def test_missing_config_is_a_clean_refusal(monkeypatch, capsys) -> None:
