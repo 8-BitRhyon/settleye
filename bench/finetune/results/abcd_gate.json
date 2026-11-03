@@ -1,0 +1,2024 @@
+{
+  "corpus": "ABCD v1.1",
+  "source": "https://github.com/asappresearch/abcd",
+  "threshold": 0.2,
+  "max_len": 512,
+  "n_rows": 10042,
+  "truncated": 71,
+  "summary": {
+    "all": {
+      "n": 10042,
+      "skipped": 94,
+      "discard_rate": 0.00936068512248556,
+      "mean_p": 0.9630614740823097
+    },
+    "refund_subflows": {
+      "n": 1070,
+      "skipped": 4,
+      "discard_rate": 0.003738317757009346,
+      "mean_p": 0.9760346406787878
+    },
+    "action_subflows": {
+      "n": 891,
+      "skipped": 4,
+      "discard_rate": 0.004489337822671156,
+      "mean_p": 0.9751070535451165
+    },
+    "by_subflow": {
+      "bad_price_competitor": {
+        "n": 149,
+        "skipped": 0,
+        "discard_rate": 0.0,
+        "mean_p": 0.9825500021844902
+      },
+      "bad_price_yesterday": {
+        "n": 139,
+        "skipped": 1,
+        "discard_rate": 0.007194244604316547,
+        "mean_p": 0.9770120399461376
+      },
+      "boots_how_1": {
+        "n": 27,
+        "skipped": 0,
+        "discard_rate": 0.0,
+        "mean_p": 0.9816679270179184
+      },
+      "boots_how_2": {
+        "n": 43,
+        "skipped": 1,
+        "discard_rate": 0.023255813953488372,
+        "mean_p": 0.9394130630115437
+      },
+      "boots_how_3": {
+        "n": 32,
+        "skipped": 0,
+        "discard_rate": 0.0,
+        "mean_p": 0.9809554349631071
+      },
+      "boots_how_4": {
+        "n": 30,
+        "skipped": 0,
+        "discard_rate": 0.0,
+        "mean_p": 0.933660181860129
+      },
+      "boots_other_1": {
+        "n": 42,
+        "skipped": 2,
+        "discard_rate": 0.047619047619047616,
+        "mean_p": 0.9037514273964223
+      },
+      "boots_other_2": {
+        "n": 36,
+        "skipped": 2,
+        "discard_rate": 0.05555555555555555,
+        "mean_p": 0.9022192997444007
+      },
+      "boots_other_3": {
+        "n": 34,
+        "skipped": 0,
+        "discard_rate": 0.0,
+        "mean_p": 0.9385546200415668
+      },
+      "boots_other_4": {
+        "n": 37,
+        "skipped": 0,
+        "discard_rate": 0.0,
+        "mean_p": 0.9488114191068185
+      },
+      "cost": {
+        "n": 243,
+        "skipped": 0,
+        "discard_rate": 0.0,
+        "mean_p": 0.9812684196503565
+      },
+      "credit_card": {
+        "n": 266,
+        "skipped": 4,
+        "discard_rate": 0.015037593984962405,
+        "mean_p": 0.9501726926633514
+      },
+      "jacket_how_1": {
+        "n": 29,
+        "skipped": 0,
+        "discard_rate": 0.0,
+        "mean_p": 0.9822863956977581
+      },
+      "jacket_how_2": {
+        "n": 39,
+        "skipped": 1,
+        "discard_rate": 0.02564102564102564,
+        "mean_p": 0.9130782102927183
+      },
+      "jacket_how_3": {
+        "n": 28,
+        "skipped": 0,
+        "discard_rate": 0.0,
+        "mean_p": 0.8899121454783848
+      },
+      "jacket_how_4": {
+        "n": 36,
+        "skipped": 2,
+        "discard_rate": 0.05555555555555555,
+        "mean_p": 0.886907077083985
+      },
+      "jacket_other_1": {
+        "n": 29,
+        "skipped": 0,
+        "discard_rate": 0.0,
+        "mean_p": 0.8833462585662973
+      },
+      "jacket_other_2": {
+        "n": 30,
+        "skipped": 0,
+        "discard_rate": 0.0,
+        "mean_p": 0.9741949379444123
+      },
+      "jacket_other_3": {
+        "n": 27,
+        "skipped": 2,
+        "discard_rate": 0.07407407407407407,
+        "mean_p": 0.8850023818236811
+      },
+      "jacket_other_4": {
+        "n": 45,
+        "skipped": 1,
+        "discard_rate": 0.022222222222222223,
+        "mean_p": 0.9071791473362181
+      },
+      "jeans_how_1": {
+        "n": 31,
+        "skipped": 2,
+        "discard_rate": 0.06451612903225806,
+        "mean_p": 0.8952697872394516
+      },
+      "jeans_how_2": {
+        "n": 34,
+        "skipped": 4,
+        "discard_rate": 0.11764705882352941,
+        "mean_p": 0.8528693793341517
+      },
+      "jeans_how_3": {
+        "n": 28,
+        "skipped": 1,
+        "discard_rate": 0.03571428571428571,
+        "mean_p": 0.9182979831738132
+      },
+      "jeans_how_4": {
+        "n": 22,
+        "skipped": 0,
+        "discard_rate": 0.0,
+        "mean_p": 0.9446657679297707
+      },
+      "jeans_other_1": {
+        "n": 33,
+        "skipped": 1,
+        "discard_rate": 0.030303030303030304,
+        "mean_p": 0.9279191927476362
+      },
+      "jeans_other_2": {
+        "n": 32,
+        "skipped": 0,
+        "discard_rate": 0.0,
+        "mean_p": 0.908034629188478
+      },
+      "jeans_other_3": {
+        "n": 40,
+        "skipped": 1,
+        "discard_rate": 0.025,
+        "mean_p": 0.9403170481324196
+      },
+      "jeans_other_4": {
+        "n": 32,
+        "skipped": 1,
+        "discard_rate": 0.03125,
+        "mean_p": 0.8999007306993008
+      },
+      "manage": {
+        "n": 248,
+        "skipped": 0,
+        "discard_rate": 0.0,
+        "mean_p": 0.9783081333002737
+      },
+      "manage_cancel": {
+        "n": 125,
+        "skipped": 0,
+        "discard_rate": 0.0,
+        "mean_p": 0.9817551984786987
+      },
+      "manage_change_address": {
+        "n": 51,
+        "skipped": 0,
+        "discard_rate": 0.0,
+        "mean_p": 0.9792195465050492
+      },
+      "manage_change_name": {
+        "n": 51,
+        "skipped": 0,
+        "discard_rate": 0.0,
+        "mean_p": 0.9654661417007446
+      },
+      "manage_change_phone": {
+        "n": 48,
+        "skipped": 0,
+        "discard_rate": 0.0,
+        "mean_p": 0.9811041578650475
+      },
+      "manage_create": {
+        "n": 134,
+        "skipped": 0,
+        "discard_rate": 0.0,
+        "mean_p": 0.9782882693098552
+      },
+      "manage_dispute_bill": {
+        "n": 190,
+        "skipped": 0,
+        "discard_rate": 0.0,
+        "mean_p": 0.9834529641427492
+      },
+      "manage_downgrade": {
+        "n": 123,
+        "skipped": 1,
+        "discard_rate": 0.008130081300813009,
+        "mean_p": 0.9752826367663902
+      },
+      "manage_extension": {
+        "n": 165,
+        "skipped": 1,
+        "discard_rate": 0.006060606060606061,
+        "mean_p": 0.976523292781503
+      },
+      "manage_pay_bill": {
+        "n": 162,
+        "skipped": 0,
+        "discard_rate": 0.0,
+        "mean_p": 0.981457269118156
+      },
+      "manage_payment_method": {
+        "n": 36,
+        "skipped": 0,
+        "discard_rate": 0.0,
+        "mean_p": 0.9671831015083525
+      },
+      "manage_upgrade": {
+        "n": 117,
+        "skipped": 0,
+        "discard_rate": 0.0,
+        "mean_p": 0.9802960381548629
+      },
+      "membership_1": {
+        "n": 76,
+        "skipped": 2,
+        "discard_rate": 0.02631578947368421,
+        "mean_p": 0.9383001914738041
+      },
+      "membership_2": {
+        "n": 65,
+        "skipped": 1,
+        "discard_rate": 0.015384615384615385,
+        "mean_p": 0.9684733803384006
+      },
+      "membership_3": {
+        "n": 71,
+        "skipped": 1,
+        "discard_rate": 0.014084507042253521,
+        "mean_p": 0.9637142139631258
+      },
+      "membership_4": {
+        "n": 69,
+        "skipped": 5,
+        "discard_rate": 0.07246376811594203,
+        "mean_p": 0.8575398688326064
+      },
+      "missing": {
+        "n": 261,
+        "skipped": 0,
+        "discard_rate": 0.0,
+        "mean_p": 0.9804320609432527
+      },
+      "mistimed_billing_already_returned": {
+        "n": 137,
+        "skipped": 0,
+        "discard_rate": 0.0,
+        "mean_p": 0.9792894464339653
+      },
+      "mistimed_billing_never_bought": {
+        "n": 139,
+        "skipped": 0,
+        "discard_rate": 0.0,
+        "mean_p": 0.9827291137880558
+      },
+      "out_of_stock_general": {
+        "n": 140,
+        "skipped": 1,
+        "discard_rate": 0.007142857142857143,
+        "mean_p": 0.9544591112860612
+      },
+      "out_of_stock_one_item": {
+        "n": 127,
+        "skipped": 0,
+        "discard_rate": 0.0,
+        "mean_p": 0.9785273685230045
+      },
+      "policy_1": {
+        "n": 69,
+        "skipped": 2,
+        "discard_rate": 0.028985507246376812,
+        "mean_p": 0.9098406046210532
+      },
+      "policy_2": {
+        "n": 70,
+        "skipped": 3,
+        "discard_rate": 0.04285714285714286,
+        "mean_p": 0.9153800392523408
+      },
+      "policy_3": {
+        "n": 64,
+        "skipped": 2,
+        "discard_rate": 0.03125,
+        "mean_p": 0.9199667278153356
+      },
+      "policy_4": {
+        "n": 69,
+        "skipped": 2,
+        "discard_rate": 0.028985507246376812,
+        "mean_p": 0.9582364878792694
+      },
+      "pricing_1": {
+        "n": 55,
+        "skipped": 0,
+        "discard_rate": 0.0,
+        "mean_p": 0.9767379522323608
+      },
+      "pricing_2": {
+        "n": 76,
+        "skipped": 0,
+        "discard_rate": 0.0,
+        "mean_p": 0.9799846442122209
+      },
+      "pricing_3": {
+        "n": 81,
+        "skipped": 0,
+        "discard_rate": 0.0,
+        "mean_p": 0.9866461775921009
+      },
+      "pricing_4": {
+        "n": 65,
+        "skipped": 0,
+        "discard_rate": 0.0,
+        "mean_p": 0.9811721260731037
+      },
+      "promo_code_invalid": {
+        "n": 133,
+        "skipped": 0,
+        "discard_rate": 0.0,
+        "mean_p": 0.9806723065842363
+      },
+      "promo_code_out_of_date": {
+        "n": 112,
+        "skipped": 0,
+        "discard_rate": 0.0,
+        "mean_p": 0.9807300801788058
+      },
+      "recover_password": {
+        "n": 336,
+        "skipped": 0,
+        "discard_rate": 0.0,
+        "mean_p": 0.9775348128307433
+      },
+      "recover_username": {
+        "n": 361,
+        "skipped": 3,
+        "discard_rate": 0.008310249307479225,
+        "mean_p": 0.9676586382627652
+      },
+      "refund_initiate": {
+        "n": 176,
+        "skipped": 0,
+        "discard_rate": 0.0,
+        "mean_p": 0.9797283448278904
+      },
+      "refund_status": {
+        "n": 179,
+        "skipped": 0,
+        "discard_rate": 0.0,
+        "mean_p": 0.9806518481430395
+      },
+      "refund_update": {
+        "n": 177,
+        "skipped": 2,
+        "discard_rate": 0.011299435028248588,
+        "mean_p": 0.9700688497889471
+      },
+      "reset_2fa": {
+        "n": 351,
+        "skipped": 1,
+        "discard_rate": 0.002849002849002849,
+        "mean_p": 0.9796420604075462
+      },
+      "return_color": {
+        "n": 180,
+        "skipped": 1,
+        "discard_rate": 0.005555555555555556,
+        "mean_p": 0.9740024430470334
+      },
+      "return_size": {
+        "n": 191,
+        "skipped": 0,
+        "discard_rate": 0.0,
+        "mean_p": 0.9786915232997915
+      },
+      "return_stain": {
+        "n": 167,
+        "skipped": 1,
+        "discard_rate": 0.005988023952095809,
+        "mean_p": 0.9726675982492234
+      },
+      "search_results": {
+        "n": 259,
+        "skipped": 7,
+        "discard_rate": 0.02702702702702703,
+        "mean_p": 0.9316286663938328
+      },
+      "shirt_how_1": {
+        "n": 34,
+        "skipped": 0,
+        "discard_rate": 0.0,
+        "mean_p": 0.9756724851972917
+      },
+      "shirt_how_2": {
+        "n": 31,
+        "skipped": 1,
+        "discard_rate": 0.03225806451612903,
+        "mean_p": 0.9487100003227111
+      },
+      "shirt_how_3": {
+        "n": 30,
+        "skipped": 0,
+        "discard_rate": 0.0,
+        "mean_p": 0.9566037520766258
+      },
+      "shirt_how_4": {
+        "n": 33,
+        "skipped": 0,
+        "discard_rate": 0.0,
+        "mean_p": 0.9455757339795431
+      },
+      "shirt_other_1": {
+        "n": 33,
+        "skipped": 3,
+        "discard_rate": 0.09090909090909091,
+        "mean_p": 0.8271889875106739
+      },
+      "shirt_other_2": {
+        "n": 34,
+        "skipped": 0,
+        "discard_rate": 0.0,
+        "mean_p": 0.9711339473724365
+      },
+      "shirt_other_3": {
+        "n": 27,
+        "skipped": 2,
+        "discard_rate": 0.07407407407407407,
+        "mean_p": 0.8746866038138116
+      },
+      "shirt_other_4": {
+        "n": 27,
+        "skipped": 0,
+        "discard_rate": 0.0,
+        "mean_p": 0.9689187032205088
+      },
+      "shopping_cart": {
+        "n": 251,
+        "skipped": 3,
+        "discard_rate": 0.01195219123505976,
+        "mean_p": 0.9428279858483262
+      },
+      "slow_speed": {
+        "n": 250,
+        "skipped": 2,
+        "discard_rate": 0.008,
+        "mean_p": 0.9662657386288047
+      },
+      "status": {
+        "n": 268,
+        "skipped": 1,
+        "discard_rate": 0.0037313432835820895,
+        "mean_p": 0.9775260621056294
+      },
+      "status_credit_missing": {
+        "n": 114,
+        "skipped": 0,
+        "discard_rate": 0.0,
+        "mean_p": 0.9835495530513295
+      },
+      "status_delivery_date": {
+        "n": 3,
+        "skipped": 0,
+        "discard_rate": 0.0,
+        "mean_p": 0.9816969434420267
+      },
+      "status_delivery_time": {
+        "n": 139,
+        "skipped": 0,
+        "discard_rate": 0.0,
+        "mean_p": 0.975917008283327
+      },
+      "status_due_amount": {
+        "n": 185,
+        "skipped": 0,
+        "discard_rate": 0.0,
+        "mean_p": 0.9801101185180046
+      },
+      "status_due_date": {
+        "n": 178,
+        "skipped": 1,
+        "discard_rate": 0.0056179775280898875,
+        "mean_p": 0.9768024226755239
+      },
+      "status_mystery_fee": {
+        "n": 130,
+        "skipped": 0,
+        "discard_rate": 0.0,
+        "mean_p": 0.9827337622642517
+      },
+      "status_payment_method": {
+        "n": 134,
+        "skipped": 0,
+        "discard_rate": 0.0,
+        "mean_p": 0.9757309106748495
+      },
+      "status_quantity": {
+        "n": 135,
+        "skipped": 0,
+        "discard_rate": 0.0,
+        "mean_p": 0.9839326779047648
+      },
+      "status_questions": {
+        "n": 30,
+        "skipped": 0,
+        "discard_rate": 0.0,
+        "mean_p": 0.9794774850209554
+      },
+      "status_service_added": {
+        "n": 129,
+        "skipped": 0,
+        "discard_rate": 0.0,
+        "mean_p": 0.9745750020640765
+      },
+      "status_service_removed": {
+        "n": 153,
+        "skipped": 1,
+        "discard_rate": 0.006535947712418301,
+        "mean_p": 0.9661033388251573
+      },
+      "status_shipping_question": {
+        "n": 131,
+        "skipped": 3,
+        "discard_rate": 0.022900763358778626,
+        "mean_p": 0.9223829756370028
+      },
+      "timing_1": {
+        "n": 76,
+        "skipped": 10,
+        "discard_rate": 0.13157894736842105,
+        "mean_p": 0.7838179015456453
+      },
+      "timing_2": {
+        "n": 63,
+        "skipped": 2,
+        "discard_rate": 0.031746031746031744,
+        "mean_p": 0.9169452938413809
+      },
+      "timing_3": {
+        "n": 60,
+        "skipped": 1,
+        "discard_rate": 0.016666666666666666,
+        "mean_p": 0.9445555674533049
+      },
+      "timing_4": {
+        "n": 65,
+        "skipped": 2,
+        "discard_rate": 0.03076923076923077,
+        "mean_p": 0.9143685689482551
+      }
+    }
+  },
+  "thresholds": {
+    "0.2": {
+      "all": {
+        "n": 10042,
+        "skipped": 94,
+        "discard_rate": 0.00936068512248556,
+        "mean_p": 0.9630614740823097
+      },
+      "refund_subflows": {
+        "n": 1070,
+        "skipped": 4,
+        "discard_rate": 0.003738317757009346,
+        "mean_p": 0.9760346406787878
+      },
+      "action_subflows": {
+        "n": 891,
+        "skipped": 4,
+        "discard_rate": 0.004489337822671156,
+        "mean_p": 0.9751070535451165
+      },
+      "by_subflow": {
+        "bad_price_competitor": {
+          "n": 149,
+          "skipped": 0,
+          "discard_rate": 0.0,
+          "mean_p": 0.9825500021844902
+        },
+        "bad_price_yesterday": {
+          "n": 139,
+          "skipped": 1,
+          "discard_rate": 0.007194244604316547,
+          "mean_p": 0.9770120399461376
+        },
+        "boots_how_1": {
+          "n": 27,
+          "skipped": 0,
+          "discard_rate": 0.0,
+          "mean_p": 0.9816679270179184
+        },
+        "boots_how_2": {
+          "n": 43,
+          "skipped": 1,
+          "discard_rate": 0.023255813953488372,
+          "mean_p": 0.9394130630115437
+        },
+        "boots_how_3": {
+          "n": 32,
+          "skipped": 0,
+          "discard_rate": 0.0,
+          "mean_p": 0.9809554349631071
+        },
+        "boots_how_4": {
+          "n": 30,
+          "skipped": 0,
+          "discard_rate": 0.0,
+          "mean_p": 0.933660181860129
+        },
+        "boots_other_1": {
+          "n": 42,
+          "skipped": 2,
+          "discard_rate": 0.047619047619047616,
+          "mean_p": 0.9037514273964223
+        },
+        "boots_other_2": {
+          "n": 36,
+          "skipped": 2,
+          "discard_rate": 0.05555555555555555,
+          "mean_p": 0.9022192997444007
+        },
+        "boots_other_3": {
+          "n": 34,
+          "skipped": 0,
+          "discard_rate": 0.0,
+          "mean_p": 0.9385546200415668
+        },
+        "boots_other_4": {
+          "n": 37,
+          "skipped": 0,
+          "discard_rate": 0.0,
+          "mean_p": 0.9488114191068185
+        },
+        "cost": {
+          "n": 243,
+          "skipped": 0,
+          "discard_rate": 0.0,
+          "mean_p": 0.9812684196503565
+        },
+        "credit_card": {
+          "n": 266,
+          "skipped": 4,
+          "discard_rate": 0.015037593984962405,
+          "mean_p": 0.9501726926633514
+        },
+        "jacket_how_1": {
+          "n": 29,
+          "skipped": 0,
+          "discard_rate": 0.0,
+          "mean_p": 0.9822863956977581
+        },
+        "jacket_how_2": {
+          "n": 39,
+          "skipped": 1,
+          "discard_rate": 0.02564102564102564,
+          "mean_p": 0.9130782102927183
+        },
+        "jacket_how_3": {
+          "n": 28,
+          "skipped": 0,
+          "discard_rate": 0.0,
+          "mean_p": 0.8899121454783848
+        },
+        "jacket_how_4": {
+          "n": 36,
+          "skipped": 2,
+          "discard_rate": 0.05555555555555555,
+          "mean_p": 0.886907077083985
+        },
+        "jacket_other_1": {
+          "n": 29,
+          "skipped": 0,
+          "discard_rate": 0.0,
+          "mean_p": 0.8833462585662973
+        },
+        "jacket_other_2": {
+          "n": 30,
+          "skipped": 0,
+          "discard_rate": 0.0,
+          "mean_p": 0.9741949379444123
+        },
+        "jacket_other_3": {
+          "n": 27,
+          "skipped": 2,
+          "discard_rate": 0.07407407407407407,
+          "mean_p": 0.8850023818236811
+        },
+        "jacket_other_4": {
+          "n": 45,
+          "skipped": 1,
+          "discard_rate": 0.022222222222222223,
+          "mean_p": 0.9071791473362181
+        },
+        "jeans_how_1": {
+          "n": 31,
+          "skipped": 2,
+          "discard_rate": 0.06451612903225806,
+          "mean_p": 0.8952697872394516
+        },
+        "jeans_how_2": {
+          "n": 34,
+          "skipped": 4,
+          "discard_rate": 0.11764705882352941,
+          "mean_p": 0.8528693793341517
+        },
+        "jeans_how_3": {
+          "n": 28,
+          "skipped": 1,
+          "discard_rate": 0.03571428571428571,
+          "mean_p": 0.9182979831738132
+        },
+        "jeans_how_4": {
+          "n": 22,
+          "skipped": 0,
+          "discard_rate": 0.0,
+          "mean_p": 0.9446657679297707
+        },
+        "jeans_other_1": {
+          "n": 33,
+          "skipped": 1,
+          "discard_rate": 0.030303030303030304,
+          "mean_p": 0.9279191927476362
+        },
+        "jeans_other_2": {
+          "n": 32,
+          "skipped": 0,
+          "discard_rate": 0.0,
+          "mean_p": 0.908034629188478
+        },
+        "jeans_other_3": {
+          "n": 40,
+          "skipped": 1,
+          "discard_rate": 0.025,
+          "mean_p": 0.9403170481324196
+        },
+        "jeans_other_4": {
+          "n": 32,
+          "skipped": 1,
+          "discard_rate": 0.03125,
+          "mean_p": 0.8999007306993008
+        },
+        "manage": {
+          "n": 248,
+          "skipped": 0,
+          "discard_rate": 0.0,
+          "mean_p": 0.9783081333002737
+        },
+        "manage_cancel": {
+          "n": 125,
+          "skipped": 0,
+          "discard_rate": 0.0,
+          "mean_p": 0.9817551984786987
+        },
+        "manage_change_address": {
+          "n": 51,
+          "skipped": 0,
+          "discard_rate": 0.0,
+          "mean_p": 0.9792195465050492
+        },
+        "manage_change_name": {
+          "n": 51,
+          "skipped": 0,
+          "discard_rate": 0.0,
+          "mean_p": 0.9654661417007446
+        },
+        "manage_change_phone": {
+          "n": 48,
+          "skipped": 0,
+          "discard_rate": 0.0,
+          "mean_p": 0.9811041578650475
+        },
+        "manage_create": {
+          "n": 134,
+          "skipped": 0,
+          "discard_rate": 0.0,
+          "mean_p": 0.9782882693098552
+        },
+        "manage_dispute_bill": {
+          "n": 190,
+          "skipped": 0,
+          "discard_rate": 0.0,
+          "mean_p": 0.9834529641427492
+        },
+        "manage_downgrade": {
+          "n": 123,
+          "skipped": 1,
+          "discard_rate": 0.008130081300813009,
+          "mean_p": 0.9752826367663902
+        },
+        "manage_extension": {
+          "n": 165,
+          "skipped": 1,
+          "discard_rate": 0.006060606060606061,
+          "mean_p": 0.976523292781503
+        },
+        "manage_pay_bill": {
+          "n": 162,
+          "skipped": 0,
+          "discard_rate": 0.0,
+          "mean_p": 0.981457269118156
+        },
+        "manage_payment_method": {
+          "n": 36,
+          "skipped": 0,
+          "discard_rate": 0.0,
+          "mean_p": 0.9671831015083525
+        },
+        "manage_upgrade": {
+          "n": 117,
+          "skipped": 0,
+          "discard_rate": 0.0,
+          "mean_p": 0.9802960381548629
+        },
+        "membership_1": {
+          "n": 76,
+          "skipped": 2,
+          "discard_rate": 0.02631578947368421,
+          "mean_p": 0.9383001914738041
+        },
+        "membership_2": {
+          "n": 65,
+          "skipped": 1,
+          "discard_rate": 0.015384615384615385,
+          "mean_p": 0.9684733803384006
+        },
+        "membership_3": {
+          "n": 71,
+          "skipped": 1,
+          "discard_rate": 0.014084507042253521,
+          "mean_p": 0.9637142139631258
+        },
+        "membership_4": {
+          "n": 69,
+          "skipped": 5,
+          "discard_rate": 0.07246376811594203,
+          "mean_p": 0.8575398688326064
+        },
+        "missing": {
+          "n": 261,
+          "skipped": 0,
+          "discard_rate": 0.0,
+          "mean_p": 0.9804320609432527
+        },
+        "mistimed_billing_already_returned": {
+          "n": 137,
+          "skipped": 0,
+          "discard_rate": 0.0,
+          "mean_p": 0.9792894464339653
+        },
+        "mistimed_billing_never_bought": {
+          "n": 139,
+          "skipped": 0,
+          "discard_rate": 0.0,
+          "mean_p": 0.9827291137880558
+        },
+        "out_of_stock_general": {
+          "n": 140,
+          "skipped": 1,
+          "discard_rate": 0.007142857142857143,
+          "mean_p": 0.9544591112860612
+        },
+        "out_of_stock_one_item": {
+          "n": 127,
+          "skipped": 0,
+          "discard_rate": 0.0,
+          "mean_p": 0.9785273685230045
+        },
+        "policy_1": {
+          "n": 69,
+          "skipped": 2,
+          "discard_rate": 0.028985507246376812,
+          "mean_p": 0.9098406046210532
+        },
+        "policy_2": {
+          "n": 70,
+          "skipped": 3,
+          "discard_rate": 0.04285714285714286,
+          "mean_p": 0.9153800392523408
+        },
+        "policy_3": {
+          "n": 64,
+          "skipped": 2,
+          "discard_rate": 0.03125,
+          "mean_p": 0.9199667278153356
+        },
+        "policy_4": {
+          "n": 69,
+          "skipped": 2,
+          "discard_rate": 0.028985507246376812,
+          "mean_p": 0.9582364878792694
+        },
+        "pricing_1": {
+          "n": 55,
+          "skipped": 0,
+          "discard_rate": 0.0,
+          "mean_p": 0.9767379522323608
+        },
+        "pricing_2": {
+          "n": 76,
+          "skipped": 0,
+          "discard_rate": 0.0,
+          "mean_p": 0.9799846442122209
+        },
+        "pricing_3": {
+          "n": 81,
+          "skipped": 0,
+          "discard_rate": 0.0,
+          "mean_p": 0.9866461775921009
+        },
+        "pricing_4": {
+          "n": 65,
+          "skipped": 0,
+          "discard_rate": 0.0,
+          "mean_p": 0.9811721260731037
+        },
+        "promo_code_invalid": {
+          "n": 133,
+          "skipped": 0,
+          "discard_rate": 0.0,
+          "mean_p": 0.9806723065842363
+        },
+        "promo_code_out_of_date": {
+          "n": 112,
+          "skipped": 0,
+          "discard_rate": 0.0,
+          "mean_p": 0.9807300801788058
+        },
+        "recover_password": {
+          "n": 336,
+          "skipped": 0,
+          "discard_rate": 0.0,
+          "mean_p": 0.9775348128307433
+        },
+        "recover_username": {
+          "n": 361,
+          "skipped": 3,
+          "discard_rate": 0.008310249307479225,
+          "mean_p": 0.9676586382627652
+        },
+        "refund_initiate": {
+          "n": 176,
+          "skipped": 0,
+          "discard_rate": 0.0,
+          "mean_p": 0.9797283448278904
+        },
+        "refund_status": {
+          "n": 179,
+          "skipped": 0,
+          "discard_rate": 0.0,
+          "mean_p": 0.9806518481430395
+        },
+        "refund_update": {
+          "n": 177,
+          "skipped": 2,
+          "discard_rate": 0.011299435028248588,
+          "mean_p": 0.9700688497889471
+        },
+        "reset_2fa": {
+          "n": 351,
+          "skipped": 1,
+          "discard_rate": 0.002849002849002849,
+          "mean_p": 0.9796420604075462
+        },
+        "return_color": {
+          "n": 180,
+          "skipped": 1,
+          "discard_rate": 0.005555555555555556,
+          "mean_p": 0.9740024430470334
+        },
+        "return_size": {
+          "n": 191,
+          "skipped": 0,
+          "discard_rate": 0.0,
+          "mean_p": 0.9786915232997915
+        },
+        "return_stain": {
+          "n": 167,
+          "skipped": 1,
+          "discard_rate": 0.005988023952095809,
+          "mean_p": 0.9726675982492234
+        },
+        "search_results": {
+          "n": 259,
+          "skipped": 7,
+          "discard_rate": 0.02702702702702703,
+          "mean_p": 0.9316286663938328
+        },
+        "shirt_how_1": {
+          "n": 34,
+          "skipped": 0,
+          "discard_rate": 0.0,
+          "mean_p": 0.9756724851972917
+        },
+        "shirt_how_2": {
+          "n": 31,
+          "skipped": 1,
+          "discard_rate": 0.03225806451612903,
+          "mean_p": 0.9487100003227111
+        },
+        "shirt_how_3": {
+          "n": 30,
+          "skipped": 0,
+          "discard_rate": 0.0,
+          "mean_p": 0.9566037520766258
+        },
+        "shirt_how_4": {
+          "n": 33,
+          "skipped": 0,
+          "discard_rate": 0.0,
+          "mean_p": 0.9455757339795431
+        },
+        "shirt_other_1": {
+          "n": 33,
+          "skipped": 3,
+          "discard_rate": 0.09090909090909091,
+          "mean_p": 0.8271889875106739
+        },
+        "shirt_other_2": {
+          "n": 34,
+          "skipped": 0,
+          "discard_rate": 0.0,
+          "mean_p": 0.9711339473724365
+        },
+        "shirt_other_3": {
+          "n": 27,
+          "skipped": 2,
+          "discard_rate": 0.07407407407407407,
+          "mean_p": 0.8746866038138116
+        },
+        "shirt_other_4": {
+          "n": 27,
+          "skipped": 0,
+          "discard_rate": 0.0,
+          "mean_p": 0.9689187032205088
+        },
+        "shopping_cart": {
+          "n": 251,
+          "skipped": 3,
+          "discard_rate": 0.01195219123505976,
+          "mean_p": 0.9428279858483262
+        },
+        "slow_speed": {
+          "n": 250,
+          "skipped": 2,
+          "discard_rate": 0.008,
+          "mean_p": 0.9662657386288047
+        },
+        "status": {
+          "n": 268,
+          "skipped": 1,
+          "discard_rate": 0.0037313432835820895,
+          "mean_p": 0.9775260621056294
+        },
+        "status_credit_missing": {
+          "n": 114,
+          "skipped": 0,
+          "discard_rate": 0.0,
+          "mean_p": 0.9835495530513295
+        },
+        "status_delivery_date": {
+          "n": 3,
+          "skipped": 0,
+          "discard_rate": 0.0,
+          "mean_p": 0.9816969434420267
+        },
+        "status_delivery_time": {
+          "n": 139,
+          "skipped": 0,
+          "discard_rate": 0.0,
+          "mean_p": 0.975917008283327
+        },
+        "status_due_amount": {
+          "n": 185,
+          "skipped": 0,
+          "discard_rate": 0.0,
+          "mean_p": 0.9801101185180046
+        },
+        "status_due_date": {
+          "n": 178,
+          "skipped": 1,
+          "discard_rate": 0.0056179775280898875,
+          "mean_p": 0.9768024226755239
+        },
+        "status_mystery_fee": {
+          "n": 130,
+          "skipped": 0,
+          "discard_rate": 0.0,
+          "mean_p": 0.9827337622642517
+        },
+        "status_payment_method": {
+          "n": 134,
+          "skipped": 0,
+          "discard_rate": 0.0,
+          "mean_p": 0.9757309106748495
+        },
+        "status_quantity": {
+          "n": 135,
+          "skipped": 0,
+          "discard_rate": 0.0,
+          "mean_p": 0.9839326779047648
+        },
+        "status_questions": {
+          "n": 30,
+          "skipped": 0,
+          "discard_rate": 0.0,
+          "mean_p": 0.9794774850209554
+        },
+        "status_service_added": {
+          "n": 129,
+          "skipped": 0,
+          "discard_rate": 0.0,
+          "mean_p": 0.9745750020640765
+        },
+        "status_service_removed": {
+          "n": 153,
+          "skipped": 1,
+          "discard_rate": 0.006535947712418301,
+          "mean_p": 0.9661033388251573
+        },
+        "status_shipping_question": {
+          "n": 131,
+          "skipped": 3,
+          "discard_rate": 0.022900763358778626,
+          "mean_p": 0.9223829756370028
+        },
+        "timing_1": {
+          "n": 76,
+          "skipped": 10,
+          "discard_rate": 0.13157894736842105,
+          "mean_p": 0.7838179015456453
+        },
+        "timing_2": {
+          "n": 63,
+          "skipped": 2,
+          "discard_rate": 0.031746031746031744,
+          "mean_p": 0.9169452938413809
+        },
+        "timing_3": {
+          "n": 60,
+          "skipped": 1,
+          "discard_rate": 0.016666666666666666,
+          "mean_p": 0.9445555674533049
+        },
+        "timing_4": {
+          "n": 65,
+          "skipped": 2,
+          "discard_rate": 0.03076923076923077,
+          "mean_p": 0.9143685689482551
+        }
+      }
+    },
+    "0.5": {
+      "all": {
+        "n": 10042,
+        "skipped": 167,
+        "discard_rate": 0.0166301533559052,
+        "mean_p": 0.9630614740823097
+      },
+      "refund_subflows": {
+        "n": 1070,
+        "skipped": 4,
+        "discard_rate": 0.003738317757009346,
+        "mean_p": 0.9760346406787878
+      },
+      "action_subflows": {
+        "n": 891,
+        "skipped": 4,
+        "discard_rate": 0.004489337822671156,
+        "mean_p": 0.9751070535451165
+      },
+      "by_subflow": {
+        "bad_price_competitor": {
+          "n": 149,
+          "skipped": 0,
+          "discard_rate": 0.0,
+          "mean_p": 0.9825500021844902
+        },
+        "bad_price_yesterday": {
+          "n": 139,
+          "skipped": 1,
+          "discard_rate": 0.007194244604316547,
+          "mean_p": 0.9770120399461376
+        },
+        "boots_how_1": {
+          "n": 27,
+          "skipped": 0,
+          "discard_rate": 0.0,
+          "mean_p": 0.9816679270179184
+        },
+        "boots_how_2": {
+          "n": 43,
+          "skipped": 1,
+          "discard_rate": 0.023255813953488372,
+          "mean_p": 0.9394130630115437
+        },
+        "boots_how_3": {
+          "n": 32,
+          "skipped": 0,
+          "discard_rate": 0.0,
+          "mean_p": 0.9809554349631071
+        },
+        "boots_how_4": {
+          "n": 30,
+          "skipped": 2,
+          "discard_rate": 0.06666666666666667,
+          "mean_p": 0.933660181860129
+        },
+        "boots_other_1": {
+          "n": 42,
+          "skipped": 3,
+          "discard_rate": 0.07142857142857142,
+          "mean_p": 0.9037514273964223
+        },
+        "boots_other_2": {
+          "n": 36,
+          "skipped": 2,
+          "discard_rate": 0.05555555555555555,
+          "mean_p": 0.9022192997444007
+        },
+        "boots_other_3": {
+          "n": 34,
+          "skipped": 1,
+          "discard_rate": 0.029411764705882353,
+          "mean_p": 0.9385546200415668
+        },
+        "boots_other_4": {
+          "n": 37,
+          "skipped": 1,
+          "discard_rate": 0.02702702702702703,
+          "mean_p": 0.9488114191068185
+        },
+        "cost": {
+          "n": 243,
+          "skipped": 0,
+          "discard_rate": 0.0,
+          "mean_p": 0.9812684196503565
+        },
+        "credit_card": {
+          "n": 266,
+          "skipped": 6,
+          "discard_rate": 0.022556390977443608,
+          "mean_p": 0.9501726926633514
+        },
+        "jacket_how_1": {
+          "n": 29,
+          "skipped": 0,
+          "discard_rate": 0.0,
+          "mean_p": 0.9822863956977581
+        },
+        "jacket_how_2": {
+          "n": 39,
+          "skipped": 2,
+          "discard_rate": 0.05128205128205128,
+          "mean_p": 0.9130782102927183
+        },
+        "jacket_how_3": {
+          "n": 28,
+          "skipped": 3,
+          "discard_rate": 0.10714285714285714,
+          "mean_p": 0.8899121454783848
+        },
+        "jacket_how_4": {
+          "n": 36,
+          "skipped": 4,
+          "discard_rate": 0.1111111111111111,
+          "mean_p": 0.886907077083985
+        },
+        "jacket_other_1": {
+          "n": 29,
+          "skipped": 3,
+          "discard_rate": 0.10344827586206896,
+          "mean_p": 0.8833462585662973
+        },
+        "jacket_other_2": {
+          "n": 30,
+          "skipped": 0,
+          "discard_rate": 0.0,
+          "mean_p": 0.9741949379444123
+        },
+        "jacket_other_3": {
+          "n": 27,
+          "skipped": 2,
+          "discard_rate": 0.07407407407407407,
+          "mean_p": 0.8850023818236811
+        },
+        "jacket_other_4": {
+          "n": 45,
+          "skipped": 3,
+          "discard_rate": 0.06666666666666667,
+          "mean_p": 0.9071791473362181
+        },
+        "jeans_how_1": {
+          "n": 31,
+          "skipped": 2,
+          "discard_rate": 0.06451612903225806,
+          "mean_p": 0.8952697872394516
+        },
+        "jeans_how_2": {
+          "n": 34,
+          "skipped": 5,
+          "discard_rate": 0.14705882352941177,
+          "mean_p": 0.8528693793341517
+        },
+        "jeans_how_3": {
+          "n": 28,
+          "skipped": 2,
+          "discard_rate": 0.07142857142857142,
+          "mean_p": 0.9182979831738132
+        },
+        "jeans_how_4": {
+          "n": 22,
+          "skipped": 1,
+          "discard_rate": 0.045454545454545456,
+          "mean_p": 0.9446657679297707
+        },
+        "jeans_other_1": {
+          "n": 33,
+          "skipped": 2,
+          "discard_rate": 0.06060606060606061,
+          "mean_p": 0.9279191927476362
+        },
+        "jeans_other_2": {
+          "n": 32,
+          "skipped": 3,
+          "discard_rate": 0.09375,
+          "mean_p": 0.908034629188478
+        },
+        "jeans_other_3": {
+          "n": 40,
+          "skipped": 2,
+          "discard_rate": 0.05,
+          "mean_p": 0.9403170481324196
+        },
+        "jeans_other_4": {
+          "n": 32,
+          "skipped": 3,
+          "discard_rate": 0.09375,
+          "mean_p": 0.8999007306993008
+        },
+        "manage": {
+          "n": 248,
+          "skipped": 0,
+          "discard_rate": 0.0,
+          "mean_p": 0.9783081333002737
+        },
+        "manage_cancel": {
+          "n": 125,
+          "skipped": 0,
+          "discard_rate": 0.0,
+          "mean_p": 0.9817551984786987
+        },
+        "manage_change_address": {
+          "n": 51,
+          "skipped": 0,
+          "discard_rate": 0.0,
+          "mean_p": 0.9792195465050492
+        },
+        "manage_change_name": {
+          "n": 51,
+          "skipped": 1,
+          "discard_rate": 0.0196078431372549,
+          "mean_p": 0.9654661417007446
+        },
+        "manage_change_phone": {
+          "n": 48,
+          "skipped": 0,
+          "discard_rate": 0.0,
+          "mean_p": 0.9811041578650475
+        },
+        "manage_create": {
+          "n": 134,
+          "skipped": 0,
+          "discard_rate": 0.0,
+          "mean_p": 0.9782882693098552
+        },
+        "manage_dispute_bill": {
+          "n": 190,
+          "skipped": 0,
+          "discard_rate": 0.0,
+          "mean_p": 0.9834529641427492
+        },
+        "manage_downgrade": {
+          "n": 123,
+          "skipped": 1,
+          "discard_rate": 0.008130081300813009,
+          "mean_p": 0.9752826367663902
+        },
+        "manage_extension": {
+          "n": 165,
+          "skipped": 1,
+          "discard_rate": 0.006060606060606061,
+          "mean_p": 0.976523292781503
+        },
+        "manage_pay_bill": {
+          "n": 162,
+          "skipped": 0,
+          "discard_rate": 0.0,
+          "mean_p": 0.981457269118156
+        },
+        "manage_payment_method": {
+          "n": 36,
+          "skipped": 0,
+          "discard_rate": 0.0,
+          "mean_p": 0.9671831015083525
+        },
+        "manage_upgrade": {
+          "n": 117,
+          "skipped": 0,
+          "discard_rate": 0.0,
+          "mean_p": 0.9802960381548629
+        },
+        "membership_1": {
+          "n": 76,
+          "skipped": 3,
+          "discard_rate": 0.039473684210526314,
+          "mean_p": 0.9383001914738041
+        },
+        "membership_2": {
+          "n": 65,
+          "skipped": 1,
+          "discard_rate": 0.015384615384615385,
+          "mean_p": 0.9684733803384006
+        },
+        "membership_3": {
+          "n": 71,
+          "skipped": 1,
+          "discard_rate": 0.014084507042253521,
+          "mean_p": 0.9637142139631258
+        },
+        "membership_4": {
+          "n": 69,
+          "skipped": 9,
+          "discard_rate": 0.13043478260869565,
+          "mean_p": 0.8575398688326064
+        },
+        "missing": {
+          "n": 261,
+          "skipped": 0,
+          "discard_rate": 0.0,
+          "mean_p": 0.9804320609432527
+        },
+        "mistimed_billing_already_returned": {
+          "n": 137,
+          "skipped": 0,
+          "discard_rate": 0.0,
+          "mean_p": 0.9792894464339653
+        },
+        "mistimed_billing_never_bought": {
+          "n": 139,
+          "skipped": 0,
+          "discard_rate": 0.0,
+          "mean_p": 0.9827291137880558
+        },
+        "out_of_stock_general": {
+          "n": 140,
+          "skipped": 2,
+          "discard_rate": 0.014285714285714285,
+          "mean_p": 0.9544591112860612
+        },
+        "out_of_stock_one_item": {
+          "n": 127,
+          "skipped": 0,
+          "discard_rate": 0.0,
+          "mean_p": 0.9785273685230045
+        },
+        "policy_1": {
+          "n": 69,
+          "skipped": 4,
+          "discard_rate": 0.057971014492753624,
+          "mean_p": 0.9098406046210532
+        },
+        "policy_2": {
+          "n": 70,
+          "skipped": 5,
+          "discard_rate": 0.07142857142857142,
+          "mean_p": 0.9153800392523408
+        },
+        "policy_3": {
+          "n": 64,
+          "skipped": 4,
+          "discard_rate": 0.0625,
+          "mean_p": 0.9199667278153356
+        },
+        "policy_4": {
+          "n": 69,
+          "skipped": 2,
+          "discard_rate": 0.028985507246376812,
+          "mean_p": 0.9582364878792694
+        },
+        "pricing_1": {
+          "n": 55,
+          "skipped": 0,
+          "discard_rate": 0.0,
+          "mean_p": 0.9767379522323608
+        },
+        "pricing_2": {
+          "n": 76,
+          "skipped": 0,
+          "discard_rate": 0.0,
+          "mean_p": 0.9799846442122209
+        },
+        "pricing_3": {
+          "n": 81,
+          "skipped": 0,
+          "discard_rate": 0.0,
+          "mean_p": 0.9866461775921009
+        },
+        "pricing_4": {
+          "n": 65,
+          "skipped": 0,
+          "discard_rate": 0.0,
+          "mean_p": 0.9811721260731037
+        },
+        "promo_code_invalid": {
+          "n": 133,
+          "skipped": 0,
+          "discard_rate": 0.0,
+          "mean_p": 0.9806723065842363
+        },
+        "promo_code_out_of_date": {
+          "n": 112,
+          "skipped": 0,
+          "discard_rate": 0.0,
+          "mean_p": 0.9807300801788058
+        },
+        "recover_password": {
+          "n": 336,
+          "skipped": 1,
+          "discard_rate": 0.002976190476190476,
+          "mean_p": 0.9775348128307433
+        },
+        "recover_username": {
+          "n": 361,
+          "skipped": 4,
+          "discard_rate": 0.0110803324099723,
+          "mean_p": 0.9676586382627652
+        },
+        "refund_initiate": {
+          "n": 176,
+          "skipped": 0,
+          "discard_rate": 0.0,
+          "mean_p": 0.9797283448278904
+        },
+        "refund_status": {
+          "n": 179,
+          "skipped": 0,
+          "discard_rate": 0.0,
+          "mean_p": 0.9806518481430395
+        },
+        "refund_update": {
+          "n": 177,
+          "skipped": 2,
+          "discard_rate": 0.011299435028248588,
+          "mean_p": 0.9700688497889471
+        },
+        "reset_2fa": {
+          "n": 351,
+          "skipped": 1,
+          "discard_rate": 0.002849002849002849,
+          "mean_p": 0.9796420604075462
+        },
+        "return_color": {
+          "n": 180,
+          "skipped": 1,
+          "discard_rate": 0.005555555555555556,
+          "mean_p": 0.9740024430470334
+        },
+        "return_size": {
+          "n": 191,
+          "skipped": 0,
+          "discard_rate": 0.0,
+          "mean_p": 0.9786915232997915
+        },
+        "return_stain": {
+          "n": 167,
+          "skipped": 1,
+          "discard_rate": 0.005988023952095809,
+          "mean_p": 0.9726675982492234
+        },
+        "search_results": {
+          "n": 259,
+          "skipped": 10,
+          "discard_rate": 0.03861003861003861,
+          "mean_p": 0.9316286663938328
+        },
+        "shirt_how_1": {
+          "n": 34,
+          "skipped": 0,
+          "discard_rate": 0.0,
+          "mean_p": 0.9756724851972917
+        },
+        "shirt_how_2": {
+          "n": 31,
+          "skipped": 1,
+          "discard_rate": 0.03225806451612903,
+          "mean_p": 0.9487100003227111
+        },
+        "shirt_how_3": {
+          "n": 30,
+          "skipped": 1,
+          "discard_rate": 0.03333333333333333,
+          "mean_p": 0.9566037520766258
+        },
+        "shirt_how_4": {
+          "n": 33,
+          "skipped": 2,
+          "discard_rate": 0.06060606060606061,
+          "mean_p": 0.9455757339795431
+        },
+        "shirt_other_1": {
+          "n": 33,
+          "skipped": 5,
+          "discard_rate": 0.15151515151515152,
+          "mean_p": 0.8271889875106739
+        },
+        "shirt_other_2": {
+          "n": 34,
+          "skipped": 0,
+          "discard_rate": 0.0,
+          "mean_p": 0.9711339473724365
+        },
+        "shirt_other_3": {
+          "n": 27,
+          "skipped": 3,
+          "discard_rate": 0.1111111111111111,
+          "mean_p": 0.8746866038138116
+        },
+        "shirt_other_4": {
+          "n": 27,
+          "skipped": 0,
+          "discard_rate": 0.0,
+          "mean_p": 0.9689187032205088
+        },
+        "shopping_cart": {
+          "n": 251,
+          "skipped": 7,
+          "discard_rate": 0.027888446215139442,
+          "mean_p": 0.9428279858483262
+        },
+        "slow_speed": {
+          "n": 250,
+          "skipped": 2,
+          "discard_rate": 0.008,
+          "mean_p": 0.9662657386288047
+        },
+        "status": {
+          "n": 268,
+          "skipped": 1,
+          "discard_rate": 0.0037313432835820895,
+          "mean_p": 0.9775260621056294
+        },
+        "status_credit_missing": {
+          "n": 114,
+          "skipped": 0,
+          "discard_rate": 0.0,
+          "mean_p": 0.9835495530513295
+        },
+        "status_delivery_date": {
+          "n": 3,
+          "skipped": 0,
+          "discard_rate": 0.0,
+          "mean_p": 0.9816969434420267
+        },
+        "status_delivery_time": {
+          "n": 139,
+          "skipped": 1,
+          "discard_rate": 0.007194244604316547,
+          "mean_p": 0.975917008283327
+        },
+        "status_due_amount": {
+          "n": 185,
+          "skipped": 0,
+          "discard_rate": 0.0,
+          "mean_p": 0.9801101185180046
+        },
+        "status_due_date": {
+          "n": 178,
+          "skipped": 1,
+          "discard_rate": 0.0056179775280898875,
+          "mean_p": 0.9768024226755239
+        },
+        "status_mystery_fee": {
+          "n": 130,
+          "skipped": 0,
+          "discard_rate": 0.0,
+          "mean_p": 0.9827337622642517
+        },
+        "status_payment_method": {
+          "n": 134,
+          "skipped": 0,
+          "discard_rate": 0.0,
+          "mean_p": 0.9757309106748495
+        },
+        "status_quantity": {
+          "n": 135,
+          "skipped": 0,
+          "discard_rate": 0.0,
+          "mean_p": 0.9839326779047648
+        },
+        "status_questions": {
+          "n": 30,
+          "skipped": 0,
+          "discard_rate": 0.0,
+          "mean_p": 0.9794774850209554
+        },
+        "status_service_added": {
+          "n": 129,
+          "skipped": 0,
+          "discard_rate": 0.0,
+          "mean_p": 0.9745750020640765
+        },
+        "status_service_removed": {
+          "n": 153,
+          "skipped": 2,
+          "discard_rate": 0.013071895424836602,
+          "mean_p": 0.9661033388251573
+        },
+        "status_shipping_question": {
+          "n": 131,
+          "skipped": 8,
+          "discard_rate": 0.061068702290076333,
+          "mean_p": 0.9223829756370028
+        },
+        "timing_1": {
+          "n": 76,
+          "skipped": 15,
+          "discard_rate": 0.19736842105263158,
+          "mean_p": 0.7838179015456453
+        },
+        "timing_2": {
+          "n": 63,
+          "skipped": 4,
+          "discard_rate": 0.06349206349206349,
+          "mean_p": 0.9169452938413809
+        },
+        "timing_3": {
+          "n": 60,
+          "skipped": 2,
+          "discard_rate": 0.03333333333333333,
+          "mean_p": 0.9445555674533049
+        },
+        "timing_4": {
+          "n": 65,
+          "skipped": 4,
+          "discard_rate": 0.06153846153846154,
+          "mean_p": 0.9143685689482551
+        }
+      }
+    }
+  },
+  "lowest_refund_rows": [
+    {
+      "id": "abcd-1643",
+      "text": "agent: Hello, how can I help you today?\ncustomer: what sizes do the boots come int\nagent: Happy to help,  may I have your full name please?\nagent: Hello, are you still there?\nagent: Hello?",
+      "flow": "product_defect",
+      "subflow": "refund_update",
+      "p_needs": 0.006481743883341551,
+      "pred_modality": "info_only",
+      "truncated": false
+    },
+    {
+      "id": "abcd-9248",
+      "text": "agent: Hi! How may I help you today?\ncustomer: Hi I want to return the Michael Kors jacket because it had a stain on it\nagent: Oh no! I am so sorry. Can I have your name?\nagent: are you still there",
+      "flow": "product_defect",
+      "subflow": "return_stain",
+      "p_needs": 0.007852522656321526,
+      "pred_modality": "info_only",
+      "truncated": false
+    },
+    {
+      "id": "abcd-7534",
+      "text": "customer: i need to add something to an existing refund\nagent: Thank you for contacting AcmeBrands, how can I help today?\nagent: Sure, Can I have your full name or account ID please?\ncustomer: Name: Rodriguez Domingo\nagent: And may I have your username, email address, and order ID?\nagent: Are you still there?\nagent: Hello?",
+      "flow": "product_defect",
+      "subflow": "refund_update",
+      "p_needs": 0.025077015161514282,
+      "pred_modality": "info_only",
+      "truncated": false
+    },
+    {
+      "id": "abcd-7631",
+      "text": "agent: Hello\ncustomer: i need to return something\ncustomer: i bought the wrong color\nagent: Give me your full name or account id\nagent: are you there?\ncustomer: Name: Joyce Wu\ncustomer: Order ID: 8377404170\nagent: Give me your username, email\nagent: Can you try and reply fast\nagent: What is your membership level?",
+      "flow": "product_defect",
+      "subflow": "return_color",
+      "p_needs": 0.11104302853345871,
+      "pred_modality": "info_only",
+      "truncated": false
+    },
+    {
+      "id": "abcd-1985",
+      "text": "customer: hello?\nagent: hi!\nagent: how can I help you?\ncustomer: I need to return the boots I ordered.  They are not the color i thought they would be\nagent: sure I can help you with that. Are you looking to replace them or just return them for a refund?\ncustomer: Lets exchange them for the black ones\nagent: Can I have your name please?\ncustomer: David Williams\nagent: and your user name please?\ncustomer: davidwilliams390\nagent: can I get your order ID and account ID as well please?\ncustomer: 5646272355",
+      "flow": "product_defect",
+      "subflow": "return_color",
+      "p_needs": 0.8394536972045898,
+      "pred_modality": "binding",
+      "truncated": false
+    },
+    {
+      "id": "abcd-6909",
+      "text": "agent: welcome, how can I help?\ncustomer: I wanna double check my refund status\nagent: OK< I will need your name please\nagent: And also your username, email & Order ID\ncustomer: Name: David Williams\nagent: thanks\ncustomer: Order ID: 7401259487\ncustomer: Email Address: davidw79@email.com  Username: davidw79\nagent: the system has found your order\nagent: Your refund is in progress\nagent: I see that you asked for it by chat.\nagent: Is there anything else?\ncustomer: no\nagent: OK< I hope that it shows up soon. I am sure you will let us know! Good bye for now!",
+      "flow": "product_defect",
+      "subflow": "refund_status",
+      "p_needs": 0.8650721311569214,
+      "pred_modality": "retracted",
+      "truncated": false
+    },
+    {
+      "id": "abcd-2830",
+      "text": "agent: Hello, how may I help you today?\ncustomer: Help, I've eaten too much during this quarentine and this item doesn't fit\nagent: I am so sorry about that. What would you like to do with the item?\ncustomer: can I exchange it?\nagent: Would you like to return the item?\ncustomer: yes\nagent: Can I please have your full name or account ID?\ncustomer: Norman Bouchard\nagent: Thank you. Additionally, can you please provide me with your username, email address, and order ID?\ncustomer: nbouchard832\nagent: Do you have your email address and order ID?\ncustomer: nbouchard832@email.com\ncustomer: 2844936745\nagent: Do you know your membership level?",
+      "flow": "product_defect",
+      "subflow": "return_size",
+      "p_needs": 0.9157623052597046,
+      "pred_modality": "binding",
+      "truncated": false
+    },
+    {
+      "id": "abcd-8806",
+      "text": "agent: Hello, can I help you with anything today?\ncustomer: Hello, I was checking on the state of my refund\nagent: What is your user id?\ncustomer: My username is jb204325\nagent: What is your email address?\nagent: And then your order ID?\ncustomer: jb204325@email.com\ncustomer: Order id is 0496942302\nagent: Your refund is currently in progress.\ncustomer: Okay\ncustomer: Thanks for the update\nagent: Is there anything else you need help with?\ncustomer: That is all today\nagent: Have a great day!",
+      "flow": "product_defect",
+      "subflow": "refund_status",
+      "p_needs": 0.9558254480361938,
+      "pred_modality": "binding",
+      "truncated": false
+    },
+    {
+      "id": "abcd-5750",
+      "text": "agent: Hello! Thanks for contacting Acme. How can I help you today?\ncustomer: need to return these shirt\ncustomer: its the wrong color\nagent: Of course, let me look into that for you. May I get your full name?\ncustomer: Rodriguez Domingo\nagent: I just need to bring up your account, Mr. Domingo.\ncustomer: can u step on it my Daughter has been kidnapped\nagent: OK, no pressure! I'll also need your Username, email address and order ID.\ncustomer: i need the refund for the ransom\nagent: That makes perfect sense, sir.\ncustomer: Phone Number: (716) 613-6340  Member Level: Gold  Email Address: rodriguezdomingo725@email.com  Username: rodriguezdomingo725  Order Statement Purchase Date: 2019-12-14  Order ID: 8878862528\ncustomer: vamanos!\ncustomer: rapido\nagent: Yes sir.\nagent: You are a gold member, correct Sir?\ncustomer: yes\ncustomer: gold as my teeth\ncustomer: i got a fancy grill put in\nagent: Very nice sir. As a gold member you get unlimited returns.\ncustomer: ya\nagent: Do you have an address for a printing label?\ncustomer: 4041 Woodshore St  Baltimore, NY 17194\nagent: How would you like to process your return?\ncustomer: can you make my name daddy on that label btw\nagent: I can make that note for you.\ncustomer: PayPal\nagent: Paypal doesn't handle the mailing of items. I can either use mail, in store or a drop off center.\ncustomer: drop off\nagent: perfect.\ncustomer: sweet\nagent: Okay, that should do it.\nagent: Is there anything else that I can help you with today?\ncustomer: nice wrap this up for me\nagent: Sir, you have my best wishes for the safe return of your daughter.\ncustomer: gracias",
+      "flow": "product_defect",
+      "subflow": "return_color",
+      "p_needs": 0.961938738822937,
+      "pred_modality": "binding",
+      "truncated": false
+    },
+    {
+      "id": "abcd-1210",
+      "text": "agent: Hi there! How can I help you today?\ncustomer: Hi\ncustomer: Can you tell me the state of my refund?\nagent: Of course! Can I please have your full name and/or account ID?\ncustomer: sure\ncustomer: Sanya Afzal\nagent: Thank you Sanya, I've pulled up your account.\ncustomer: ok\nagent: Now, can I please have your email address and the order ID?\nagent: Ah, and your username, if you have it?\ncustomer: sa912566@email.com\ncustomer: I do\ncustomer: sa912566\ncustomer: 5838359486\ncustomer: Anything else?\nagent: No, that was perfect, thanks! I've validated your purchase.\ncustomer: Has my refund been processed?\nagent: It looks like your refund status is currently \"in progress.\"\ncustomer: oh, I see\nagent: And it looks like you initiated this refund via chat.\ncustomer: and what is the payment method?\nagent: By chat, according to our database.\nagent: Do these details sound correct to you, or would you like to change any of them?\ncustomer: I paid by chat?\nagent: Hm, it's how you initiated your refund, and that's the only information I have access to. Would you like to make changes to your payment method?\ncustomer: Yes\ncustomer: Can I change it to paypal\nagent: Sure! One second, please.\nagent: Your order has been updated!\nagent: Would you like additional help with this refund status? Or is there anything else I can help you with?\ncustomer: Hm, that's it\ncustomer: thanks\nagent: You're welcome. Take care, and have a great day!",
+      "flow": "product_defect",
+      "subflow": "refund_status",
+      "p_needs": 0.9621267318725586,
+      "pred_modality": "binding",
+      "truncated": false
+    },
+    {
+      "id": "abcd-441",
+      "text": "customer: I would like to check on a return please.\ncustomer: is anyone there?\ncustomer: Checking on a return for Name: Crystal Minh  Phone Number: (089) 875-6007  Member Level: Gold  Email Address: crystalminh382@email.com\nagent: Ok, sorry about that I will pull up your account right now\ncustomer: I also need to check on the payment method too.\nagent: Could I just have your order ID please?\nagent: May I ask your username?, and the Order ID please",
+      "flow": "product_defect",
+      "subflow": "refund_status",
+      "p_needs": 0.9632454514503479,
+      "pred_modality": "binding",
+      "truncated": false
+    },
+    {
+      "id": "abcd-7921",
+      "text": "agent: Good afternoon, how can I help you today?\ncustomer: Hi!\ncustomer: I need to return an item\nagent: I can look in to that for you. May I ask what was wrong with the item?\ncustomer: I'm simply not liking it much. I looks so different form the picture they put on the description\nagent: No problem, just to verify, you have already received the item and you want to return it?\ncustomer: Actually, the item is not shipped yet\nagent: Ok, then this will be a refund. can I get your full name or account ID?\ncustomer: Norman Bouchard, and the id is EPFRFWVQE7\nagent: Thanks Norman. I pulled up your account and need to validate the purchase. Do you have your username, email address and Order ID?\ncustomer: Sure, user name is normanbouchard195, email is normanbouchard195@email.com, and the order id is 7800407924\nagent: I was able to validate your purchase. How would you like your refund?\ncustomer: I'd like it to be refunded to me credit card. thanks\nagent: What was the cost of the item Norman?\ncustomer: It was 79 bucks\nagent: Alright, I have credited your card for $79. Is there anything else I can help you with today?\ncustomer: I really appreciate it. Thank you and have a great day.\nagent: Thanks, you too!",
+      "flow": "product_defect",
+      "subflow": "refund_initiate",
+      "p_needs": 0.9635896682739258,
+      "pred_modality": "binding",
+      "truncated": false
+    },
+    {
+      "id": "abcd-2334",
+      "text": "agent: Hello, how can I help you today?\ncustomer: Hi! Hello! Sorry, a little embarrassed I accidentally must have ordered the wrong size to a jacket I purchased, is there anything you can do to help?\nagent: Let me see, I'll try to pull up what I can to help you!\ncustomer: It was so horrible, I didn't know a jacket would double as a tube top if small enough\nagent: Have you received the order already or is it still in shipping?\ncustomer: It's arrived here yes, trying it on was a mistake\ncustomer: I dont' think the kids will ever look at me the same\nagent: Ahh okay, so you'd like to return it!\nagent: Can I get your full name please?\ncustomer: Oh yes sorry, I thought I mentioned that earlier\ncustomer: Joseph Banter would be the name!\nagent: And your username, email, and order ID?\ncustomer: Certainly! Username is jb000270\ncustomer: Email is jb000270@email.com and Order ID is 3849635242\nagent: Okay, and what's your membership level?\ncustomer: It's a very nice Gold!\nagent: Well good news, as you're a Gold member you get unlimited returns\ncustomer: Oh really?!?!\ncustomer: That's amazing!\nagent: Yup!\nagent: Now you'll have to print out a shipping label so I'll need a lot of information to get that ready for you\ncustomer: I think I can do that for you! Lay it on me\nagent: I need your full address including street number, street name, city, state, and zip code\ncustomer: 8595 Kennedy St  Monterey, WA 95915\nagent: And how would you like to process your return?\ncustomer: Uhh process how?\nagent: The options are By Mail, In Store, or Drop off at one of our Centers.\nagent: As in how you plan on getting it back to us.\ncustomer: Hmmm in store sounds fun\nagent: Okay!\ncustomer: Awesome! You've been so nice, thank you so much\nagent: And with that everythings been done on my end\nagent: You'll get an email with the information on what you'll need to do\ncustomer: You truly are amazing, I hope you're having a great week so far\nagent: Is there anything else I can do for you?\ncustomer: Alrighty I'll look out for it, and I think that's all thank you\nagent: Well then have a nice day!",
+      "flow": "product_defect",
+      "subflow": "return_size",
+      "p_needs": 0.963921308517456,
+      "pred_modality": "binding",
+      "truncated": true
+    },
+    {
+      "id": "abcd-8767",
+      "text": "customer: Hi\ncustomer: I want to return an item\ncustomer: I got the wrong size\ncustomer: Can you help me with that\nagent: Okay, no problem. Can you please give me your name, account number, and order number?\ncustomer: Sanya Afzal\ncustomer: Order ID: 9909215748\nagent: Great - thank you. Do you happen to have your account number, too?  Or an email address?\ncustomer: No. I don't\nagent: Okay, no problem.  I don't see that you have a subscription with us - is that correct?\ncustomer: I do\nagent: Oh. Hmm. Okay. Could I get your email address please? Maybe I can pull up your account that way.\ncustomer: Email Address: sanyaa30@email.com\nagent: Oh, I see it now!  One moment...\ncustomer: Okay\nagent: Do you happen to know what type of membership you have?\ncustomer: Silver\nagent: Great. Okay, can you tell me the date of purchase?\ncustomer: 2020-03-02\nagent: Wonderful. Yes, you can certainly return that item. Would you like credit, a refund, or are you hoping to re-order in a different size?\ncustomer: I want a refund.\nagent: Okay, sure. We'll need to send you a return authorization, so can I please get your mailing address?\ncustomer: Okay\ncustomer: 9444 Kennedy St  Baltimore, WA 79492\nagent: Okay, and would you like to return the item by mail, or by dropping it off at one of our stores?\ncustomer: I will drop it at the store\nagent: Great. And how would you like your refund processed. Shall we put the money back on your credit card, or would you like store credit?\ncustomer: Yes. Put it on my credit card\nagent: No problem. You should get the return label in the mail shortly, and then once you return the item, we'll put that money back on your card.\ncustomer: Okay. Thanks\nagent: Is there anything else I can help you with, Sanya?\ncustomer: That will be all\nagent: Perfect. You have a nice day. Goodbye!",
+      "flow": "product_defect",
+      "subflow": "return_size",
+      "p_needs": 0.9643392562866211,
+      "pred_modality": "binding",
+      "truncated": false
+    },
+    {
+      "id": "abcd-1337",
+      "text": "agent: hi how can i help you todya\ncustomer: Hi\ncustomer: can you deliver to this to my home adr\nagent: deliver what?\ncustomer: refund\nagent: What is your name?\ncustomer: Joyce\ncustomer: My order id is\ncustomer: Order ID: 3689981828\nagent: what is your last name\ncustomer: Wu\nagent: What is the order status?\ncustomer: Pending\ncustomer: I wish to return this jacket\ncustomer: and would like to my refund amount\nagent: what is your username and account id?\ncustomer: jw035074\nagent: and your meail address please\ncustomer: jw035074@email.com\nagent: Where do you want it refunded to?\ncustomer: in store\nagent: a paper check to your address?\ncustomer: yes check is comfortable for me\ncustomer: or you can add it to my account\nagent: What isyour account id\ncustomer: jw035074\ncustomer: (288) 749-5627\ncustomer: Name: Joyce Wu  Phone Number: (288) 749-5627  Member Level: Silver  Email Address: jw035074@email.com  Username: jw035074\nagent: What is the dollar amount?\ncustomer: Purchase Date: 2019-07-16  Order ID: 3689981828  Payment Method: Debit Card  Address: 7103 Primrose Ave  La Fayette, CA 86652\ncustomer: 84\ncustomer: Product: Jacket  Brand: Tommy_Hilfiger  Amount: $84\ncustomer: Thank you\ncustomer: Bye\nagent: The refund will be added to your account, let me know if you have any questions\ncustomer: no",
+      "flow": "product_defect",
+      "subflow": "refund_update",
+      "p_needs": 0.9644133448600769,
+      "pred_modality": "binding",
+      "truncated": false
+    },
+    {
+      "id": "abcd-10148",
+      "text": "agent: Hello, thank you for contacting AcmeCorp, how may I help you today?\nagent: How may I help you today?\ncustomer: I want to know the state of my refund because I want to add the item to my existing refund\nagent: I would happy to help. Just to clarify you want to add an item to another refund correct?\nagent: May I have your full name or account id please?\ncustomer: Yes\ncustomer: Name: Joyce Wu\nagent: Thank you may I please have your username, email address, and Order ID?\ncustomer: Username: jw720811, Email Address: jw720811@email.com, Order ID: 2316736529\nagent: Thank you.\nagent: What item would you like to add?\ncustomer: Product: Jacket  Brand: Calvin_Klein  Amount: $74\nagent: What was the total of your existing refund?\ncustomer: 100\nagent: So your total refund will be 174. Is there anything else I may help you with today?\ncustomer: No\nagent: Thank you for contacting AcmeCorp, please be safe and stay well.",
+      "flow": "product_defect",
+      "subflow": "refund_update",
+      "p_needs": 0.964835524559021,
+      "pred_modality": "binding",
+      "truncated": false
+    },
+    {
+      "id": "abcd-9135",
+      "text": "agent: Hello! How can I help you today?\ncustomer: Joseph Banter, at your service!\nagent: Hello Joseph!\ncustomer: This Michael Kors jacket is very comely, but it simply doesn't suit a portly gentleman such as myself. I need to return it because I got it in Medium, and perhaps it's time to upgrade to an Extra Large, if you know what I mean!\ncustomer: I am an exalted Gold Member with your fine establishment, so I do hope you'll be able to process the return for me.\nagent: I know exactly what you mean. I think everyone is feeling the effects of the covid 15. I can help you with your return.\ncustomer: The COVID 15, a-ha! Like when one goes off to college and accumulates additional poundage! I do appreciate the levity, good sir and/or ma'am.\nagent: Alright Joseph, I have your account pulled up and now I just need to validate your purchase. Can I please have your username, email address, and order ID please.\ncustomer: jbanter2 is my username. Unoriginal, I know.\ncustomer: jbanter2@email.com\ncustomer: Order ID: 4163785063\nagent: Thank you! And you said you are a Gold member, correct?\ncustomer: Vraimant!\ncustomer: That's French for \"really!\" because I am fancy.\nagent: Thank you. As a gold member, you get unlimited returns.\nagent: Can I have your full address please so I can give you a shipping label.\ncustomer: Mais oui!\ncustomer: 7723 Brushwick Dr  Brighton, MI 63703\nagent: Now how would you like to return your item? In store, drop off center, or by mail?\ncustomer: I suppose I can have my driver take me to the nearest outlet of your fine establishment.\ncustomer: In your parlance, I believe that would be \"in store\".\nagent: You are all set Joseph!\ncustomer: Excelsior!\nagent: Is there anything else I can help you with today?\ncustomer: A thousand thanks for your efficient customer service this fine day.\ncustomer: That will be all!\nagent: I do hope you have a fantastic day!",
+      "flow": "product_defect",
+      "subflow": "return_size",
+      "p_needs": 0.965004026889801,
+      "pred_modality": "binding",
+      "truncated": false
+    },
+    {
+      "id": "abcd-1979",
+      "text": "agent: Hello, how can I help you today?\ncustomer: Hi! I need to return an item\nagent: And what is the reason for the return?\ncustomer: It is the wrong color. I order black but I need orange for a pride event\nagent: May I have your full name or account ID?\ncustomer: Sanya Afzal\nagent: May I have your username, e-mail address, and the order ID?\ncustomer: sanyaafzal849\ncustomer: sanyaafzal849@email.com\ncustomer: 6757433758\nagent: What is your membership level?\ncustomer: Silver\nagent: What is the purchase date of the item?\ncustomer: 2019-10-26\nagent: Ok, I can process this return for you.\nagent: What is your address for the shipping label?\ncustomer: 1816 n confers st Baltimore, tx 43567\nagent: And would you like to return the item by mail, in-store, or drop it off?\ncustomer: mail\nagent: Ok, the return has been processed for you.\ncustomer: Thank you\nagent: Is there anything else I can help you with today?\ncustomer: no thank you\nagent: Have a great day.",
+      "flow": "product_defect",
+      "subflow": "return_color",
+      "p_needs": 0.9651733040809631,
+      "pred_modality": "binding",
+      "truncated": false
+    },
+    {
+      "id": "abcd-6685",
+      "text": "agent: Thanks for contacting us at AcmeBrands! What can I do for you today?\ncustomer: Hello, I'd like to return an item please\nagent: No problem. What is the reason for the return?\ncustomer: It has a stain\nagent: I'm sorry to hear. Let me take care of this for you. What is your name, please?\ncustomer: Joyce Wu\nagent: Thank you, Joyce. While I pull up your account, can you please tell me your username, email address, and order ID, so that I can validate your purchase?\ncustomer: Email Address: jwu95262@email.com\ncustomer: jwu95262 is my username\ncustomer: Order ID: 7396248490\nagent: Got it, thank you!\nagent: What is your membership level?\ncustomer: Bronze\nagent: Thank you. And when was this purchase made?\ncustomer: March 16, 2020\nagent: Got it, thank you. I can process this with no problem.\ncustomer: That's awesome\nagent: What is your shipping address, please? I will create a return label.\ncustomer: It's: 4244 Brushwick Dr  Newark, MI 29140\nagent: Thank you. Would you like to do the return by mail, or in store/at a drop-off center?\ncustomer: I can bring it into the store\nagent: Okay Joyce, you're all set! Can I help you with anything else today?\ncustomer: That is everything, you are the best!\nagent: Thanks so much, have a great day!",
+      "flow": "product_defect",
+      "subflow": "return_stain",
+      "p_needs": 0.9652839303016663,
+      "pred_modality": "binding",
+      "truncated": false
+    },
+    {
+      "id": "abcd-1229",
+      "text": "agent: Hello, thanks for contacting AcmeBrands. How can I help you today?\ncustomer: Hi!  I got this pair of jeans the other day and they have a damn stain on them! I want to return them\nagent: Oh no! So sorry to hear that. I'd be happy to help you out though.\nagent: Can I get your full name please?\ncustomer: Alessandro Phoeni\ncustomer: Phoenix\ncustomer: sorry\nagent: No problem. Can I get your username, e-mail address and the order ID as well please?\ncustomer: user- alessandrophoenix357\ncustomer: email- alessandrophoenix375@email.com\ncustomer: order- 1307833917\ncustomer: This really sucks man!  I needed those jeans for my hipsters ball coming up next week!\nagent: Great thanks. Do you know what membership level you are on?\ncustomer: I'm gold baby!\nagent: Ballin!\ncustomer: Always\nagent: That means you get unlimited returns. So let me get started on that for you.\ncustomer: How does a new pair of jeans have a stain anyways? was the dang mailman tryin them on or WHAT?!\nagent: Can I get your address so I can send out a shipping label, so you can return that stained item?\nagent: Yeah, sounds like there is a rogue UPS or Fedex delivery man out there.\ncustomer: I'm at 1087 Lincoln Ave, San Mateo CA 84667\ncustomer: You can come over later if you want\nagent: Great, give me one second here to enter this into the system.\nagent: Once you get that shipping label, how would you like to send that back to us? We have several options available.\nagent: By Mail, In Store, or Drop off at a local shipping center\ncustomer: I'd like to do it the laziest way as possible, please.  Oh, and threw away that package.  It might have coronavirus on it! Blech!\ncustomer: Mail, so I can shame the delivery man\nagent: Ok, by mail is probably the option you're going to want to go with then\nagent: you can just leave it for your mail person to pick up\ncustomer: I'll ask him how he liked them\ncustomer: Ok great\nagent: Alright, all set. Is there anything else I can help you with?\ncustomer: Naw, that's all for now.  I have to find a new outfit to wear now though. Geez. You've been great though so thank you\ncustomer: If you want to go to the hipsters ball with me you know where to find me\nagent: Not a problem, happy to help! Have a fantastic day!\nagent: Sounds good!",
+      "flow": "product_defect",
+      "subflow": "return_stain",
+      "p_needs": 0.9653842449188232,
+      "pred_modality": "binding",
+      "truncated": true
+    }
+  ],
+  "skipped_refund_rows": [
+    {
+      "id": "abcd-9248",
+      "text": "agent: Hi! How may I help you today?\ncustomer: Hi I want to return the Michael Kors jacket because it had a stain on it\nagent: Oh no! I am so sorry. Can I have your name?\nagent: are you still there",
+      "flow": "product_defect",
+      "subflow": "return_stain",
+      "p_needs": 0.007852522656321526,
+      "pred_modality": "info_only",
+      "truncated": false
+    },
+    {
+      "id": "abcd-1643",
+      "text": "agent: Hello, how can I help you today?\ncustomer: what sizes do the boots come int\nagent: Happy to help,  may I have your full name please?\nagent: Hello, are you still there?\nagent: Hello?",
+      "flow": "product_defect",
+      "subflow": "refund_update",
+      "p_needs": 0.006481743883341551,
+      "pred_modality": "info_only",
+      "truncated": false
+    },
+    {
+      "id": "abcd-7631",
+      "text": "agent: Hello\ncustomer: i need to return something\ncustomer: i bought the wrong color\nagent: Give me your full name or account id\nagent: are you there?\ncustomer: Name: Joyce Wu\ncustomer: Order ID: 8377404170\nagent: Give me your username, email\nagent: Can you try and reply fast\nagent: What is your membership level?",
+      "flow": "product_defect",
+      "subflow": "return_color",
+      "p_needs": 0.11104302853345871,
+      "pred_modality": "info_only",
+      "truncated": false
+    },
+    {
+      "id": "abcd-7534",
+      "text": "customer: i need to add something to an existing refund\nagent: Thank you for contacting AcmeBrands, how can I help today?\nagent: Sure, Can I have your full name or account ID please?\ncustomer: Name: Rodriguez Domingo\nagent: And may I have your username, email address, and order ID?\nagent: Are you still there?\nagent: Hello?",
+      "flow": "product_defect",
+      "subflow": "refund_update",
+      "p_needs": 0.025077015161514282,
+      "pred_modality": "info_only",
+      "truncated": false
+    }
+  ]
+}

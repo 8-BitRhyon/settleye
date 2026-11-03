@@ -1,8 +1,8 @@
 """Tests for the Meta-model promise extraction pipeline.
 
 All model I/O goes through httpx.MockTransport: no network, no credits,
-deterministic. The wire-level tests also pin the canonical model ID so the
-nonexistent `-1026` suffixed ID can never ship again.
+deterministic. The wire-level tests also pin the event-pinned `-1026` ID so a
+silent fallback to the public catalog ID cannot ship.
 """
 
 import json
@@ -14,7 +14,7 @@ from app.extract.client import MODEL_ID, MetaModelClient
 from app.extract.pipeline import ExtractionError, extract_promises
 from app.models import PromiseEntity
 
-CANONICAL_MODEL_ID = "meta-models/muse-spark-open-1026"
+EVENT_MODEL_ID = "meta-models/muse-spark-open-1026"
 
 PHANTOM_JSON = json.dumps([
     {
@@ -36,7 +36,7 @@ def make_client(replies: list[str], seen: list[dict]) -> MetaModelClient:
         seen.append(json.loads(request.content.decode()))
         body = {
             "choices": [{"message": {"content": replies.pop(0)}}],
-            "model": CANONICAL_MODEL_ID,
+            "model": EVENT_MODEL_ID,
         }
         return httpx.Response(200, json=body)
 
@@ -44,16 +44,16 @@ def make_client(replies: list[str], seen: list[dict]) -> MetaModelClient:
     return MetaModelClient(api_key="test-key", transport=transport)
 
 
-def test_model_id_is_canonical() -> None:
-    assert MODEL_ID == CANONICAL_MODEL_ID
+def test_model_id_is_event_pinned() -> None:
+    assert MODEL_ID == EVENT_MODEL_ID
     assert MODEL_ID == "meta-models/muse-spark-open-1026"
 
 
-async def test_wire_sends_canonical_model_id() -> None:
+async def test_wire_sends_event_model_id() -> None:
     seen: list[dict] = []
     client = make_client(["[]"], seen)
     await client.chat([{"role": "user", "content": "hi"}])
-    assert seen[0]["model"] == CANONICAL_MODEL_ID
+    assert seen[0]["model"] == EVENT_MODEL_ID
 
 
 async def test_happy_transcript_extracts_nothing() -> None:

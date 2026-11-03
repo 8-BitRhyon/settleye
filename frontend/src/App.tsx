@@ -9,7 +9,13 @@ import {
   type ValueSummary,
 } from "./api";
 import { EyeIcon, type EyeIconHandle } from "./components/EyeIcon";
-import { SAMPLE_AUDIT_RESPONSE } from "./sample";
+import {
+  SAMPLE_AUDIT_RESPONSE,
+  SAMPLE_EXPLANATION,
+  additionalMovement,
+  nextSampleReceipt,
+  type SampleReceiptState,
+} from "./sample";
 import {
   AUDIT_LOADING_LABEL,
   SAMPLE_PHANTOM_TRANSCRIPT,
@@ -38,6 +44,8 @@ export default function App() {
   const [fixes, setFixes] = useState<RemediateState>({});
   const [explanations, setExplanations] = useState<ExplainState>({});
   const [isSample, setIsSample] = useState(false);
+  const [sampleReceipt, setSampleReceipt] = useState<SampleReceiptState | null>(null);
+  const [sampleDrift, setSampleDrift] = useState<DriftResult | null>(null);
 
   // Deep link from the landing page: ?sample=1 opens the recorded audit
   // immediately so a visitor sees a drift without a single click.
@@ -61,6 +69,8 @@ export default function App() {
     setAuditing(true);
     setError(null);
     setIsSample(false);
+    setSampleReceipt(null);
+    setSampleDrift(null);
     try {
       const next = await auditTranscript(transcript);
       setReport(next);
@@ -79,10 +89,16 @@ export default function App() {
     setReport(SAMPLE_AUDIT_RESPONSE);
     setFixes({});
     setExplanations({});
+    setSampleReceipt(null);
+    setSampleDrift(null);
   }
 
   async function onExplain(drift: DriftResult) {
     const key = `${drift.promise.order_id}:${drift.amount_at_risk_usd}`;
+    if (isSample) {
+      setExplanations((prev) => ({ ...prev, [key]: SAMPLE_EXPLANATION }));
+      return;
+    }
     setExplanations((prev) => ({ ...prev, [key]: "…" }));
     try {
       const text = await explainDrift(
@@ -101,6 +117,34 @@ export default function App() {
 
   async function onRemediate(drift: DriftResult) {
     const key = `${drift.promise.order_id}:${drift.amount_at_risk_usd}`;
+    const matches = (candidate: DriftResult) =>
+      `${candidate.promise.order_id}:${candidate.amount_at_risk_usd}` === key;
+    if (isSample) {
+      const next = nextSampleReceipt(sampleReceipt, drift);
+      setSampleReceipt(next);
+      setSampleDrift(drift);
+      setFixes((prev) => ({ ...prev, [key]: "done" }));
+      if (next.status === "executed") {
+        setReport((prev) =>
+          prev === null
+            ? prev
+            : {
+                ...prev,
+                drifts: prev.drifts.filter((d) => !matches(d)),
+                results: prev.results.map((r) =>
+                  matches(r)
+                    ? { ...r, verdict: "verified" as const, amount_at_risk_usd: 0 }
+                    : r,
+                ),
+                total_at_risk_usd: Math.max(
+                  0,
+                  prev.total_at_risk_usd - next.amount_usd,
+                ),
+              },
+        );
+      }
+      return;
+    }
     setFixes((prev) => ({ ...prev, [key]: "sending" }));
     try {
       const receipt = await remediate(
@@ -113,9 +157,9 @@ export default function App() {
           ? prev
           : {
               ...prev,
-              drifts: prev.drifts.filter((d) => d !== drift),
+              drifts: prev.drifts.filter((d) => !matches(d)),
               results: prev.results.map((r) =>
-                r === drift
+                matches(r)
                   ? { ...r, verdict: "verified" as const, amount_at_risk_usd: 0 }
                   : r,
               ),
@@ -132,6 +176,11 @@ export default function App() {
         [key]: err instanceof Error ? err.message : "Fix failed.",
       }));
     }
+  }
+
+  function onSampleRetry() {
+    if (sampleDrift === null) return;
+    setSampleReceipt((prev) => nextSampleReceipt(prev, sampleDrift));
   }
 
   return (
@@ -287,6 +336,42 @@ export default function App() {
                 </article>
               );
             })}
+          </section>
+        )}
+
+        {isSample && sampleReceipt !== null && (
+          <section className="mt-4 rounded-xl border border-emerald-800 bg-zinc-900 p-4">
+            <p className="text-xs font-semibold tracking-widest text-emerald-400 uppercase">
+              Remediation receipt
+            </p>
+            <p className="mt-1 font-mono text-xs text-zinc-300">
+              {sampleReceipt.idempotency_key}
+            </p>
+            <p className="mt-2 text-sm text-zinc-100" aria-live="polite">
+              {sampleReceipt.status === "executed"
+                ? `${formatUSD(sampleReceipt.amount_usd)} refunded.`
+                : `Already executed. ${formatUSD(additionalMovement(sampleReceipt))} additional movement.`}
+            </p>
+            <p className="mt-1 text-xs text-zinc-500">
+              Attempt {sampleReceipt.attempts}. Same key on every retry; no
+              second refund.
+            </p>
+            <div className="mt-3 flex items-center gap-3">
+              <button
+                type="button"
+                onClick={onSampleRetry}
+                className="rounded-full border border-emerald-600 px-4 py-1.5 text-xs font-bold text-emerald-300"
+              >
+                Retry the same fix
+              </button>
+              <button
+                type="button"
+                onClick={onSample}
+                className="text-xs font-semibold text-zinc-400 underline underline-offset-2"
+              >
+                Reload sample
+              </button>
+            </div>
           </section>
         )}
 
