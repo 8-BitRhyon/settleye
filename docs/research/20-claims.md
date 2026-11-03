@@ -14,7 +14,7 @@ Every number the landing page shows, where it comes from, and what it does not c
 | Non-binding cases that drifted | 0 of 4 | `docs/research/12-eval-results.md` | Retracted, conditional, superseded, info-only |
 | Wild transcripts processed | 300 of 300 | `docs/research/19-hf-benchmark.md` | Bitext sample, seed 7. Zero crashes, zero false binding promises |
 | Live drift caught | $44.00 on order #1001 in 4.07s | `README.md` | Single test-mode dev-store order. Not a fleet sample |
-| Automated checks | 86 backend, 20 frontend | CI | Counted at the commit named in the run |
+| Automated checks | 97 backend, 34 frontend | CI | Counted at the commit named in the run |
 
 ## Borrowed numbers, with qualifiers
 

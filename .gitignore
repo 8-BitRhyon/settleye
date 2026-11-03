@@ -45,3 +45,10 @@ npm-debug.log*
 
 # Local tooling state
 .tmp/
+
+# Fine-tune bench artifacts (weights, generated rows, logs)
+bench/finetune/.venv/
+bench/finetune/data/
+bench/finetune/out/
+bench/finetune/laya_base/
+bench/finetune/*.log

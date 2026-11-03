@@ -102,3 +102,5 @@ That leaves three honest positions, and we should pick one rather than blur them
 3. Fine-tune an open checkpoint, which does not fit in the remaining time.
 
 Recorded scripts: `bench/laya/` for Laya. The d1 runs are reproducible from the model card's own example with the two question phrasings above.
+
+Follow-up: the fine-tune path was tested in `22-free-gate-finetune.md` on 2026-11-03.
