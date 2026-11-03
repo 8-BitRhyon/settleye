@@ -48,3 +48,33 @@ python3 bench/score.py
 ```
 
 Inputs: `fixtures/eval_expected.json`, `fixtures/eval_live_output.json`, `bench/argon_output.json`.
+
+## Open System One model, zero-shot (Laya, Apache 2.0)
+
+Measured 2026-11-03 with `convaiinnovations/laya` (ModernBERT-large, 421M), CPU, no fine-tuning. Same questions our gate asks Jev: is there a financial promise, and what is its end state.
+
+### Promise presence on our 12 curated cases
+
+11 of 12. The miss is the clean status-check case, which scored 0.62 for "yes" and would have been kept rather than skipped.
+
+### Commitment modality on the 11 promise cases
+
+8 of 11. The three misses all collapse to `binding`: a retracted promise, an info-only policy explanation, and a superseded amount were each labelled binding. That is the dangerous direction for an auditor, because it would raise drift on things the agent never actually owed.
+
+### Cost gate on 300 wild transcripts
+
+Kept 294 of 300. A 2.0 percent discard rate, at about 150 ms per request on CPU. As a cost filter this is close to useless out of the box: it says "possible promise" to nearly everything.
+
+### Calibration
+
+The runtime warns on load that this checkpoint ships invalid temperatures. It tells you to treat the affected confidence values as uncalibrated. The model card says the same. The base checkpoints are near chance zero-shot, and they need per-question-type temperature fitting before the probabilities mean anything.
+
+### What this supports
+
+Laya is a promising base to fine-tune, not a drop-in gate. Its own card says as much. The measured failure is useful for three reasons:
+
+1. It shows why a calibrated decision model needs fitting on domain data first. That is the fine-tune path in the impact research.
+2. It rules out the cheap shortcut. An open checkpoint does not remove the need for a hosted calibrated model or a fine-tuning step.
+3. It gives the write-up an honest negative result next to the positive ones. Two of three models were measured against our task and neither is a free lunch.
+
+Weights: https://huggingface.co/convaiinnovations/laya. Reproduce with the two scripts recorded in this folder.
