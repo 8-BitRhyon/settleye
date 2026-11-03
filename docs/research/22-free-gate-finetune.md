@@ -110,6 +110,32 @@ The sample is money-adjacent by construction: 150 of 300 rows are refund
 intents. A general support queue would likely discard more, but we have not
 measured one. Do not quote 12.7 percent as a general rate.
 
+### Real-text check: ABCD
+
+The Bitext sample is templated. To test real human-human support text, we ran
+the gate over ABCD v1.1: 10,042 public retail support dialogues from ASAPP
+(MIT license), with scenario subflows for refund initiation, refund updates,
+status checks, returns, cancellations, and account or shipping issues. It is
+not merchant Shopify data, but it is real support language and the closest
+public proxy we have.
+
+| Threshold | All discarded | Refund or return subflows discarded | Action subflows discarded | Mean p |
+|---|---|---|---|---|
+| 0.20 | 0.9% (94 of 10,042) | 0.4% (4 of 1,070) | 0.5% (4 of 891) | 0.963 |
+| 0.50 | 1.7% (167 of 10,042) | 0.4% (4 of 1,070) | 0.5% (4 of 891) | 0.963 |
+
+The four skipped refund rows are abandoned threads: the customer starts a
+return or refund update, the agent asks for identity details, and the customer
+never replies. The agent never commits, so the skips are correct. There are no
+false clears in this sample. The gate scores at 512 tokens; 71 of 10,042
+transcripts are longer and were truncated, but none of the four skipped refund
+rows is among them. The transcripts are in
+`bench/finetune/results/abcd_gate.json`.
+
+The gate is safe on this corpus, but it is not a cost saver. It keeps 98.3 to
+99.1 percent of real support dialogues. The 12.7 percent Bitext discard did not
+generalize. The synthetic training data is the bottleneck, not the model size.
+
 ### Calibration and latency
 
 - Brier 0.016 and ECE 0.022 on the 250-row held-out set, after one temperature
@@ -127,9 +153,16 @@ also discards 6.3 percent of the 300 money-adjacent Bitext rows, against 2
 percent for zero-shot Laya. At 0.50 the discard rises to 12.7 percent for a
 2.4-point recall cost on the held-out set.
 
-For a product that fails closed on money, 0.20 is the better default: it keeps
-98.4 percent of held-out commitments and still discards 6.3 percent of the wild
-sample. 0.50 is the cost-tuned point, not the safety point.
+The real-text check changes the conclusion. The gate is safe on ABCD, with zero
+false clears in the four skipped refund threads, but it keeps 98.3 percent of
+real support dialogues at 0.50. The 12.7 percent Bitext discard is a property
+of a templated sample, not a product claim. Do not put it on the landing page
+without the ABCD correction.
+
+For a product that fails closed on money, 0.20 is the safer default: it keeps
+98.4 percent of held-out commitments. On real text it discards only 0.9
+percent, so the cost saving is negligible. 0.50 discards 1.7 percent, still not
+enough to justify a second model.
 
 The modality head is not the reason to ship this. It gets 8 of 10 commitment
 states right on the eval. It confuses a retraction with a supersession and a
@@ -150,19 +183,23 @@ and that call is clean on the eval.
   torch runtime. Shipping it is a deployment decision, not a research result.
 - The Bitext sample has no labels for our schema. The discard rate measures
   cost, not recall.
+- ABCD is public human-human retail support, not merchant Shopify transcripts.
+  It has scenario subflows, not promise labels; the four skipped refund rows
+  were inspected manually.
 - The TinyBERT model card does not state a license. Verify it before
   redistributing the checkpoint; the method transfers to a checkpoint with a
   clear license.
 
 ## Decision
 
-Keep the hosted extractor as the product path. The TinyBERT gate is a credible
-free alternative for a batch worker, where a 55 MB checkpoint and a few
-milliseconds per transcript are cheap and the cold start is amortized. It is
-not a drop-in replacement for the synchronous API on this evidence, and it is
-not wired in.
-The next step, if the product needs the saving, is to run the gate over a real
-merchant transcript sample and compare its discard rate and false-clear rate.
+Keep the hosted extractor as the product path. The TinyBERT gate is a safety
+result, not a cost result: it keeps every commitment on the 12-case eval and has
+zero false clears in the ABCD sample, but it discards only 0.9 to 1.7 percent of
+real support dialogues. That is not enough to justify a second model in the
+batch worker. The next step is domain adaptation with real support labels, not
+a larger model. If that raises the non-refund discard rate without losing
+refund recall, revisit the gate. Until then, do not ship it and do not put the
+12.7 percent Bitext number on the landing page.
 
 ## Reproduce
 
@@ -181,6 +218,14 @@ uv pip install --python .venv/bin/python torch transformers pandas pyarrow
 .venv/bin/python summarize.py \
   --report out/tinybert_eval_report.json \
   --out results/summary.json
+
+# ABCD real-text check (10,042 public support dialogues, MIT)
+mkdir -p data/abcd
+curl -sL https://raw.githubusercontent.com/asappresearch/abcd/master/data/abcd_v1.1.json.gz \
+  | gzip -dc > data/abcd/abcd_v1.1.json
+.venv/bin/python eval_abcd_gate.py \
+  --model out/tinybert_gate \
+  --device mps
 ```
 
 The recorded environment used `torch` 2.15.0 and `transformers` 5.22.1. Add

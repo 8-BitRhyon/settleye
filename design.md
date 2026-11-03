@@ -52,7 +52,7 @@ settleye/
 | Explanations fire per drift on demand | Sweeps keep one model call per transcript. Display text is capped and fact-bound | 2026-10-27 |
 | Third-eye brand mark in final CTA | Presentation beats perf on first view. Lazy Three.js with static fallback. Floor 85, a11y 100 | 2026-10-27 |
 | Jev hybrid evaluated, not adopted pre-judging | No live trial exists, vendor benchmarks unconfirmed, freeze holds. Revisit with metered eval after | 2026-10-28 |
-| Free TinyBERT gate measured, kept off the API path | 55 MB checkpoint, 25 s on M4. 10 of 10 commitments kept on the 12-case eval, 12.7% wild discard at 0.50. Bench-only: 421M Laya path swapped on a 16 GB laptop. See `docs/research/22-free-gate-finetune.md` | 2026-11-03 |
+| Free TinyBERT gate measured, kept off the API path | 55 MB, 25 s on M4. 10 of 10 commitments on the 12-case eval. Real ABCD check: 0.9% discard at 0.20, zero false clears in 4 skipped refund threads. Safe but not a cost saver; synthetic data is the bottleneck. Bench-only: 421M Laya path swapped on a 16 GB laptop. See `docs/research/22-free-gate-finetune.md` | 2026-11-03 |
 | Challenge track: Push the Frontier | Execution-verification layer for the agent economy is a new capability, not a personal workflow fix | 2026-10-27 |
 | Validate-then-retry extraction, not constrained decoding | Baseten accepts but does not enforce `json_schema` for this model | 2026-10-26 |
 | Mock ledger adapter behind interface from day one | Shopify auth and idempotency friction is the top integration risk | 2026-10-26 |

@@ -42,8 +42,14 @@ On the 250-row held-out set at threshold 0.20: 98.4 percent commitment recall,
 money-adjacent Bitext sample: 6.3 percent discard at 0.20, 12.7 percent at 0.50.
 Zero-shot Laya discarded 2 percent.
 
+The Bitext result did not generalize. On ABCD v1.1, a public corpus of 10,042
+human-human retail support dialogues, the gate discards 0.9 percent at 0.20 and
+1.7 percent at 0.50. The four skipped refund threads are abandoned conversations
+with no agent commitment, so there are zero false clears in the sample. The gate
+is safe but not a cost saver on real text.
+
 Full result and limits: `docs/research/22-free-gate-finetune.md`.
-Compact evidence: `results/summary.json`.
+Compact evidence: `results/summary.json` and `results/abcd_gate.json`.
 
 ## Reproduce
 
@@ -62,6 +68,14 @@ uv pip install --python .venv/bin/python torch transformers pandas pyarrow
 .venv/bin/python summarize.py \
   --report out/tinybert_eval_report.json \
   --out results/summary.json
+
+# ABCD real-text check (10,042 public support dialogues, MIT)
+mkdir -p data/abcd
+curl -sL https://raw.githubusercontent.com/asappresearch/abcd/master/data/abcd_v1.1.json.gz \
+  | gzip -dc > data/abcd/abcd_v1.1.json
+.venv/bin/python eval_abcd_gate.py \
+  --model out/tinybert_gate \
+  --device mps
 ```
 
 The recorded environment used `torch` 2.15.0 and `transformers` 5.22.1. Add
@@ -82,7 +96,10 @@ recorded run.
 - `train_tinybert.py`: TinyBERT fine-tune with the gate and modality heads.
 - `eval_tinybert.py`: scores the gate on the eval set, held-out data, and the
   300-row Bitext sample.
+- `eval_abcd_gate.py`: runs the gate over ABCD and records the real-text
+  discard rate and skipped-refund evidence.
 - `summarize.py`: compacts the full eval report into `results/summary.json`.
+- `results/summary.json`, `results/abcd_gate.json`: committed evidence.
 - `train_gate.py`, `eval_gate.py`: the 421M Laya path for larger machines.
 - `smoke_rows.jsonl`: 8-row fixture for the larger Laya path.
 - `test_metrics.py`: metric math checks.
@@ -97,5 +114,8 @@ recorded run.
 - One training run. No seed sweep, so variance is unmeasured.
 - The Bitext sample is money-adjacent and has no labels for our schema, so its
   discard rate measures cost, not recall.
+- ABCD is public human-human retail support, not merchant Shopify transcripts.
+  Its scenario subflows are not promise labels; the four skipped refund threads
+  were inspected manually.
 - The TinyBERT model card does not state a license. Verify it before
   redistributing the checkpoint.

@@ -21,7 +21,7 @@ Built for the Meta Global AI Developer Hackathon (Indie Developer Track, Push th
 
 - Eval set (`fixtures/eval/`, 12 cases): 12 of 12 verdicts correct, 11 of 12 entities exact. Zero non-binding drifts in four chances. See `docs/research/12-eval-results.md`.
 - Live Shopify run: dev-store order #1001 showed $6.00 settled of $50.00 promised. The daemon reported $44.00 at risk in 4.07 seconds.
-- Free gate bench: a 55 MB TinyBERT fine-tune kept 10 of 10 commitments on the 12-case eval and discarded 12.7% of 300 money-adjacent wild rows at threshold 0.50. Bench-only, not wired into the API. See `docs/research/22-free-gate-finetune.md`.
+- Free gate bench: a 55 MB TinyBERT fine-tune kept 10 of 10 commitments on the 12-case eval. On 10,042 real ABCD support dialogues it discarded only 0.9% at threshold 0.20 and 1.7% at 0.50, with zero false clears in the four skipped refund threads. Safe, but not a cost saver. Bench-only, not wired into the API. See `docs/research/22-free-gate-finetune.md`.
 - Suite: 97 backend checks plus 34 frontend checks, green on every push.
 
 ## Run it yourself (under five minutes)
