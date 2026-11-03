@@ -186,6 +186,10 @@
     h1 { font-size:clamp(32px,8.6vw,42px); }
     .sub { font-size:16px; }
     .hero-cmd { font-size:10.5px; max-width:100%; overflow-wrap:anywhere; }
+    /* The photo edge is vertical on desktop and diagonal on mobile. Cover the column
+       so body copy never sits on the dark half. */
+    .hero::before { background:linear-gradient(180deg, rgba(243,245,241,.97) 0%, rgba(243,245,241,.95) 62%, rgba(243,245,241,.9) 100%); }
+    .sub { color:rgba(13,27,30,.8); }
   }
 </style>
 </head>
