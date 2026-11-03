@@ -52,19 +52,20 @@ cd backend
 uv run python -m app.daemon --dir ../fixtures/eval --ledger mock
 ```
 
-Shopify dev-store check (read-only, needs a dev-store Admin API token):
+Shopify dev-store check (read-only, Dev Dashboard app):
 
 ```bash
+uv run python -m app.ledger.token --write
 uv run python -m app.ledger.live_check 1001
 uv run python -m app.daemon --dir ../fixtures/live --ledger shopify
 ```
 
-The first command reads settled refunds for order #1001. The second replays the
-$50 promise fixture against the dev store and should report $44 at risk. Neither
-writes money. A custom-app Admin API token starts with `shpat_`. If the check
-names `shpss_` or `shpua_`, it is the API secret or a user token, not the Admin
-API access token; copy the `shpat_` token from the app's API credentials. If the
-check returns 401, regenerate the token and update `SHOPIFY_ADMIN_TOKEN`.
+The Dev Dashboard app `Settleye Auditor` exchanges its client ID and secret for
+a 24-hour `shpua_` access token. `token --write` refreshes that token in `.env`
+without printing it. The live check reads settled refunds for order #1001. The
+daemon replays the $50 fixture and should report $44 at risk. Neither writes
+money. A `shpss_` value is the app secret, not the access token; use the token
+command. A custom app's `shpat_` token also works if you prefer that setup.
 
 Copy `.env.example` to `.env` and fill in test-mode credentials only. Never commit `.env`.
 
