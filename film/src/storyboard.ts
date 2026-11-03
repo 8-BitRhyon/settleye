@@ -47,7 +47,7 @@ export const storyboard: Scene[] = [
     start: 0,
     duration: 20,
     mode: "code",
-    vo: "Every AI support agent, yours, mine, Grok, Atlas, any of them, will eventually tell a customer 'your refund is processed' when nothing was processed. The agent is not lying. It just never checks. Each phantom refund costs $45, plus a $128 chargeback when the customer gives up waiting. I'm [name], and this is Settleye: the auditor for AI agents.",
+    vo: "Every AI support agent will eventually tell a customer 'your refund is processed' when nothing was processed. The agent is not lying. It just never checks. Each phantom refund costs $45, plus a $128 chargeback. I'm [name], and this is Settleye: the auditor for AI agents.",
     cues: [
       { at: 0.5, hold: 3.2, kind: "kicker", text: "SETTLEYE", sub: "The auditor for AI agents", tone: "pine" },
       { at: 4.0, hold: 4.6, kind: "line", text: "\"Your refund is processed\"", sub: "when nothing was processed", tone: "alarm" },
@@ -117,7 +117,7 @@ export const storyboard: Scene[] = [
     start: 165,
     duration: 15,
     mode: "code",
-    vo: "Every payment needs a ledger. Every agent needs an auditor. The nightly sweep already catches orders promised across several tickets. Built [dates] for this event on Meta open weights. Repo link, setup under five minutes, synthetic data only, no live payments.",
+    vo: "Every payment needs a ledger. Every agent needs an auditor. The nightly sweep catches orders promised across several tickets. Built [dates] for this event on Meta open weights.",
     cues: [
       { at: 0.3, hold: 5.2, kind: "line", text: "Every payment needs a ledger.", sub: "Every agent needs an auditor.", tone: "pine" },
       { at: 5.8, hold: 4.2, kind: "line", text: "The nightly sweep already catches orders promised across several tickets", sub: "Built for this event on Meta open weights.", tone: "ink" },
