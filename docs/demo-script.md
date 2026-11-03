@@ -59,6 +59,16 @@ one is available.
 The end card on screen carries the repo link, setup time, and the synthetic
 data and test-ledger scope.
 
+## 15-second proof
+
+Recorded from the public sample inbox by `film/capture/proof20.mjs`.
+
+> The agent promised a forty-five dollar refund. The ledger shows zero settled.
+> Settleye catches the drift. One click fixes it. Click again: same key, zero
+> dollars more. Resolved is not settled.
+
+End card: `Resolved is not Settled.` / `SETTLEYE`.
+
 ## Re-render the voiceover
 
 ```bash
