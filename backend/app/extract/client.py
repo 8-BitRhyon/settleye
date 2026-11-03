@@ -1,9 +1,10 @@
 """Thin client for the Meta model over an OpenAI-compatible endpoint.
 
-Verified 2026-10-26: the canonical model ID is `meta-models/muse-spark-open`.
-The `-1026` suffixed variant does not exist on Baseten, Modal, or anywhere
-else. The ID lives in exactly one constant so a typo breaks loudly at the
-wire level instead of silently at demo time.
+Verified 2026-11-03: the event key answers the pinned
+`meta-models/muse-spark-open-1026` deployment. The public catalog ID
+`meta-models/muse-spark-open` returns 403 with the same key. The default
+follows the event; MODEL_ID overrides. The ID lives in exactly one constant so
+a typo breaks loudly at the wire level instead of silently at demo time.
 """
 
 import os
@@ -17,9 +18,9 @@ BASE_URL_DEFAULT = "https://inference.baseten.co/v1"
 def model_id() -> str:
     """Active model ID: MODEL_ID override wins, event default otherwise.
 
-    The event guide instructs `meta-models/muse-spark-open-1026` for this
-    hackathon (a pinned event deployment), overriding the public catalog
-    ID `meta-models/muse-spark-open`. Either works through MODEL_ID.
+    The event guide pins `meta-models/muse-spark-open-1026`. The public
+    catalog ID `meta-models/muse-spark-open` is not authorized for the event
+    key. Set MODEL_ID only when you have a different key or deployment.
     """
     return os.environ.get("MODEL_ID", MODEL_ID)
 

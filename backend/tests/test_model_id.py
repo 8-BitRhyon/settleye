@@ -2,7 +2,8 @@
 
 The event guide instructs `meta-models/muse-spark-open-1026` (a pinned
 event deployment), overriding the public catalog ID. The default follows
-the event; MODEL_ID selects anything else with zero code changes.
+the event; MODEL_ID selects anything else with zero code changes. Verified
+2026-11-03: the same key returns 403 for the public catalog ID.
 """
 
 from app.extract.client import MODEL_ID, model_id
