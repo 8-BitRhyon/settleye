@@ -18,6 +18,23 @@ from app.extract.live_check import load_dotenv_file
 from app.ledger.shopify import ShopifyAdapter, ShopifyError
 
 
+def token_hint(token: str) -> str | None:
+    """Name the common wrong Shopify credential before sending it anywhere."""
+    if token.startswith("shpss_"):
+        return (
+            "This is the app's API secret key (shpss_), not an Admin API "
+            "access token. Copy the Admin API access token (shpat_) from the "
+            "app's API credentials."
+        )
+    if token.startswith("shpua_"):
+        return (
+            "This looks like a user or OAuth token (shpua_), not a custom-app "
+            "Admin API access token. Copy the shpat_ token from the app's API "
+            "credentials."
+        )
+    return None
+
+
 def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(
         description="Read-only Shopify dev-store refund check."
@@ -38,6 +55,12 @@ def main(argv: list[str] | None = None) -> int:
             file=sys.stderr,
         )
         return 2
+
+    hint = token_hint(token)
+    if hint is not None:
+        print(hint, file=sys.stderr)
+        print("No call was made.", file=sys.stderr)
+        return 3
 
     adapter = ShopifyAdapter(store_domain=store, access_token=token)
     try:
