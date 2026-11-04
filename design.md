@@ -58,7 +58,7 @@ settleye/
 | Live signed remediation | `/audit` returns digest, turns, and time; `/remediate` signs only when key and context exist. The issuer signs its fresh reconcile summary, never the client's. A signing failure leaves the refund and durable receipt intact | 2026-11-04 |
 | Issuer key registry | Active, retired, and revoked states in a local JSON registry. Retired keys verify history; revoked and unknown keys fail closed. `GET /receipt/keys` publishes public records only | 2026-11-04 |
 | Merchant countersignature | Merchant signs `{receipt_id, role, key_id, acknowledged_at}`. The issuer payload excludes it, so countersigning cannot change the receipt id or issuer signature. Two-party verification is fail-closed | 2026-11-04 |
-| Shadow audit harness | Measures tickets, drifts, dollars at risk, per-1,000 rate, and false clears. Replay mode runs recorded output without a model call. 12-case proxy: $285.50 at risk, $23,791.67 per 1,000, 0 of 8 false clears. Not a real merchant pilot | 2026-11-04 |
+| Shadow audit harness | Measures tickets, drifts, dollars at risk, per-1,000 rate, and false clears. Replay mode runs recorded output without a model call. 12-case proxy: 5 drifts, $285.50 at risk, 0 of 8 false clears. Not a merchant pilot; the per-1,000 figure stays in the research note | 2026-11-04 |
 | Challenge track: Push the Frontier | Execution-verification layer for the agent economy is a new capability, not a personal workflow fix | 2026-10-27 |
 | Validate-then-retry extraction, not constrained decoding | Baseten accepts but does not enforce `json_schema` for this model | 2026-10-26 |
 | Mock ledger adapter behind interface from day one | Shopify auth and idempotency friction is the top integration risk | 2026-10-26 |
