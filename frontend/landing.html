@@ -99,6 +99,14 @@
   .heroproof li + li { border-left:1px solid rgba(13,27,30,.14); }
   .heroproof b { display:block; font-family:"JetBrains Mono",monospace; font-weight:700; font-size:15px; color:#0d1b1e; font-variant-numeric:tabular-nums; letter-spacing:-.01em; }
   .heroproof span { display:block; margin-top:5px; font-size:10.5px; line-height:1.45; color:rgba(13,27,30,.66); letter-spacing:.01em; }
+  .tiergrid { margin-top:34px; display:grid; gap:16px; grid-template-columns:repeat(3,1fr); }
+  .tiercard { background:rgba(233,236,230,.05); border:1px solid rgba(233,236,230,.14); border-top:2px solid rgba(159,216,194,.55); border-radius:16px; padding:24px; }
+  .tiernum { font-family:"JetBrains Mono",monospace; font-size:10.5px; letter-spacing:.12em; color:#9fd8c2; }
+  .tiercard h3 { margin-top:10px; font-family:Fraunces,serif; font-weight:400; font-size:22px; letter-spacing:-.01em; }
+  .tiercard p { margin-top:10px; font-size:14px; line-height:1.6; color:rgba(233,236,230,.8); }
+  .tiercard .tier-big { margin-top:16px; font-family:"JetBrains Mono",monospace; font-size:clamp(24px,2.2vw,30px); font-weight:600; letter-spacing:-.02em; color:#e9ece6; }
+  .fleetnote { margin-top:16px; padding-left:14px; border-left:1px solid rgba(159,216,194,.35); font-family:"JetBrains Mono",monospace; font-size:11px; line-height:1.7; color:rgba(233,236,230,.62); max-width:86ch; }
+  @media (max-width:860px){ .tiergrid { grid-template-columns:1fr; } }
   @media (max-width:760px){ .heroproof { grid-template-columns:1fr; gap:12px; } .heroproof li { padding:0; } .heroproof li + li { border-left:0; border-top:1px solid rgba(13,27,30,.12); padding-top:12px; } }
   #problem .band-inner { max-width:1120px; }
   .problem-title { font-size:clamp(44px,6vw,84px); max-width:16ch; }
@@ -223,6 +231,30 @@
     .hero::before { background:linear-gradient(180deg, rgba(243,245,241,.97) 0%, rgba(243,245,241,.95) 62%, rgba(243,245,241,.9) 100%); }
     .sub { color:rgba(13,27,30,.8); }
   }
+
+  /* Proof Tier Badges & Layout */
+  .tier-badge { display:inline-block; font-family:"JetBrains Mono",monospace; font-size:10px; letter-spacing:.12em; text-transform:uppercase; color:#9fd8c2; background:rgba(159,216,194,.1); border:1px solid rgba(159,216,194,.25); border-radius:999px; padding:3px 9px; margin-bottom:12px; }
+  .tier-list { margin-top:14px; list-style:none; display:grid; gap:8px; font-size:13px; line-height:1.5; color:rgba(233,236,230,.78); }
+  .tier-list li { display:flex; align-items:flex-start; gap:8px; }
+  .tier-list li::before { content:"•"; color:#9fd8c2; font-weight:bold; }
+
+  /* ABCD Dialogue Corpus Parameter Grid */
+  .param-section { margin-top:36px; border-top:1px solid rgba(233,236,230,.12); padding-top:28px; }
+  .param-title { font-family:"JetBrains Mono",monospace; font-size:11px; letter-spacing:.14em; text-transform:uppercase; color:#9fd8c2; margin-bottom:14px; }
+  .param-grid { display:grid; gap:12px; grid-template-columns:repeat(3,1fr); }
+  @media (max-width:860px){ .param-grid { grid-template-columns:repeat(2,1fr); } }
+  @media (max-width:540px){ .param-grid { grid-template-columns:1fr; } }
+  .param-card { background:rgba(233,236,230,.04); border:1px solid rgba(233,236,230,.12); border-radius:12px; padding:14px 16px; }
+  .param-val { font-family:"JetBrains Mono",monospace; font-size:20px; font-weight:600; color:#e9ece6; }
+  .param-name { font-size:12.5px; font-weight:600; color:rgba(233,236,230,.9); margin-top:4px; }
+  .param-desc { font-size:11.5px; line-height:1.45; color:rgba(233,236,230,.6); margin-top:4px; }
+
+  /* Microbenchmark Banner Callout */
+  .bench-banner { margin-top:24px; background:rgba(159,216,194,.06); border:1px solid rgba(159,216,194,.24); border-radius:16px; padding:20px 24px; display:flex; align-items:center; justify-content:space-between; gap:20px; flex-wrap:wrap; }
+  .bench-stat-group { display:flex; align-items:baseline; gap:12px; flex-wrap:wrap; }
+  .bench-tps { font-family:"JetBrains Mono",monospace; font-size:clamp(22px,2.5vw,28px); font-weight:700; color:#9fd8c2; }
+  .bench-lat { font-family:"JetBrains Mono",monospace; font-size:13px; color:rgba(233,236,230,.8); background:rgba(10,16,20,.6); padding:4px 10px; border-radius:6px; border:1px solid rgba(233,236,230,.15); }
+  .bench-desc { font-size:13px; line-height:1.55; color:rgba(233,236,230,.75); max-width:68ch; }
 </style>
 </head>
 <body>
@@ -233,7 +265,7 @@
 
   <nav class="rv">
     <a class="logo" href="#top"><span></span>Settleye</a>
-    <div class="links"><a href="#audit">Audit</a><a href="#demo">Demo</a><a href="https://github.com/8-BitRhyon/settleye" rel="noopener">Repo</a></div>
+    <div class="links"><a href="#audit">Audit</a><a href="#demo">Demo</a><a href="#proof">Proof</a><a href="#tiers">Tiers</a><a href="https://github.com/8-BitRhyon/settleye" rel="noopener">Repo</a></div>
     <a class="cta" href="./index.html?sample=1"><span class="cta-long">Open the drift inbox</span><span class="cta-short">Open inbox</span></a>
   </nav>
 
@@ -422,7 +454,7 @@ ledger unchanged</pre>
 <section class="band proofband" id="proof" aria-labelledby="proof-heading">
   <div class="band-inner">
     <p class="kicker">Proof</p>
-    <h2 id="proof-heading">Proof (measured Oct 27, 2026, not targets)</h2>
+    <h2 id="proof-heading">Measured proof (Oct 27, 2026, not targets)</h2>
     <ul class="proofgrid">
       <li>
         <p class="stat">12 of 12</p>
@@ -448,6 +480,152 @@ ledger unchanged</pre>
       <p><b>Fails closed:</b> 0 of 4 non-binding promises reached drift, and the model returned nothing rather than invent an order number. Cheaper models exist. They drop fields.</p>
     </div>
 
+  </div>
+</section>
+
+<section class="band deep" id="tiers" aria-labelledby="tiers-heading">
+  <div class="band-inner">
+    <p class="kicker">Three-tier proof</p>
+    <h2 id="tiers-heading">Tier 1 is live. Tier 2 is labeled. <em>Tier 3 is modeled.</em></h2>
+    <p class="lede">The first two tiers are measured on this build. The third is a projection from stated assumptions. We keep the border between them visible.</p>
+
+    <div class="tiergrid">
+      <article class="tiercard">
+        <span class="tier-badge">Tier 1: Live, Read-Only</span>
+        <h3>Real Shopify dev store</h3>
+        <p class="tier-big">$44.00</p>
+        <p>at risk in 4.07 seconds on one Shopify test-mode order #1001. $6.00 settled of a $50.00 promise. Read-only GraphQL, no money moved. Single order, not a fleet sample.</p>
+        <ul class="tier-list">
+          <li>Live read-only GraphQL audit daemon</li>
+          <li>Fails closed: secret keys (shpss_) rejected at boundary</li>
+          <li>Single order proof, not a fleet sample</li>
+        </ul>
+      </article>
+
+      <article class="tiercard">
+        <span class="tier-badge">Tier 2: Labeled Eval Replay</span>
+        <h3>Ground-truth eval set</h3>
+        <p class="tier-big">12 / 12</p>
+        <p>verdicts correct and 11 of 12 entity extractions exact across 12 adversarial cases. Zero false clears (0/8 binding missed) and zero hallucinated orders.</p>
+        <ul class="tier-list">
+          <li>0 of 4 non-binding promises reached drift</li>
+          <li>0 hallucinated order IDs (vs Argon which invented EVAL09)</li>
+          <li>$285.50 unledgered liability caught across 5 drifts</li>
+        </ul>
+      </article>
+
+      <article class="tiercard">
+        <span class="tier-badge">Tier 3: Modeled, Not Measured</span>
+        <h3>Enterprise impact</h3>
+        <p class="tier-big">$124K to $12.5M</p>
+        <p>modeled annual exposure protected at 10,000 to 1,000,000 tickets per month, from stated assumptions. This is a projection, not a guarantee or a merchant result.</p>
+        <ul class="tier-list">
+          <li>10.6% refund intent, 66.7% commitment rate</li>
+          <li>4.0% agent tool-call execution failure drift</li>
+          <li>4.61x LexisNexis multiplier + $128 chargeback fee</li>
+        </ul>
+      </article>
+    </div>
+
+    <!-- Enterprise Fleet Impact Table -->
+    <div class="cmpwrap">
+      <table class="cmp" aria-label="Modeled annual enterprise exposure">
+        <thead>
+          <tr>
+            <th scope="col">Volume Tier</th>
+            <th scope="col">Monthly Tickets</th>
+            <th scope="col">Annual Drift Events</th>
+            <th scope="col">Direct Exposure</th>
+            <th scope="col">Dispute Exposure (4.61x)</th>
+            <th scope="col">Chargeback Fees ($128/ea)</th>
+            <th scope="col">Modeled Annual Exposure Protected</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Mid-Market</strong></td>
+            <td>10,000/mo</td>
+            <td>336 drifts/yr</td>
+            <td>$17,640.00</td>
+            <td>$81,320.40</td>
+            <td>$43,008.00</td>
+            <td><strong>$124,328.40</strong></td>
+          </tr>
+          <tr>
+            <td><strong>Large E-Commerce</strong></td>
+            <td>100,000/mo</td>
+            <td>3,396 drifts/yr</td>
+            <td>$178,290.00</td>
+            <td>$821,916.96</td>
+            <td>$434,688.00</td>
+            <td><strong>$1,256,604.96</strong></td>
+          </tr>
+          <tr class="us">
+            <td><strong>Global Enterprise</strong></td>
+            <td>1,000,000/mo</td>
+            <td>33,936 drifts/yr</td>
+            <td>$1,781,640.00</td>
+            <td>$8,213,360.40</td>
+            <td>$4,343,808.00</td>
+            <td><strong>$12,557,168.40</strong></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- ABCD Dialogue Corpus Grounding Parameters -->
+    <div class="param-section">
+      <p class="param-title">Model inputs and assumptions</p>
+      <div class="param-grid">
+        <div class="param-card">
+          <p class="param-val">10.6%</p>
+          <p class="param-name">Refund Intent Rate</p>
+          <p class="param-desc">Retail support ticket baseline from the ABCD dialogue corpus.</p>
+        </div>
+        <div class="param-card">
+          <p class="param-val">66.7%</p>
+          <p class="param-name">Binding Commitment Rate</p>
+          <p class="param-desc">Proportion of refund inquiries resulting in unconditional commitments.</p>
+        </div>
+        <div class="param-card">
+          <p class="param-val">4.0%</p>
+          <p class="param-name">Execution Failure Drift</p>
+          <p class="param-desc">Assumption used in the projection model, not a merchant measurement.</p>
+        </div>
+        <div class="param-card">
+          <p class="param-val">$52.50</p>
+          <p class="param-name">Average Refund Commitment</p>
+          <p class="param-desc">Assumption used in the projection model.</p>
+        </div>
+        <div class="param-card">
+          <p class="param-val">4.61x</p>
+          <p class="param-name">Dispute Cost Multiplier</p>
+          <p class="param-desc">LexisNexis true cost of fraud and disputes (goods, labor, churn).</p>
+        </div>
+        <div class="param-card">
+          <p class="param-val">$128.00</p>
+          <p class="param-name">Chargeback Administrative Fee</p>
+          <p class="param-desc">Standard card network filing fee per formal merchant dispute.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Audit Throughput Microbenchmark Banner -->
+    <div class="bench-banner">
+      <div>
+        <div class="bench-stat-group">
+          <span class="bench-tps">about 95,000 to 122,000 transcripts/sec</span>
+          <span class="bench-lat">p50 about 0.009 ms &middot; p95 about 0.010 ms &middot; p99 about 0.013 ms</span>
+        </div>
+        <p class="bench-desc" style="margin-top:8px">Pipeline micro-benchmark on 1,000 canned transcripts against a mock ledger. No model or network calls. Model inference is seconds per transcript, not milliseconds.</p>
+      </div>
+      <div>
+        <a class="u" href="https://github.com/8-BitRhyon/settleye/blob/main/bench/fleet_benchmark.py" rel="noopener" style="font-family:'JetBrains Mono',monospace;font-size:12px;font-weight:600">View benchmark script &rarr;</a>
+      </div>
+    </div>
+
+    <p class="fleetnote" style="margin-top:20px">Assumptions: 10.6% refund intent, 66.7% binding commitment, 4.0% execution failure, $52.50 average refund, 4.61x dispute cost, $128 chargeback fee. The 4.0% failure rate is an assumption, not a merchant measurement. The table is modeled, not measured.</p>
+    <p class="fleetnote" style="margin-top:20px">Sources: <a class="u" href="https://github.com/8-BitRhyon/settleye/blob/main/bench/fleet_projection.py" rel="noopener">fleet_projection.py</a> for enterprise math, <a class="u" href="https://github.com/8-BitRhyon/settleye/blob/main/bench/fleet_benchmark.py" rel="noopener">fleet_benchmark.py</a> for daemon throughput, and <a class="u" href="https://github.com/8-BitRhyon/settleye/blob/main/docs/research/20-claims.md" rel="noopener">claim ledger</a> for empirical citations.</p>
   </div>
 </section>
 

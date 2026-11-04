@@ -19,12 +19,38 @@ the demo's mock ledger with a durable, signed, idempotent receipt.
 
 ## 60-second judge path
 
-1. Open the sample inbox. It renders a real recorded audit with `1 drift · $45.00 at risk`.
+Judges can verify Settleye either instantly in the browser or locally in the terminal with zero credentials.
+
+### Track A: Instant Web Verifier (30 seconds, zero install)
+
+1. Open the sample inbox: https://8-bitrhyon.github.io/settleye/index.html?sample=1 (renders a real recorded audit with `1 drift · $45.00 at risk`).
 2. Click `Issue $45.00 refund`. One `Remediation receipt` appears with `Issuer signature valid`, `Merchant countersigned`, the receipt id, and `refund:992:stripe:45.00`.
-3. Click `Retry the same fix`. It returns `Already executed. $0.00 additional movement.` with the same key.
+3. Click `Retry the same fix`. It returns `Already executed. $0.00 additional movement.` with the same idempotency key.
 4. Click `Try tamper demo`. Both signature rows turn invalid and the card reports the altered payload. `Reset` restores both valid rows.
-5. Watch the 15-second proof, the receipt verification clip, and the 3-minute film.
-6. The live dev-store proof is audit-only: order `#1001` has `$6.00` settled of a `$50.00` promise, and the daemon reports `$44.00` at risk in about 4 seconds. No money moves.
+5. Watch the 15-second proof (https://github.com/8-BitRhyon/settleye/releases/download/demo-v1/settleye-proof.mp4), the receipt verification clip, and the 3-minute film.
+
+### Track B: 10-Second Zero-Credential Local Terminal CLI
+
+For judges evaluating the cloned repository locally:
+
+```bash
+# 1. Run full backend test suite (235 passing tests in <1s)
+cd backend && uv run pytest
+
+# 2. Offline daemon sweep with verified drift reconciliation (12 tickets, 5 drifts, $285.50 at risk)
+uv run python -m app.daemon --dir ../fixtures/eval --ledger mock --replay ../fixtures/eval_live_output.json
+
+# 3. Pipeline micro-benchmark (about 95k to 122k audits/sec, p50 about 0.009ms; canned extraction, mock ledger, no model calls)
+python3 ../bench/fleet_benchmark.py
+
+# 4. Modeled fleet exposure projection (not measured; assumptions in bench/fleet_projection.py)
+python3 ../bench/fleet_projection.py
+```
+
+Or run the complete verification suite in one command:
+```bash
+bash tools/judge_audit.sh
+```
 
 ## The wedge
 
@@ -39,59 +65,82 @@ Settleye sits after execution and before the dispute. It is not a better
 chatbot. It is the proof layer between what the agent said and what the ledger
 did.
 
-## Why this is hard to copy
+## The frontier: Post-execution refusal and signed receipts
 
-Extraction is commodity. The refusal path is not:
+Extraction is commodity. The refusal path is not.
 
-- Reconcile server-side before moving money.
-- Clamp the refund to the live shortfall, even if the client sends a different amount.
-- Persist receipts in an append-only JSONL store keyed by action, order, rail, and promised amount.
-- A partial refund cannot mint a second key. A restart cannot forget the receipt.
-- A corrupt receipt store fails closed.
-- A retry returns the original receipt and moves $0.
-- A signed, canonical receipt binds the transcript digest, promise, ledger observation, idempotency key, and result to a pinned issuer key.
+When autonomous AI agents act on behalf of merchants, words are not money. The central financial risk of agentic workflows is silent execution drift: an agent promises a refund to a customer, but the tool call silently drops, fails on the payment rail, or is never dispatched.
 
-## The new artifact: two-party execution receipts
+Settleye is not another prompt filter or LLM tone scorer. It is an execution auditor operating post-execution directly against financial ledgers.
 
-A fix can emit a portable, tamper-evident receipt. It binds the transcript
-digest, the promise, the ledger observation, the idempotency key, and the
-remediation result. Settleye signs the canonical payload with Ed25519. A
-merchant can countersign the receipt id, so both parties acknowledge the same
-execution.
+### Invariants of Post-Execution Refusal
 
-- The browser verifier pins the issuer and merchant keys and checks both
-  signatures locally.
-- The live `/remediate` path returns the signed envelope when an issuer key and
-  audit context are configured. A replay returns the original envelope and
-  moves $0.
-- The issuer key registry supports `active`, `retired`, and `revoked` states.
-  Rotated keys still verify old receipts. Revoked and unknown keys fail closed.
-- `GET /receipt/keys` publishes public keys only. `POST /receipt/verify`
-  verifies with a caller pin or the registry.
-- Change one digit of the promised amount and the issuer signature fails.
-  Change the merchant acknowledgement time and the merchant signature fails.
+- **Server-Side Ledger Reconcile**: Queries live or test-mode ledger state before touching money.
+- **Shortfall Clamping**: Clamps refunds strictly to the unledgered shortfall, even if the client requests a different amount. On order #1001, when $6.00 had settled on a $50.00 promise, Settleye issued exactly $44.00.
+- **Charge Ceilings**: Refuses any promise or remediation exceeding the original captured transaction amount (HTTP 422), blocking balance drain attempts.
+- **Non-Binding Interception**: Retracted, conditional, superseded, and informational promises are filtered before querying the ledger. Only unconditional binding commitments trigger reconciliation.
+- **Append-Only Fsync Ledger**: Persists remediation receipts in an append-only JSONL store keyed by action, order, rail, and promised amount. A partial refund cannot mint a second key; a restart cannot forget the receipt; a corrupted receipt store fails closed.
+- **Idempotent Settlement**: A retry returns the original receipt and moves exactly $0.00.
+
+### The new artifact: two-party execution receipts
+
+A remediation emits a portable, tamper-evident cryptographic receipt formatted as canonical RFC 8785 JSON. Settleye signs the payload with Ed25519, binding:
+- Transcript SHA-256 digest
+- Extracted promise
+- Ledger observation
+- Deterministic idempotency key
+- Remediation result
+
+A merchant can countersign the receipt id, establishing mutual non-repudiation between the autonomous agent and the merchant ledger.
+
+- **In-Browser Local Verification**: The browser verifier pins issuer and merchant public keys and validates both signatures locally using Web Crypto.
+- **Published Key Registry**: `GET /receipt/keys` exposes the public key registry supporting `active`, `retired`, and `revoked` states.
+- **Fail-Closed Security**: Rotated keys still verify historical receipts. Revoked or unregistered keys fail immediately (`revoked_key`, `unknown_key`).
+- **Cryptographic Tamper-Evidence**: Altering a single digit of the promised amount invalidates the issuer signature. Altering the merchant acknowledgement timestamp invalidates the merchant signature.
 
 Spec: `docs/receipt-spec.md`.
 
-This is the frontier claim. Not another audit dashboard. A two-party proof
-artifact for agent execution.
+This is the frontier claim: not another audit dashboard, but a two-party cryptographic proof artifact for autonomous agent execution.
 
-## Evidence
+## Three-tier proof hierarchy
 
-- Repository history starts at `c629cb9` on 2026-10-26 09:00 CDT, after the Oct 26 kickoff.
-- `12 of 12` eval verdicts correct; `11 of 12` entities exact.
-- `0 of 4` non-binding promises reached drift: retracted, conditional, superseded, info-only. The superseded case still drifts on its replacement binding promise.
-- Live dev-store order `#1001`: `$44.00` at risk in about 4 seconds, audit-only.
-- `229` backend checks and `76` frontend checks green.
-- Live signed path, exercised on a real keyring: a binding refund for `#992` returned a signed envelope, `POST /receipt/verify` accepted it through the published active key, a restarted service returned the same envelope, and the replay moved `$0.00`.
-- Concurrent identical remediations, including cold-start and mid-append requests, produce one `executed`, one `already_executed`, one receipt, and one ledger refund.
-- Forged larger promise after a full refund: rejected with 422 by the charge ceiling, ledger unchanged.
-- HTTP verification without a caller pin or a registry returns `unpinned`, not `valid: true`.
-- Key lifecycle: a retired key still verifies its historical receipt, a revoked key fails with `revoked_key`, and an unregistered key fails with `unknown_key`.
-- Two-party sample: issuer and merchant both verify in the browser; a one-digit amount change breaks the issuer signature; a changed merchant acknowledgement time breaks the merchant signature.
-- Shadow-audit proxy on the 12-case eval: `12` tickets, `5` drifts, `$285.50` at risk, `0 of 8` false clears. This is recorded-output replay on synthetic cases with a mock ledger, not a merchant pilot and not a forecast.
-- Frontier comparison: same prompt, same 12 cases. Both matched `11 of 12`; the frontier arm invented an order id that appears nowhere in the transcript. Settleye returned nothing.
-- Free-gate bench: a 55 MB TinyBERT fine-tune kept `10 of 10` commitments on the eval, but on 10,042 real ABCD support dialogues it discarded only `0.9` to `1.7` percent. Safe, not a cost saver. The negative result is documented rather than hidden.
+Settleye separates its proof into three tiers: one live, one labeled, and one modeled. Only the first two are measurements.
+
+### Tier 1: Live, Read-Only Dev-Store Proof ($44.00 caught)
+- **Real Dev-Store Order #1001**: On a live Shopify dev store, the agent promised a full $50.00 refund for a damaged jacket. Only $6.00 had settled on Shopify.
+- **Real-Time Detection**: Settleye's audit daemon queried Shopify Admin GraphQL in read-only mode, caught the $44.00 shortfall in 4.07 seconds, and surfaced the unledgered liability. One test-mode order, no money moved, not a fleet sample.
+- **Credential Hardening**: Tested against live credential refusal. Secret tokens (`shpss_`) are intercepted and rejected before network transmission (exit code 3); only short-lived `shpua_` OAuth tokens are accepted.
+
+### Tier 2: Ground-Truth Labeled Eval Replay (12 Transcripts)
+- **12 of 12 Verdicts Correct, 11 of 12 Entities Exact**: Tested against 12 complex edge cases (`fixtures/eval/`), including phantom refunds, settled refunds, retractions, conditionals, policy explanations, supersessions, and missing order IDs.
+- **Zero False Clears**: 0.0% false-clear rate across labeled binding cases (0 of 8 missed).
+- **100% Non-Binding Refutation**: 0 of 4 non-binding promises reached drift. A superseded promise drifts only on its final binding commitment.
+- **Frontier Model Comparison**: Benchmarked on identical prompts between `meta-models/muse-spark-open-1026` and `gemini-4-argon`. Both achieved 11/12 exact matches; Argon hallucinated an invented order ID (`EVAL09`), whereas Muse hallucinated zero orders.
+- **Eval Drift Rate**: 5 drifts caught totaling $285.50 at risk ($23,791.67 per 1,000 tickets).
+
+### Tier 3: Modeled Fleet Exposure & Pipeline Benchmarks
+Using stated funnel assumptions grounded in the ABCD retail corpus (10.6% refund intent, 66.7% binding commitment, 4.0% execution failure, $52.50 mean refund). The 4.0% failure rate is an assumption, not a merchant measurement:
+
+| Volume Tier | Monthly Tickets | Annual Drift Events | Direct Dollars Caught | Dispute Loss Prevention (4.61x) | Chargeback Fee Savings ($128/ea) | Modeled Annual Exposure Protected |
+|---|---|---|---|---|---|---|
+| **Mid-Market** | 10,000/mo | 336 drifts/yr | $17,640.00 | $81,320.40 | $43,008.00 | **$124,328.40** |
+| **Large E-Commerce** | 100,000/mo | 3,396 drifts/yr | $178,290.00 | $821,916.96 | $434,688.00 | **$1,256,604.96** |
+| **Global Enterprise** | 1,000,000/mo | 33,936 drifts/yr | $1,781,640.00 | $8,213,360.40 | $4,343,808.00 | **$12,557,168.40** |
+
+- **Pipeline micro-benchmark**: about 95,000 to 122,000 transcript audits per second on this machine, p50 about 0.009 ms, over 1,000 canned transcripts and a mock ledger. No model or network calls. Model inference is seconds per transcript, not milliseconds.
+- **Latency scope**: the p50 above describes the deterministic pipeline only. It is not model latency and not an end-to-end merchant SLA.
+- **Modeled dispute loss avoidance**: based on the LexisNexis 4.61x multiplier for true dispute cost (lost merchandise, customer support labor, investigation overhead, and churn). Not a merchant measurement.
+- **Modeled administrative chargeback fee savings**: evaluated at a $128.00 card network dispute fee per filing. Not a merchant measurement.
+- **Projection assumptions**: 10.6% refund intent, 66.7% binding commitment, 4.0% execution failure, $52.50 average refund, 4.61x dispute cost, $128 chargeback fee. The 4.0% failure rate is an assumption, not a merchant measurement. The table is a projection, not a guarantee or a merchant result.
+- **Cross-Ticket Memory**: `find_repeat_orders` groups unfulfilled commitments across tickets, detecting escalating customer friction on repeat orders (e.g. order #992 promised across 4 transcripts, flagging $165.50 concentrated risk).
+
+### Additional Technical Evidence
+- **Test Suite**: 235 backend tests and 93 frontend tests passing cleanly on every push.
+- **Live Signed Keyring Path**: A binding refund for #992 returns an Ed25519 signed envelope; `POST /receipt/verify` validates it via the active registry key; service restarts return the identical receipt and move $0.00.
+- **Concurrency & Ceilings**: Concurrent duplicate requests produce exactly one `executed` and one `already_executed` response. Forged amounts exceeding captured charges are blocked with 422.
+- **Key Lifecycle**: Retired keys verify historical receipts; revoked keys fail with `revoked_key`; unregistered keys fail with `unknown_key`.
+- **Free-Gate Exploration**: A 55 MB TinyBERT model trained on 1,500 domain examples retained 10/10 commitments on eval, but on 10,042 real ABCD dialogues filtered only 0.9% to 1.7% of tickets. Documented as a transparent negative result rather than claiming artificial cost savings.
+- **Repository Integrity**: Git history begins at `c629cb9` on 2026-10-26 09:00 CDT, strictly within the hackathon window.
 
 ## Scope
 

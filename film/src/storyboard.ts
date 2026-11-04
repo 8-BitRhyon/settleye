@@ -28,6 +28,7 @@ export interface Cue {
     | "image"
     | "receipt"
     | "hero"
+    | "fleet"
     | "end";
   text: string;
   sub?: string;
@@ -294,29 +295,29 @@ export const storyboard: Scene[] = [
     duration: 30,
     mode: "code",
     tone: "dark",
-    vo: "The proof is not a projection. Forty-four dollars caught live on one test order in four seconds. Twelve of twelve eval verdicts, eleven of twelve exact entities, zero non-binding promises drifted. Three hundred wild transcripts, zero false binding promises. Every dollar of dispute loss costs four sixty-one all-in. This is evidence, not vibes.",
+    vo: "The proof is not a projection. Forty-four dollars caught live on one test-mode order in four seconds. Twelve of twelve eval verdicts, eleven of twelve entities exact, zero of eight binding cases missed. Three hundred wild transcripts, zero false binding promises. Then the fleet model: one hundred twenty-four thousand a year at ten thousand tickets, twelve point five million at a million. Stated assumptions, not a guarantee.",
     cues: [
       {
         at: 0.4,
-        hold: 6.0,
+        hold: 6.2,
         kind: "money",
-        label: "LIVE TEST ORDER",
+        label: "TIER 1 / LIVE, READ-ONLY",
         text: "$44.00",
-        sub: "at risk on one test-mode dev-store order (#1001), found in 4.07 seconds. Single order, not a fleet sample.",
+        sub: "at risk on one test-mode dev-store order (#1001), found in 4.07 seconds. No money moved. Single order, not a fleet sample.",
         tone: "mint",
       },
       {
         at: 7.0,
-        hold: 7.0,
+        hold: 6.0,
         kind: "money",
-        label: "EVAL",
+        label: "TIER 2 / LABELED EVAL",
         text: "12 of 12",
-        sub: "verdicts correct. 11 of 12 exact entity matches. 0 of 4 non-binding promises drifted.",
+        sub: "verdicts correct. 11 of 12 exact entities. 0 of 8 binding cases missed. 0 of 4 non-binding drifts.",
         tone: "cream",
       },
       {
-        at: 14.8,
-        hold: 6.0,
+        at: 13.6,
+        hold: 4.8,
         kind: "money",
         label: "WILD TRANSCRIPTS",
         text: "300 of 300",
@@ -324,13 +325,18 @@ export const storyboard: Scene[] = [
         tone: "mint",
       },
       {
-        at: 21.4,
-        hold: 8.2,
-        kind: "money",
-        label: "ALL-IN DISPUTE COST",
-        text: "$4.61",
-        sub: "per $1 of dispute loss, once goods, fees, and labor are added. Evidence, not vibes.",
-        tone: "gold",
+        at: 19.0,
+        hold: 10.4,
+        kind: "fleet",
+        label: "TIER 3 / MODELED, NOT MEASURED",
+        text: "$124K to $12.5M",
+        sub: "modeled annual exposure protected across 10,000 to 1,000,000 tickets per month.",
+        highlight: "Assumptions: 10.6% refund intent, 66.7% binding, 4.0% execution failure, $52.50 refund, 4.61x dispute cost, $128 fee. Modeled, not measured.",
+        facts: [
+          { label: "10,000 / mo", value: "$124,328.40", tone: "cream" },
+          { label: "100,000 / mo", value: "$1,256,604.96", tone: "cream" },
+          { label: "1,000,000 / mo", value: "$12,557,168.40", tone: "mint" },
+        ],
       },
     ],
   },

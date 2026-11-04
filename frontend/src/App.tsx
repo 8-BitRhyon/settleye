@@ -21,6 +21,9 @@ import {
 import type { ExecutionReceipt } from "./receipt";
 import { selectIssuerKey } from "./receipt-display";
 import ReceiptCard from "./ReceiptCard";
+import ProofHierarchy from "./components/ProofHierarchy";
+import FleetImpact from "./components/FleetImpact";
+import FrontierNarrative from "./components/FrontierNarrative";
 import {
   SAMPLE_AUDIT_RESPONSE,
   SAMPLE_EXPLANATION,
@@ -57,7 +60,13 @@ export default function App() {
   const [error, setError] = useState<string | null>(null);
   const [fixes, setFixes] = useState<RemediateState>({});
   const [explanations, setExplanations] = useState<ExplainState>({});
-  const [isSample, setIsSample] = useState(false);
+  const [isSample, setIsSample] = useState(() => {
+    if (typeof window === "undefined") return false;
+    return new URLSearchParams(window.location.search).get("sample") === "1";
+  });
+  const staticDemo =
+    typeof window !== "undefined" &&
+    isStaticDemo(window.location.hostname, import.meta.env.VITE_API_URL);
   const [sampleReceipt, setSampleReceipt] = useState<SampleReceiptState | null>(null);
   const [sampleDrift, setSampleDrift] = useState<DriftResult | null>(null);
   const [liveReceipt, setLiveReceipt] = useState<
@@ -85,10 +94,15 @@ export default function App() {
   }, []);
 
   useEffect(() => {
+    if (isSample || staticDemo) return;
     refreshValue();
-  }, [refreshValue]);
+  }, [isSample, staticDemo, refreshValue]);
 
   useEffect(() => {
+    if (isSample || staticDemo) {
+      setLiveIssuerKeys(null);
+      return;
+    }
     let cancelled = false;
     fetchReceiptKeys()
       .then((keys) => {
@@ -100,7 +114,7 @@ export default function App() {
     return () => {
       cancelled = true;
     };
-  }, [liveReceipt?.receipt_id]);
+  }, [isSample, staticDemo, liveReceipt?.receipt_id]);
 
   async function onAudit() {
     setAuditing(true);
@@ -243,10 +257,6 @@ export default function App() {
     setSampleReceipt((prev) => nextSampleReceipt(prev, sampleDrift));
   }
 
-  const staticDemo =
-    typeof window !== "undefined" &&
-    isStaticDemo(window.location.hostname, import.meta.env.VITE_API_URL);
-
   const liveIssuerKey =
     liveReceipt === null || liveReceipt === undefined
       ? null
@@ -254,7 +264,7 @@ export default function App() {
 
   return (
     <main className="min-h-screen bg-night font-body text-cream">
-      <div className="mx-auto max-w-3xl px-5 py-12 md:px-8 md:py-16">
+      <div className="mx-auto max-w-5xl px-5 py-12 md:px-8 md:py-16">
         <header className="flex flex-wrap items-end justify-between gap-4">
           <div>
             <p className="font-mono text-[11px] font-semibold uppercase tracking-[0.16em] text-mint">
@@ -277,7 +287,22 @@ export default function App() {
           )}
         </header>
 
-        <section className="mt-10 rounded-2xl border border-cream/10 bg-cream/[0.04] p-5 backdrop-blur md:p-7">
+        <nav aria-label="Section navigation" className="mt-6 flex flex-wrap items-center gap-2">
+          <a
+            href="#inbox"
+            className="rounded-full border border-cream/15 bg-cream/[0.04] px-3.5 py-1 text-xs font-mono text-cream/80 hover:border-mint/50 hover:text-mint transition-colors"
+          >
+            Exception Inbox
+          </a>
+          <a
+            href="#proof-hierarchy"
+            className="rounded-full border border-cream/15 bg-cream/[0.04] px-3.5 py-1 text-xs font-mono text-cream/80 hover:border-mint/50 hover:text-mint transition-colors"
+          >
+            Three-Tier Proof
+          </a>
+        </nav>
+
+        <section id="inbox" className="mt-10 rounded-2xl border border-cream/10 bg-cream/[0.04] p-5 backdrop-blur md:p-7">
           <label
             htmlFor="transcript"
             className="font-mono text-[11px] font-semibold uppercase tracking-[0.14em] text-cream/55"
@@ -525,11 +550,54 @@ export default function App() {
             />
           ))}
 
-        <footer className="mt-12 border-t border-cream/10 pt-4">
-          <p className="font-mono text-[11px] leading-relaxed text-cream/40">
-            Built with Muse Spark Open. Extraction by Meta open-weight model
-            via Baseten; fixtures are synthetic, test ledgers only.
-          </p>
+        <div className="mt-14 space-y-6">
+          <ProofHierarchy />
+          <details className="rounded-2xl border border-cream/10 bg-cream/[0.02] p-5 sm:p-6">
+            <summary className="cursor-pointer font-mono text-xs uppercase tracking-widest text-mint">
+              Modeled fleet exposure (optional detail)
+            </summary>
+            <p className="mt-2 max-w-2xl text-xs leading-relaxed text-cream/60">
+              Tier 3 is a projection from stated assumptions, not a merchant
+              result. The table and assumptions are here for judges who want
+              the full model.
+            </p>
+            <div className="mt-6">
+              <FleetImpact />
+            </div>
+          </details>
+          <details className="rounded-2xl border border-cream/10 bg-cream/[0.02] p-5 sm:p-6">
+            <summary className="cursor-pointer font-mono text-xs uppercase tracking-widest text-mint">
+              Frontier architecture and receipt invariants
+            </summary>
+            <div className="mt-6">
+              <FrontierNarrative />
+            </div>
+          </details>
+        </div>
+
+        <footer className="mt-14 border-t border-cream/10 pt-6">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 font-mono text-[11px] text-cream/45">
+            <p>
+              Built for Meta Global AI Developer Hackathon (Indie track). Model: meta-models/muse-spark-open-1026 via Baseten.
+            </p>
+            <div className="flex items-center gap-4">
+              <a
+                href="https://github.com/8-BitRhyon/settleye"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="hover:text-cream hover:underline"
+              >
+                GitHub Repository
+              </a>
+              <span>&middot;</span>
+              <a
+                href="landing.html"
+                className="hover:text-cream hover:underline"
+              >
+                Landing Page
+              </a>
+            </div>
+          </div>
         </footer>
       </div>
     </main>

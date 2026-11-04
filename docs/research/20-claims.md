@@ -8,13 +8,12 @@ Every number the landing page shows, where it comes from, and what it does not c
 |---|---|---|---|
 | Model cost | Same shape: Opus $0.034, Sonnet $0.017, Astra $0.085; Claude Haiku 5.5 about $0.00085. We do not claim to beat it | `docs/research/21-model-comparison.md` | Cost only, not quality |
 | Frontier comparison | 11 of 12 exact, same as ours | `docs/research/21-model-comparison.md`, `bench/score.py` | Single run per case on a 12-case set, Argon arm ran with agent scaffolding, one hallucination observed |
-
 | Eval verdicts | 12 of 12 | `docs/research/12-eval-results.md` | Our own 12-case set, written by us |
 | Exact entity matches | 11 of 12 | `fixtures/eval_live_output.json`, `backend/tests/test_eval_replay.py` | One documented miss: t07 returns an empty list where the manifest holds an info-only entity. Both are green |
 | Non-binding promises that drifted | 0 of 4 | `docs/research/12-eval-results.md` | Retracted, conditional, superseded, info-only. The superseded case can still drift on its replacement binding promise |
 | Wild transcripts processed | 300 of 300 | `docs/research/19-hf-benchmark.md` | Bitext sample, seed 7. Zero crashes, zero false binding promises |
 | Free gate discard on real support text | 0.9% at 0.20, 1.7% at 0.50 | `bench/finetune/results/abcd_gate.json` | ABCD public human-human retail support, not merchant transcripts. Four skipped refund threads inspected, zero false clears |
-| Live drift caught | $44.00 on order #1001 in 4.07s | `README.md` | Single test-mode dev-store order. Not a fleet sample |
+| Live drift caught | $44.00 on order #1001 in 4.07s | `README.md` | Single Shopify test-mode dev-store order, read-only GraphQL. $6.00 of $50.00 settled. No money moved, not a fleet sample |
 | Live signed remediation | Signed envelope, registry verify, restart replay, $0.00 additional | `backend/tests/test_signing_service.py`, `backend/tests/test_receipt_registry_api.py` | Local keyring and mock ledger. Proves the path, not a merchant deployment |
 | Concurrent duplicate remediation | One refund, one receipt | `backend/tests/test_remediate.py` | Single process, including lazy cold-start creation and a duplicate arriving mid-append. The HTTP demo runs one worker; multi-process needs a shared lock |
 | Forged larger promise | 422, ledger unchanged | `backend/tests/test_remediate.py` | Mock ledger charge ceiling. Production also needs authentication and a stored audit binding |
@@ -22,7 +21,9 @@ Every number the landing page shows, where it comes from, and what it does not c
 | Key lifecycle | Retired verifies, revoked and unknown fail | `backend/tests/test_keyring.py` | Local JSON registry, not a hosted certificate authority |
 | Two-party sample receipt | Issuer and merchant valid; tamper fails each | `frontend/src/sample-receipt.test.ts`, `frontend/src/receipt-merchant.test.ts` | Frozen demo keys and synthetic payload |
 | Shadow-audit proxy | 12 tickets, 5 drifts, $285.50, 0/8 false clears | `docs/research/23-shadow-audit.md` | Recorded live model output replay on synthetic eval cases with a mock ledger. Not a merchant pilot, not a forecast. The per-1,000 figure stays in the research note only |
-| Automated checks | 229 backend, 76 frontend | CI | Counted at the commit named in the run |
+| Modeled fleet exposure | $124,328.40 / $1,256,604.96 / $12,557,168.40 per year at 10k / 100k / 1M monthly tickets | `bench/fleet_projection.py` | Deterministic projection from stated assumptions. The 4.0% execution failure rate is an assumption, not a merchant measurement. Not a guarantee or a merchant result |
+| Pipeline benchmark | about 95,000 to 122,000 transcript audits/sec, p50 about 0.009 ms | `bench/fleet_benchmark.py`, local runs on 2026-11-04 | 1,000 canned transcripts and a mock ledger, no model or network calls. Not model throughput and not an end-to-end merchant SLA |
+| Automated checks | 235 backend, 93 frontend | CI | Counted at the commit named in the run |
 
 ## Borrowed numbers, with qualifiers
 
@@ -40,6 +41,8 @@ Every number the landing page shows, where it comes from, and what it does not c
 - SOC 2 certified. It is a roadmap item.
 - Real merchant savings. Every proof above uses synthetic fixtures or test-mode data.
 - A real merchant shadow audit. The 12-case result is a labeled proxy, not a merchant transcript export.
+- Guaranteed enterprise savings from the modeled Tier 3 table. It is a projection from stated assumptions, not a merchant result.
+- 133,000 audits/sec or 0.007 ms as model or end-to-end throughput. Those figures did not reproduce; the pipeline benchmark is about 95,000 to 122,000 audits/sec at p50 about 0.009 ms, with no model calls.
 - A production certificate authority or hosted key transparency log. The registry is a local JSON file with CLI rotation.
 - Fully automate production remediation. Auto-remediate runs against the mock ledger only.
 - Replace guardrails. We sit after execution, not before the send.

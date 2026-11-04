@@ -157,6 +157,16 @@ body { font-family: var(--font-body); color: var(--light); -webkit-font-smoothin
 .stat-value { margin-top: 18px; font-family: var(--font-mono); font-weight: 600; font-size: 206px; line-height: 0.88; letter-spacing: -0.06em; font-variant-numeric: tabular-nums; }
 .stat-sub { margin-top: 28px; font-size: 34px; line-height: 1.5; color: var(--muted); max-width: 1150px; }
 
+/* ------------------------------------------------------------- fleet ladder */
+.fleet-layout { max-width: 1280px; }
+.fleet-layout h2 { margin-top: 18px; font-family: var(--font-display); font-weight: 350; font-size: 92px; line-height: 0.95; letter-spacing: -0.04em; color: var(--text); }
+.fleet-sub { margin-top: 18px; font-size: 30px; line-height: 1.4; color: var(--muted); }
+.fleet-ladder { margin-top: 30px; border-top: 1px solid var(--line); }
+.fleet-row { display: flex; align-items: baseline; justify-content: space-between; gap: 24px; padding: 14px 0; border-bottom: 1px solid var(--line); }
+.fleet-row span { font-family: var(--font-mono); font-size: 15px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted); }
+.fleet-row b { font-family: var(--font-mono); font-weight: 600; font-size: 44px; letter-spacing: -0.03em; font-variant-numeric: tabular-nums; color: var(--text); }
+.fleet-note { margin-top: 20px; max-width: 1180px; font-family: var(--font-mono); font-size: 12px; line-height: 1.7; color: var(--muted); }
+
 /* ------------------------------------------------------------ capture split */
 .capture-split { display: grid; grid-template-columns: 1.26fr 0.74fr; gap: 64px; align-items: center; width: 100%; }
 .window {
