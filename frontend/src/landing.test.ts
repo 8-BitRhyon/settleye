@@ -109,7 +109,7 @@ describe("landing page contract", () => {
     expect(html).toContain("Join it to settled state");
     expect(html).toContain("Ledger reconciliation is deterministic code");
     expect(html).toContain("Refund the exact shortfall, once");
-    expect(html).toContain("Open the live drift inbox, no install");
+    expect(html).toContain("Open the sample drift inbox, no install");
     expect(html).toContain("releases/download/demo-v1/settleye-film.mp4");
     expect(html).toContain("<video");
     expect(html).toContain("?sample=1");
@@ -141,7 +141,7 @@ describe("conversion path", () => {
   it("makes the sample inbox the primary call to action", () => {
     const sampleLinks = page.match(/href="\.\/index\.html\?sample=1"/g) ?? [];
     expect(sampleLinks.length).toBeGreaterThanOrEqual(2);
-    const sample = page.indexOf("Open the live drift inbox, no install");
+    const sample = page.indexOf("Open the sample drift inbox, no install");
     const video = page.indexOf("<video");
     expect(sample).toBeGreaterThan(-1);
     expect(sample).toBeLessThan(video);

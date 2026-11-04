@@ -9,6 +9,7 @@ import {
   type ValueSummary,
 } from "./api";
 import { EyeIcon, type EyeIconHandle } from "./components/EyeIcon";
+import { isStaticDemo } from "./runtime";
 import {
   SAMPLE_AUDIT_RESPONSE,
   SAMPLE_EXPLANATION,
@@ -183,6 +184,10 @@ export default function App() {
     setSampleReceipt((prev) => nextSampleReceipt(prev, sampleDrift));
   }
 
+  const staticDemo =
+    typeof window !== "undefined" &&
+    isStaticDemo(window.location.hostname, import.meta.env.VITE_API_URL);
+
   return (
     <main className="min-h-screen bg-zinc-950 text-zinc-100">
       <div className="mx-auto max-w-3xl px-6 py-10">
@@ -222,41 +227,84 @@ export default function App() {
             rows={6}
             className="mt-2 w-full rounded-lg bg-zinc-950 p-3 font-mono text-xs text-zinc-200 outline-none ring-zinc-700 focus:ring-1"
           />
-          <div className="mt-3 flex items-center gap-3">
-            <button
-              type="button"
-              onClick={onAudit}
-              disabled={auditing || transcript.trim().length === 0}
-              className="rounded-full bg-emerald-500 px-5 py-2 text-sm font-bold text-black disabled:opacity-40"
-            >
-              {auditing ? AUDIT_LOADING_LABEL : "Audit transcript"}
-            </button>
-            <button
-              type="button"
-              onClick={onSample}
-              className="rounded-full border border-zinc-700 px-5 py-2 text-sm font-bold text-zinc-200"
-            >
-              Load sample result
-            </button>
+          <div className="mt-3 flex flex-wrap items-center gap-3">
+            {staticDemo ? (
+              <>
+                <button
+                  type="button"
+                  onClick={onSample}
+                  className="rounded-full bg-emerald-500 px-5 py-2 text-sm font-bold text-black"
+                >
+                  Load sample result
+                </button>
+                <button
+                  type="button"
+                  disabled
+                  title="Start the backend locally to run a live audit"
+                  className="rounded-full border border-zinc-700 px-5 py-2 text-sm font-bold text-zinc-500 opacity-50"
+                >
+                  Audit transcript (local API)
+                </button>
+              </>
+            ) : (
+              <>
+                <button
+                  type="button"
+                  onClick={onAudit}
+                  disabled={auditing || transcript.trim().length === 0}
+                  className="rounded-full bg-emerald-500 px-5 py-2 text-sm font-bold text-black disabled:opacity-40"
+                >
+                  {auditing ? AUDIT_LOADING_LABEL : "Audit transcript"}
+                </button>
+                <button
+                  type="button"
+                  onClick={onSample}
+                  className="rounded-full border border-zinc-700 px-5 py-2 text-sm font-bold text-zinc-200"
+                >
+                  Load sample result
+                </button>
+              </>
+            )}
             {error !== null && (
               <p role="alert" className="text-xs text-red-300">
-                {error} <span className="text-zinc-400">Live audits run against the local API. Use Load sample result to see a recorded audit.</span>
+                {error}{" "}
+                <span className="text-zinc-400">
+                  Live audits run against the local API. Use Load sample result
+                  to see a recorded audit.
+                </span>
               </p>
             )}
           </div>
-          <p className="mt-2 text-[11px] text-zinc-500">
-            This public copy is a static demo. Live audits need the API running
-            locally (see README). Load sample result shows a recorded live
-            audit.
-          </p>
+          {staticDemo ? (
+            <p className="mt-2 rounded-lg border border-amber-700/60 bg-amber-950/20 p-3 text-[11px] text-amber-200">
+              Static demo. The sample is a recorded live audit, not a live model
+              call.{" "}
+              <a
+                className="underline"
+                href="https://github.com/8-BitRhyon/settleye#run-it-yourself-under-five-minutes"
+                target="_blank"
+                rel="noopener"
+              >
+                Run the API locally
+              </a>{" "}
+              to audit your own transcript.
+            </p>
+          ) : (
+            <p className="mt-2 text-[11px] text-zinc-500">
+              Live audits run against the local API (see README). Load sample
+              result shows a recorded live audit.
+            </p>
+          )}
         </section>
 
         {report !== null && (
           <section className="mt-4 space-y-3">
             {isSample && (
               <p className="rounded-xl border border-amber-700 bg-zinc-900 p-3 text-xs text-amber-200">
-                Sample data: recorded live audit, not a live result. Run your
-                own audit against the API to verify.
+                Sample data: recorded live audit, not a live result.{" "}
+                {staticDemo
+                  ? "The public copy is a static demo; run the API locally to audit your own transcript."
+                  : "Run your own audit against the API to verify."}
               </p>
             )}
             {report.results.length === 0 && (
