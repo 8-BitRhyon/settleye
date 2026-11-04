@@ -2,10 +2,12 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import {
   auditTranscript,
   explainDrift,
+  fetchReceiptKeys,
   fetchValue,
   remediate,
   type AuditReport,
   type DriftResult,
+  type ReceiptKeyRecord,
   type ValueSummary,
 } from "./api";
 import { EyeIcon, type EyeIconHandle } from "./components/EyeIcon";
@@ -13,10 +15,12 @@ import { isStaticDemo } from "./runtime";
 import sampleReceipt from "./sample-receipt.json";
 import { SAMPLE_KEY_ID, SAMPLE_PUBLIC_KEY } from "./sample-receipt-key";
 import {
-  tamperAmount,
-  verifyExecutionReceipt,
-  type ExecutionReceipt,
-} from "./receipt";
+  SAMPLE_MERCHANT_KEY_ID,
+  SAMPLE_MERCHANT_PUBLIC_KEY,
+} from "./sample-receipt-merchant-key";
+import type { ExecutionReceipt } from "./receipt";
+import { selectIssuerKey } from "./receipt-display";
+import ReceiptCard from "./ReceiptCard";
 import {
   SAMPLE_AUDIT_RESPONSE,
   SAMPLE_EXPLANATION,
@@ -34,7 +38,6 @@ import {
 
 type RemediateState = Record<string, "idle" | "sending" | "done" | string>;
 type ExplainState = Record<string, string | undefined>;
-type ReceiptCheck = { status: "idle" | "valid" | "invalid"; reason?: string };
 
 const SIGNED_SAMPLE = sampleReceipt as ExecutionReceipt;
 
@@ -57,7 +60,12 @@ export default function App() {
   const [isSample, setIsSample] = useState(false);
   const [sampleReceipt, setSampleReceipt] = useState<SampleReceiptState | null>(null);
   const [sampleDrift, setSampleDrift] = useState<DriftResult | null>(null);
-  const [receiptCheck, setReceiptCheck] = useState<ReceiptCheck>({ status: "idle" });
+  const [liveReceipt, setLiveReceipt] = useState<
+    ExecutionReceipt | null | undefined
+  >(undefined);
+  const [liveIssuerKeys, setLiveIssuerKeys] = useState<
+    ReceiptKeyRecord[] | null | undefined
+  >(undefined);
 
   // Deep link from the landing page: ?sample=1 opens the recorded audit
   // immediately so a visitor sees a drift without a single click.
@@ -77,13 +85,27 @@ export default function App() {
     refreshValue();
   }, [refreshValue]);
 
+  useEffect(() => {
+    let cancelled = false;
+    fetchReceiptKeys()
+      .then((keys) => {
+        if (!cancelled) setLiveIssuerKeys(keys);
+      })
+      .catch(() => {
+        if (!cancelled) setLiveIssuerKeys(null);
+      });
+    return () => {
+      cancelled = true;
+    };
+  }, [liveReceipt?.receipt_id]);
+
   async function onAudit() {
     setAuditing(true);
     setError(null);
     setIsSample(false);
     setSampleReceipt(null);
     setSampleDrift(null);
-    setReceiptCheck({ status: "idle" });
+    setLiveReceipt(undefined);
     try {
       const next = await auditTranscript(transcript);
       setReport(next);
@@ -104,7 +126,7 @@ export default function App() {
     setExplanations({});
     setSampleReceipt(null);
     setSampleDrift(null);
-    setReceiptCheck({ status: "idle" });
+    setLiveReceipt(undefined);
   }
 
   async function onExplain(drift: DriftResult) {
@@ -164,7 +186,14 @@ export default function App() {
       const receipt = await remediate(
         drift.promise,
         drift.amount_at_risk_usd,
+        {
+          transcript_sha256: report?.transcript_sha256,
+          transcript_turns: report?.transcript_turns,
+          audited_at: report?.audited_at,
+          ledger_summary: drift.ledger_summary,
+        },
       );
+      setLiveReceipt(receipt.receipt ?? null);
       setFixes((prev) => ({ ...prev, [key]: "done" }));
       setReport((prev) =>
         prev === null
@@ -197,33 +226,14 @@ export default function App() {
     setSampleReceipt((prev) => nextSampleReceipt(prev, sampleDrift));
   }
 
-  async function onVerifyReceipt() {
-    const result = await verifyExecutionReceipt(
-      SIGNED_SAMPLE,
-      SAMPLE_PUBLIC_KEY,
-      SAMPLE_KEY_ID,
-    );
-    setReceiptCheck({
-      status: result.valid ? "valid" : "invalid",
-      reason: result.reason,
-    });
-  }
-
-  async function onTamperReceipt() {
-    const result = await verifyExecutionReceipt(
-      tamperAmount(SIGNED_SAMPLE),
-      SAMPLE_PUBLIC_KEY,
-      SAMPLE_KEY_ID,
-    );
-    setReceiptCheck({
-      status: result.valid ? "valid" : "invalid",
-      reason: result.reason,
-    });
-  }
-
   const staticDemo =
     typeof window !== "undefined" &&
     isStaticDemo(window.location.hostname, import.meta.env.VITE_API_URL);
+
+  const liveIssuerKey =
+    liveReceipt === null || liveReceipt === undefined
+      ? null
+      : selectIssuerKey(liveIssuerKeys, liveReceipt.issuer.key_id);
 
   return (
     <main className="min-h-screen bg-zinc-950 text-zinc-100">
@@ -425,90 +435,62 @@ export default function App() {
         )}
 
         {isSample && sampleReceipt !== null && (
-          <section className="mt-4 rounded-xl border border-emerald-800 bg-zinc-900 p-4">
-            <p className="text-xs font-semibold tracking-widest text-emerald-400 uppercase">
-              Remediation receipt
-            </p>
-            <p className="mt-1 font-mono text-xs text-zinc-300">
-              {sampleReceipt.idempotency_key}
-            </p>
-            <p className="mt-2 text-sm text-zinc-100" aria-live="polite">
-              {sampleReceipt.status === "executed"
+          <ReceiptCard
+            key={SIGNED_SAMPLE.receipt_id}
+            receipt={SIGNED_SAMPLE}
+            issuerPublicKey={SAMPLE_PUBLIC_KEY}
+            issuerKeyId={SAMPLE_KEY_ID}
+            merchantPublicKey={SAMPLE_MERCHANT_PUBLIC_KEY}
+            merchantKeyId={SAMPLE_MERCHANT_KEY_ID}
+            originNote="Sample data: recorded live audit, not a live result."
+            statusLine={
+              sampleReceipt.status === "executed"
                 ? `${formatUSD(sampleReceipt.amount_usd)} refunded.`
-                : `Already executed. ${formatUSD(additionalMovement(sampleReceipt))} additional movement.`}
+                : `Already executed. ${formatUSD(additionalMovement(sampleReceipt))} additional movement.`
+            }
+            attemptsNote={`Attempt ${sampleReceipt.attempts}. Same key on every retry; no second refund.`}
+            onRetry={onSampleRetry}
+            retryLabel="Retry the same fix"
+            onReload={onSample}
+            reloadLabel="Reload sample"
+            allowTamper
+          />
+        )}
+
+        {liveReceipt === null && (
+          <section className="mt-4 rounded-xl border border-zinc-700 bg-zinc-900 p-4">
+            <p className="text-sm text-zinc-300">
+              No signed receipt for this fix.
             </p>
             <p className="mt-1 text-xs text-zinc-500">
-              Attempt {sampleReceipt.attempts}. Same key on every retry; no
-              second refund.
+              Durable receipt is recorded; signing is not configured.
             </p>
-            <div className="mt-3 flex items-center gap-3">
-              <button
-                type="button"
-                onClick={onSampleRetry}
-                className="rounded-full border border-emerald-600 px-4 py-1.5 text-xs font-bold text-emerald-300"
-              >
-                Retry the same fix
-              </button>
-              <button
-                type="button"
-                onClick={onSample}
-                className="text-xs font-semibold text-zinc-400 underline underline-offset-2"
-              >
-                Reload sample
-              </button>
-            </div>
           </section>
         )}
 
-        {isSample && sampleReceipt !== null && (
-          <section
-            id="signed-receipt"
-            className="mt-4 rounded-xl border border-emerald-700 bg-zinc-900 p-4"
-          >
-            <p className="text-xs font-semibold tracking-widest text-emerald-400 uppercase">
-              Signed execution receipt
-            </p>
-            <p className="mt-1 break-all font-mono text-[11px] text-zinc-300">
-              {SIGNED_SAMPLE.receipt_id}
-            </p>
-            <p className="mt-1 font-mono text-[10px] text-zinc-500">
-              pinned key {SIGNED_SAMPLE.issuer.key_id}
-            </p>
-            <div className="mt-3 flex flex-wrap items-center gap-3">
-              <button
-                type="button"
-                onClick={onVerifyReceipt}
-                className="rounded-full border border-emerald-600 px-4 py-1.5 text-xs font-bold text-emerald-300"
-              >
-                Verify receipt
-              </button>
-              <button
-                type="button"
-                onClick={onTamperReceipt}
-                className="text-xs font-semibold text-zinc-400 underline underline-offset-2"
-              >
-                Tamper with the amount
-              </button>
-            </div>
-            {receiptCheck.status !== "idle" && (
-              <p
-                role="status"
-                aria-live="polite"
-                className={`mt-2 text-xs ${receiptCheck.status === "valid" ? "text-emerald-200" : "text-red-300"}`}
-              >
-                {receiptCheck.status === "valid"
-                  ? "Signature valid. The promise, ledger state, and remediation key are bound."
-                  : "Invalid receipt. The payload was altered."}
+        {liveReceipt !== undefined &&
+          liveReceipt !== null &&
+          (liveIssuerKeys === undefined ? (
+            <section className="mt-4 rounded-xl border border-zinc-700 bg-zinc-900 p-4">
+              <p className="text-sm text-zinc-300">Loading issuer key…</p>
+            </section>
+          ) : liveIssuerKey === null ? (
+            <section className="mt-4 rounded-xl border border-zinc-700 bg-zinc-900 p-4">
+              <p className="text-sm text-zinc-300">
+                No active or retired issuer key matches this receipt. It cannot
+                be attributed in this browser.
               </p>
-            )}
-            <p className="mt-2 text-[11px] text-zinc-500">
-              This sample receipt is signed by Settleye's demo key. The check
-              runs in your browser; it proves the payload was issued by that key
-              and has not changed. It does not independently prove Stripe's
-              state.
-            </p>
-          </section>
-        )}
+            </section>
+          ) : (
+            <ReceiptCard
+              key={liveReceipt.receipt_id}
+              receipt={liveReceipt}
+              issuerPublicKey={liveIssuerKey.public_key}
+              issuerKeyId={liveIssuerKey.key_id}
+              merchantPublicKey=""
+              merchantKeyId=""
+            />
+          ))}
 
         <footer className="mt-8 border-t border-zinc-800 pt-3">
           <p className="text-[11px] text-zinc-500">

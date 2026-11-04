@@ -13,27 +13,29 @@ const context = await browser.newContext({
 const page = await context.newPage();
 const video = page.video();
 
-await page.goto("http://127.0.0.1.nip.io:8000/index.html?sample=1", {
+await page.goto("http://127.0.0.1.nip.io:8000/index.html?sample=1&v=verify2", {
   waitUntil: "networkidle",
 });
 await page.getByText("1 drift").waitFor();
-await page.waitForTimeout(1500);
+await page.waitForTimeout(2000);
 
 await page.getByRole("button", { name: /Issue \$45\.00 refund/ }).click();
-await page.getByText("Signed execution receipt").waitFor();
-await page.evaluate(() => {
-  document
-    .getElementById("signed-receipt")
-    ?.scrollIntoView({ block: "center" });
-});
-await page.waitForTimeout(1500);
+await page.getByText("Remediation receipt").waitFor();
+await page.getByText("Issuer signature valid").waitFor();
+await page.getByText("Merchant countersigned").waitFor();
+await page
+  .locator("section")
+  .filter({ hasText: "Remediation receipt" })
+  .scrollIntoViewIfNeeded();
+await page.waitForTimeout(4000);
 
-await page.getByRole("button", { name: "Verify receipt" }).click();
-await page.getByText("Signature valid.").waitFor();
-await page.waitForTimeout(2500);
+await page.getByRole("button", { name: "Try tamper demo" }).click();
+await page.getByText("Issuer signature invalid").waitFor();
+await page.getByText("Merchant signature invalid").waitFor();
+await page.waitForTimeout(4000);
 
-await page.getByRole("button", { name: "Tamper with the amount" }).click();
-await page.getByText("Invalid receipt.").waitFor();
+await page.getByRole("button", { name: "Reset" }).click();
+await page.getByText("Issuer signature valid").waitFor();
 await page.waitForTimeout(3000);
 
 await context.close();

@@ -39,6 +39,6 @@ export const AUDIT_LOADING_LABEL = "Auditing transcript…";
 export const SAMPLE_PHANTOM_TRANSCRIPT =
   [
     "Customer: The jacket I ordered (order #992) arrived with a torn seam. I want a refund.",
-    "Agent: I am sorry about the torn seam. I have processed a full $45 refund for order #992.",
+    "Agent: I am sorry about the torn seam. I have processed a full $45 refund for order #992. It should appear on your statement within 5 to 10 business days.",
     "Customer: Great, thank you for sorting that out so fast.",
   ].join("\n") + "\n";

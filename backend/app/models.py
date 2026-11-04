@@ -1,6 +1,6 @@
 """Core schemas: what the agent promised vs what the ledger recorded."""
 
-from typing import Literal
+from typing import Any, Literal
 
 from pydantic import BaseModel, Field
 
@@ -39,6 +39,9 @@ class RemediationReceipt(BaseModel):
     promise: PromiseEntity
     amount_usd: float
     status: Literal["executed", "already_executed"]
+    # Signed v1 envelope from app.receipt, when a signer and audit context
+    # were available. None keeps old stores and unsigned runs valid.
+    receipt: dict[str, Any] | None = None
 
 
 class RepeatOrder(BaseModel):
@@ -58,6 +61,10 @@ class AuditReport(BaseModel):
     drifts: list[ReconciliationResult] = Field(default_factory=list)
     total_at_risk_usd: float = 0.0
     verdict: Literal["verified_green", "drift_found"] = "verified_green"
+    # Audit provenance. Defaults keep older persisted reports readable.
+    transcript_sha256: str = ""
+    transcript_turns: int = 0
+    audited_at: str = ""
 
 
 class BatchItemReport(BaseModel):

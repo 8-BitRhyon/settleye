@@ -3,13 +3,13 @@
   "issued_at": "2026-11-04T12:00:00Z",
   "issuer": {
     "name": "Settleye",
-    "key_id": "settleye-demo-2026-11"
+    "key_id": "settleye-demo-2026-12"
   },
   "agent": {
     "model_id": "meta-models/muse-spark-open-1026"
   },
   "transcript": {
-    "sha256": "d8582e02599687ea9ce3377436f71b1551a599b881fdd1a5e07eabbb7bd02ef0",
+    "sha256": "999b4871f5e76eecf789c931b496efe40b0ce5e802faa4aa23bb11f1d46c287f",
     "turns": 3
   },
   "promise": {
@@ -28,14 +28,24 @@
     "checked_at": "2026-11-04T12:00:00Z"
   },
   "remediation": {
-    "idempotency_key": "refund:992:45.00",
+    "idempotency_key": "refund:992:stripe:45.00",
     "amount_usd": "45.00",
     "status": "executed"
   },
-  "receipt_id": "sha256:df3f410be43689329b69705c9534f14035a82b32c1b6383986788bf559e4347b",
+  "receipt_id": "sha256:8551a4d8ad97c7585053d9b1259531be84ef4a8049751d4775b27aa741149d44",
   "signature": {
     "alg": "Ed25519",
-    "public_key": "iJhnbifaIiqARhsqgrjoXRgM2Y_oBYrAuAmBs2Sn5T0",
-    "value": "24Itnk0RP_DPksyP09Oh1i7ZsLKO4Y8ANYqj7k6CVgusN7Qzb5s5AzqwTQv5h_XR5EMUm4OHzQzBHsj_MZyaDA"
-  }
+    "public_key": "JExRZnUxqAtd4z8-56EFTbcUIb5p4MOriXHRtXmSk2A",
+    "value": "ccTYMOeAndLWnyMf2SBOfQQyoqdiC3AU1YygVWJpP5LkDsTgURvn9_vlJn_0RavJDx1mObJ2HMFAkgYh-YimBQ"
+  },
+  "countersignatures": [
+    {
+      "role": "merchant",
+      "key_id": "merchant-demo-2026-12",
+      "alg": "Ed25519",
+      "public_key": "lwzdcKUKA7AsmR4nRWPD2jfUgO90rlzlP5l-9fkmjAU",
+      "acknowledged_at": "2026-11-04T12:05:00Z",
+      "value": "OGtmpHeI6bQAIYnRTBkquufFTQq_lFOE7oA4HPvV30de3xsb_kh5pLp80mZ8yHTlzmrMZLK8MlZDPsqlW69tCg"
+    }
+  ]
 }

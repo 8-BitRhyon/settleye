@@ -6,7 +6,7 @@ Every number the landing page shows, where it comes from, and what it does not c
 
 | Claim | Value | Source | Scope |
 |---|---|---|---|
-| Model cost only. Same shape: Opus $0.034, Sonnet $0.017, Astra $0.085. Claude Haiku 5.5 about $0.00085. We do not claim to beat it |
+| Model cost | Same shape: Opus $0.034, Sonnet $0.017, Astra $0.085; Claude Haiku 5.5 about $0.00085. We do not claim to beat it | `docs/research/21-model-comparison.md` | Cost only, not quality |
 | Frontier comparison | 11 of 12 exact, same as ours | `docs/research/21-model-comparison.md`, `bench/score.py` | Single run per case on a 12-case set, Argon arm ran with agent scaffolding, one hallucination observed |
 
 | Eval verdicts | 12 of 12 | `docs/research/12-eval-results.md` | Our own 12-case set, written by us |
@@ -15,7 +15,11 @@ Every number the landing page shows, where it comes from, and what it does not c
 | Wild transcripts processed | 300 of 300 | `docs/research/19-hf-benchmark.md` | Bitext sample, seed 7. Zero crashes, zero false binding promises |
 | Free gate discard on real support text | 0.9% at 0.20, 1.7% at 0.50 | `bench/finetune/results/abcd_gate.json` | ABCD public human-human retail support, not merchant transcripts. Four skipped refund threads inspected, zero false clears |
 | Live drift caught | $44.00 on order #1001 in 4.07s | `README.md` | Single test-mode dev-store order. Not a fleet sample |
-| Automated checks | 144 backend, 51 frontend | CI | Counted at the commit named in the run |
+| Live signed remediation | Signed envelope, registry verify, restart replay, $0.00 additional | `backend/tests/test_signing_service.py`, `backend/tests/test_receipt_registry_api.py` | Local keyring and mock ledger. Proves the path, not a merchant deployment |
+| Key lifecycle | Retired verifies, revoked and unknown fail | `backend/tests/test_keyring.py` | Local JSON registry, not a hosted certificate authority |
+| Two-party sample receipt | Issuer and merchant valid; tamper fails each | `frontend/src/sample-receipt.test.ts`, `frontend/src/receipt-merchant.test.ts` | Frozen demo keys and synthetic payload |
+| Shadow-audit proxy | 12 tickets, 5 drifts, $285.50, $23,791.67 per 1,000, 0/8 false clears | `docs/research/23-shadow-audit.md` | Recorded live model output replay on synthetic eval cases with a mock ledger. Not a merchant pilot |
+| Automated checks | 222 backend, 76 frontend | CI | Counted at the commit named in the run |
 
 ## Borrowed numbers, with qualifiers
 
@@ -32,6 +36,8 @@ Every number the landing page shows, where it comes from, and what it does not c
 - Work with every ledger. Stripe and Shopify are the rails today.
 - SOC 2 certified. It is a roadmap item.
 - Real merchant savings. Every proof above uses synthetic fixtures or test-mode data.
+- A real merchant shadow audit. The 12-case result is a labeled proxy, not a merchant transcript export.
+- A production certificate authority or hosted key transparency log. The registry is a local JSON file with CLI rotation.
 - Fully automate production remediation. Auto-remediate runs against the mock ledger only.
 - Replace guardrails. We sit after execution, not before the send.
 - Saves 10x or more versus a frontier model. The measured gap is about 3.5x against the Opus tier, 1.8x against Sonnet, and we lose to small cheap models. The wedge is failing closed on money, not being the cheapest.

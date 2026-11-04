@@ -80,9 +80,11 @@ executed. `capture/endcard.mjs` renders the end card to
 H.264/AAC) and the release asset `settleye-proof.mp4`. The VO is the
 15-second script in `../docs/demo-script.md`.
 
-`capture/verify20.mjs` records the signed receipt check: `Verify receipt`
-returns valid, then `Tamper with the amount` returns invalid. The shipped cut is
-`out/settleye-verify.mp4` (12.3s) and the release asset `settleye-verify.mp4`.
+`capture/verify20.mjs` records the two-party receipt check: the card
+auto-verifies `Issuer signature valid` and `Merchant countersigned`, then
+`Try tamper demo` invalidates both rows, and `Reset` restores them. The shipped
+cut is `out/settleye-verify3.mp4` (16.0s) and the release asset
+`settleye-verify.mp4`.
 
 ## Voiceover
 

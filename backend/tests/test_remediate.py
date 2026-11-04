@@ -15,7 +15,7 @@ from fastapi.testclient import TestClient
 from app import main as main_module
 from app.extract.client import MetaModelClient
 from app.ledger.mock import MockLedgerAdapter
-from app.models import PromiseEntity, ReconciliationResult
+from app.models import PromiseEntity, ReconciliationResult, RemediationReceipt
 from app.remediate.service import RemediationError, RemediationService
 from app.value import ValueLedger
 
@@ -242,6 +242,76 @@ def test_receipts_survive_process_restart(tmp_path) -> None:
     assert second.idempotency_key == first.idempotency_key
     assert second_ledger.refunds == []
     assert len(receipt_lines(path)) == 1
+
+
+def test_hash_prefixed_order_reaches_the_ledger_without_the_hash(
+    tmp_path,
+) -> None:
+    """The model speaks "#992"; reconciliation and writes use the bare key."""
+    path = tmp_path / "receipts.jsonl"
+    ledger = recording_ledger()
+    service = RemediationService(path)
+    result = drift_result().model_copy(
+        update={
+            "promise": drift_result().promise.model_copy(
+                update={"order_id": "#992"}
+            )
+        }
+    )
+
+    first = service.remediate(result, ledger, ValueLedger())
+    assert first.status == "executed"
+    assert first.promise.order_id == "#992"
+    assert first.idempotency_key == "refund:992:stripe:45.00"
+    assert ledger.refunds == [("992", 45.00)]
+    assert ledger.refunded_usd("992") == 45.00
+
+    replay = service.remediate(result, ledger, ValueLedger())
+    assert replay.status == "already_executed"
+    assert replay.idempotency_key == first.idempotency_key
+    assert ledger.refunds == [("992", 45.00)]
+    assert len(receipt_lines(path)) == 1
+
+
+def test_hash_prefix_and_bare_order_share_one_key(tmp_path) -> None:
+    """The same order cannot mint two keys by changing "#992" to "992"."""
+    path = tmp_path / "receipts.jsonl"
+    ledger = recording_ledger()
+    service = RemediationService(path)
+    hashed = drift_result().model_copy(
+        update={
+            "promise": drift_result().promise.model_copy(
+                update={"order_id": "#992"}
+            )
+        }
+    )
+
+    first = service.remediate(hashed, ledger, ValueLedger())
+    second = service.remediate(drift_result(), ledger, ValueLedger())
+
+    assert first.idempotency_key == "refund:992:stripe:45.00"
+    assert second.idempotency_key == first.idempotency_key
+    assert second.status == "already_executed"
+    assert ledger.refunds == [("992", 45.00)]
+    assert len(receipt_lines(path)) == 1
+
+
+def test_legacy_hash_key_is_still_found(tmp_path) -> None:
+    """A store written before normalization must not forget a refund."""
+    path = tmp_path / "receipts.jsonl"
+    legacy = RemediationReceipt(
+        idempotency_key="refund:#992:stripe:45.00",
+        promise=drift_result().promise,
+        amount_usd=45.00,
+        status="executed",
+    )
+    path.write_text(legacy.model_dump_json() + "\n")
+    service = RemediationService(path)
+
+    found = service.find("refund:992:stripe:45.00")
+    assert found is not None
+    assert found.status == "already_executed"
+    assert found.idempotency_key == "refund:#992:stripe:45.00"
 
 
 def test_partial_refund_never_authorizes_a_second_refund(tmp_path) -> None:

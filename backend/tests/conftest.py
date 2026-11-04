@@ -18,3 +18,15 @@ def isolated_receipts(
     path = tmp_path / "receipts.jsonl"
     monkeypatch.setenv("SETTLEYE_RECEIPTS_PATH", str(path))
     yield path
+
+
+@pytest.fixture(autouse=True)
+def isolated_keyring(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> Iterator[Path]:
+    """Never let a test read or write the repo-local issuer key or registry."""
+    registry = tmp_path / "keyring.json"
+    key = tmp_path / "issuer.key"
+    monkeypatch.setenv("SETTLEYE_KEYRING_PATH", str(registry))
+    monkeypatch.setenv("SETTLEYE_ISSUER_KEY_PATH", str(key))
+    yield registry

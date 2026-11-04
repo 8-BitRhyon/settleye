@@ -13,11 +13,13 @@ refusing to remediate is always cheaper than a second refund.
 """
 
 import json
+import logging
 import os
 from pathlib import Path
 
 from app.ledger.base import LedgerAdapter
 from app.models import PromiseEntity, ReconciliationResult, RemediationReceipt
+from app.signing import ReceiptContext, ReceiptSigner
 from app.value import Recovery, ValueLedger
 
 RECEIPTS_PATH_ENV = "SETTLEYE_RECEIPTS_PATH"
@@ -25,9 +27,16 @@ _DEFAULT_RECEIPTS_PATH = (
     Path(__file__).resolve().parents[2] / ".tmp" / "receipts.jsonl"
 )
 
+_LOGGER = logging.getLogger(__name__)
+
 
 class RemediationError(Exception):
     """The requested fix is not a drift or cannot be executed safely."""
+
+
+def _bare_order_id(order_id: str | None) -> str:
+    """Ledger key without the spoken hash or surrounding space."""
+    return (order_id or "").strip().lstrip("#") or "unknown"
 
 
 def idempotency_key(
@@ -36,9 +45,13 @@ def idempotency_key(
     amount_usd: float,
     target_system: str = "unknown",
 ) -> str:
-    """Stable key: action, order, refund rail, and promised amount."""
+    """Stable key: action, order, refund rail, and promised amount.
+
+    The order id is normalized exactly like the ledger boundary, so `#992`
+    and `992` can never mint two keys for the same promised refund.
+    """
     return (
-        f"{promise_action}:{order_id or 'unknown'}:"
+        f"{promise_action}:{_bare_order_id(order_id)}:"
         f"{target_system}:{amount_usd:.2f}"
     )
 
@@ -66,12 +79,17 @@ def default_receipts_path() -> Path:
 class RemediationService:
     """Executes drift fixes; idempotency receipts survive process restarts."""
 
-    def __init__(self, receipts_path: str | Path | None = None) -> None:
+    def __init__(
+        self,
+        receipts_path: str | Path | None = None,
+        signer: ReceiptSigner | None = None,
+    ) -> None:
         self._path = (
             Path(receipts_path)
             if receipts_path is not None
             else default_receipts_path()
         )
+        self._signer = signer
         self._executed: dict[str, RemediationReceipt] = {}
         self._load()
 
@@ -120,17 +138,28 @@ class RemediationService:
         self._executed[receipt.idempotency_key] = receipt
 
     def find(self, key: str) -> RemediationReceipt | None:
-        """Return the original receipt for a seen key, if any."""
-        receipt = self._executed.get(key)
-        if receipt is None:
-            return None
-        return receipt.model_copy(update={"status": "already_executed"})
+        """Return the original receipt for a seen key, if any.
+
+        Stores written before order normalization may hold `#992`. Check the
+        normalized key first, then the one legacy hash-prefixed variant, so an
+        upgrade cannot forget a refund that already moved money.
+        """
+        candidates = [key]
+        parts = key.split(":")
+        if len(parts) == 4 and not parts[1].startswith("#"):
+            candidates.append(f"{parts[0]}:#{parts[1]}:{parts[2]}:{parts[3]}")
+        for candidate in candidates:
+            receipt = self._executed.get(candidate)
+            if receipt is not None:
+                return receipt.model_copy(update={"status": "already_executed"})
+        return None
 
     def remediate(
         self,
         result: ReconciliationResult,
         ledger: LedgerAdapter,
         value: ValueLedger,
+        context: ReceiptContext | None = None,
     ) -> RemediationReceipt:
         if result.verdict != "drift":
             raise RemediationError(
@@ -138,12 +167,14 @@ class RemediationService:
             )
         promise = result.promise
         key = promise_key(promise, result.amount_at_risk_usd)
-        if key in self._executed:
-            found = self.find(key)
-            assert found is not None
+        found = self.find(key)
+        if found is not None:
             return found
+        # Reconcile strips the spoken "#" before reading the ledger; writes
+        # must cross the same boundary with the same bare key.
+        ledger_order_id = _bare_order_id(promise.order_id)
         ledger.record_refund(
-            order_id=promise.order_id or "unknown",
+            order_id=ledger_order_id,
             amount_usd=result.amount_at_risk_usd,
         )
         value.recoveries.append(
@@ -159,5 +190,23 @@ class RemediationService:
             amount_usd=result.amount_at_risk_usd,
             status="executed",
         )
+        # Sign only after the money moved and only for a new key. A signing
+        # failure is logged, not raised: refusing the receipt now would hide
+        # a refund that already happened and invite a second one.
+        if self._signer is not None and context is not None:
+            try:
+                envelope = self._signer.sign(
+                    promise,
+                    result.amount_at_risk_usd,
+                    "executed",
+                    context,
+                )
+            except Exception as exc:  # noqa: BLE001 - the refund already moved
+                envelope = None
+                _LOGGER.warning(
+                    "Receipt signing failed for %s: %s", key, exc
+                )
+            if envelope is not None:
+                receipt = receipt.model_copy(update={"receipt": envelope})
         self._append(receipt)
         return receipt
