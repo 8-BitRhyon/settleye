@@ -63,6 +63,9 @@ export default function App() {
   const [liveReceipt, setLiveReceipt] = useState<
     ExecutionReceipt | null | undefined
   >(undefined);
+  const [liveReceiptStatus, setLiveReceiptStatus] = useState<string | null>(
+    null,
+  );
   const [liveIssuerKeys, setLiveIssuerKeys] = useState<
     ReceiptKeyRecord[] | null | undefined
   >(undefined);
@@ -106,6 +109,7 @@ export default function App() {
     setSampleReceipt(null);
     setSampleDrift(null);
     setLiveReceipt(undefined);
+    setLiveReceiptStatus(null);
     try {
       const next = await auditTranscript(transcript);
       setReport(next);
@@ -127,6 +131,7 @@ export default function App() {
     setSampleReceipt(null);
     setSampleDrift(null);
     setLiveReceipt(undefined);
+    setLiveReceiptStatus(null);
   }
 
   async function onExplain(drift: DriftResult) {
@@ -194,6 +199,11 @@ export default function App() {
         },
       );
       setLiveReceipt(receipt.receipt ?? null);
+      setLiveReceiptStatus(
+        receipt.status === "executed"
+          ? `${formatUSD(receipt.amount_usd)} refunded.`
+          : "Already executed. $0.00 additional movement.",
+      );
       setFixes((prev) => ({ ...prev, [key]: "done" }));
       setReport((prev) =>
         prev === null
@@ -489,6 +499,7 @@ export default function App() {
               issuerKeyId={liveIssuerKey.key_id}
               merchantPublicKey=""
               merchantKeyId=""
+              statusLine={liveReceiptStatus ?? undefined}
             />
           ))}
 
