@@ -2,7 +2,7 @@ import json, time
 from pathlib import Path
 import laya
 
-F = Path('/Users/rhyon/Downloads/Self Curated CS Curriculum/Projects/promise-check/fixtures')
+F = Path(__file__).resolve().parents[2] / 'fixtures'
 expected = json.loads((F/'eval_expected.json').read_text())
 
 QUESTIONS = {

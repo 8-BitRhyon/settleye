@@ -3,7 +3,7 @@ from pathlib import Path
 import torch
 from transformers import AutoModel
 
-F = Path('/Users/rhyon/Downloads/Self Curated CS Curriculum/Projects/promise-check/fixtures')
+F = Path(__file__).resolve().parents[2] / 'fixtures'
 expected = json.loads((F/'eval_expected.json').read_text())
 
 # Described choice instead of bare noul, per the model card's guidance.
