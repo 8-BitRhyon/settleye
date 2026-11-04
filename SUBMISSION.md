@@ -82,9 +82,9 @@ artifact for agent execution.
 - `12 of 12` eval verdicts correct; `11 of 12` entities exact.
 - `0 of 4` non-binding promises reached drift: retracted, conditional, superseded, info-only. The superseded case still drifts on its replacement binding promise.
 - Live dev-store order `#1001`: `$44.00` at risk in about 4 seconds, audit-only.
-- `228` backend checks and `76` frontend checks green.
+- `229` backend checks and `76` frontend checks green.
 - Live signed path, exercised on a real keyring: a binding refund for `#992` returned a signed envelope, `POST /receipt/verify` accepted it through the published active key, a restarted service returned the same envelope, and the replay moved `$0.00`.
-- Concurrent identical remediations, including cold-start requests, produce one `executed`, one `already_executed`, one receipt, and one ledger refund.
+- Concurrent identical remediations, including cold-start and mid-append requests, produce one `executed`, one `already_executed`, one receipt, and one ledger refund.
 - Forged larger promise after a full refund: rejected with 422 by the charge ceiling, ledger unchanged.
 - HTTP verification without a caller pin or a registry returns `unpinned`, not `valid: true`.
 - Key lifecycle: a retired key still verifies its historical receipt, a revoked key fails with `revoked_key`, and an unregistered key fails with `unknown_key`.

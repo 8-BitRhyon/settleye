@@ -6,12 +6,14 @@ second identical remediation must be a no-op receipt, never a second refund.
 """
 
 import json
+import threading
 import time
 from concurrent.futures import ThreadPoolExecutor
 from pathlib import Path
 
 import httpx
 import pytest
+from fastapi import HTTPException
 from fastapi.testclient import TestClient
 
 from app import main as main_module
@@ -593,11 +595,6 @@ def test_cold_start_concurrent_remediations_create_one_service(
             time.sleep(0.15)
             super().__init__(*args, **kwargs)
 
-        def _append(self, receipt):
-            # Widen the window between the ledger write and the receipt line.
-            time.sleep(0.15)
-            super()._append(receipt)
-
     monkeypatch.setattr(main_module, "RemediationService", SlowInitService)
     client = TestClient(main_module.app)
     body = {
@@ -615,6 +612,58 @@ def test_cold_start_concurrent_remediations_create_one_service(
     assert statuses.count("executed") == 1
     assert statuses.count("already_executed") == 3
     assert main_module.app.state.ledger.refunded_usd("992") == 45.00
+    assert len(receipt_lines(isolated_receipts)) == 1
+
+    for attribute in ("remediation", "ledger", "value"):
+        if hasattr(main_module.app.state, attribute):
+            delattr(main_module.app.state, attribute)
+
+
+def test_route_lock_blocks_duplicate_between_ledger_and_receipt(
+    isolated_receipts,
+) -> None:
+    """A duplicate starting during the append must wait, not reconcile to 422."""
+    append_started = threading.Event()
+    release_append = threading.Event()
+    original_service = main_module.RemediationService
+
+    class PausedAppendService(original_service):
+        def _append(self, receipt):
+            append_started.set()
+            assert release_append.wait(5), "append was never released"
+            super()._append(receipt)
+
+    service = PausedAppendService(isolated_receipts)
+    ledger = mock_ledger()
+    main_module.app.state.remediation = service
+    main_module.app.state.ledger = ledger
+    main_module.app.state.value = ValueLedger()
+    request = main_module.RemediateRequest(
+        promise=drift_result().promise, amount_usd=45.00
+    )
+
+    def call():
+        try:
+            return main_module.remediate(request)
+        except HTTPException as exc:
+            return exc.status_code
+
+    with ThreadPoolExecutor(max_workers=2) as pool:
+        first = pool.submit(call)
+        if not append_started.wait(5):
+            release_append.set()
+            raise AssertionError("first request never reached the append")
+        second = pool.submit(call)
+        time.sleep(0.1)
+        release_append.set()
+        first_result = first.result(timeout=10)
+        second_result = second.result(timeout=10)
+
+    results = [first_result, second_result]
+    assert all(not isinstance(result, int) for result in results), results
+    statuses = [result.status for result in results]
+    assert sorted(statuses) == ["already_executed", "executed"]
+    assert ledger.refunded_usd("992") == 45.00
     assert len(receipt_lines(isolated_receipts)) == 1
 
     for attribute in ("remediation", "ledger", "value"):
