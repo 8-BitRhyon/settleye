@@ -593,6 +593,11 @@ def test_cold_start_concurrent_remediations_create_one_service(
             time.sleep(0.15)
             super().__init__(*args, **kwargs)
 
+        def _append(self, receipt):
+            # Widen the window between the ledger write and the receipt line.
+            time.sleep(0.15)
+            super()._append(receipt)
+
     monkeypatch.setattr(main_module, "RemediationService", SlowInitService)
     client = TestClient(main_module.app)
     body = {
