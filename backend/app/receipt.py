@@ -184,7 +184,8 @@ def encode_public_key(public_key: Ed25519PublicKey) -> str:
 
 def generate_keypair() -> tuple[Ed25519PrivateKey, Ed25519PublicKey]:
     """Fresh Ed25519 keypair. The caller owns the private key."""
-    private_key = Ed25519PrivateKey.generate()
+    # Generated in memory, never a literal credential.
+    private_key = Ed25519PrivateKey.generate()  # gitleaks:allow
     return private_key, private_key.public_key()
 
 
