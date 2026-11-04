@@ -181,47 +181,50 @@ def remediate(request: RemediateRequest) -> RemediationReceipt:
                 f"request asked ${request.amount_usd:.2f}."
             ),
         )
-    # Key first: a retried request returns the original receipt without
-    # touching the ledger, even though the drift is now settled.
-    if (existing := service.find(key)) is not None:
-        return existing
-    ledger_checked_at = utc_now_iso()
-    result = reconcile(request.promise, get_ledger())
-    if result.verdict != "drift":
-        raise HTTPException(
-            status_code=422, detail=f"Nothing to remediate: {result.verdict}."
-        )
-    # Never refund more than the live shortfall, no matter what the client
-    # claims. A mismatch means the ledger moved under the request.
-    if abs(result.amount_at_risk_usd - request.amount_usd) > 0.005:
-        raise HTTPException(
-            status_code=422,
-            detail=(
-                f"Amount mismatch: ledger shows ${result.amount_at_risk_usd:.2f} "
-                f"at risk, request asked ${request.amount_usd:.2f}."
-            ),
-        )
-    try:
-        context: ReceiptContext | None = None
-        if (
-            request.transcript_sha256
-            and request.transcript_turns is not None
-        ):
-            context = ReceiptContext(
-                transcript_sha256=request.transcript_sha256,
-                transcript_turns=request.transcript_turns,
-                audited_at=request.audited_at or "",
-                # Never sign a client-supplied observation. The issuer signs
-                # only the ledger summary its own reconcile just produced.
-                ledger_summary=result.ledger_summary,
-                ledger_checked_at=ledger_checked_at,
-                model_id=model_id(),
+    # Hold the service lock across find, reconcile, and write so a concurrent
+    # twin can never observe a moved ledger without its receipt.
+    with service.lock:
+        # Key first: a retried request returns the original receipt without
+        # touching the ledger, even though the drift is now settled.
+        if (existing := service.find(key)) is not None:
+            return existing
+        ledger_checked_at = utc_now_iso()
+        result = reconcile(request.promise, get_ledger())
+        if result.verdict != "drift":
+            raise HTTPException(
+                status_code=422, detail=f"Nothing to remediate: {result.verdict}."
             )
-        return service.remediate(
-            result, get_ledger(), get_value(), context=context
-        )
-    except RemediationError as exc:
-        raise HTTPException(status_code=422, detail=str(exc))
+        # Never refund more than the live shortfall, no matter what the client
+        # claims. A mismatch means the ledger moved under the request.
+        if abs(result.amount_at_risk_usd - request.amount_usd) > 0.005:
+            raise HTTPException(
+                status_code=422,
+                detail=(
+                    f"Amount mismatch: ledger shows ${result.amount_at_risk_usd:.2f} "
+                    f"at risk, request asked ${request.amount_usd:.2f}."
+                ),
+            )
+        try:
+            context: ReceiptContext | None = None
+            if (
+                request.transcript_sha256
+                and request.transcript_turns is not None
+            ):
+                context = ReceiptContext(
+                    transcript_sha256=request.transcript_sha256,
+                    transcript_turns=request.transcript_turns,
+                    audited_at=request.audited_at or "",
+                    # Never sign a client-supplied observation. The issuer signs
+                    # only the ledger summary its own reconcile just produced.
+                    ledger_summary=result.ledger_summary,
+                    ledger_checked_at=ledger_checked_at,
+                    model_id=model_id(),
+                )
+            return service.remediate(
+                result, get_ledger(), get_value(), context=context
+            )
+        except RemediationError as exc:
+            raise HTTPException(status_code=422, detail=str(exc))
 
 
 @app.get("/value")

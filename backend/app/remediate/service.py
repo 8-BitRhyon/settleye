@@ -95,8 +95,13 @@ class RemediationService:
         # FastAPI runs sync endpoints in a thread pool. The check, ledger
         # write, and append must be one critical section, or two identical
         # clicks can both pass `find` and refund twice.
-        self._lock = threading.Lock()
+        # Reentrant: the route holds it across find, reconcile and remediate.
+        self._lock = threading.RLock()
         self._load()
+
+    @property
+    def lock(self) -> threading.RLock:
+        return self._lock
 
     @property
     def receipts_path(self) -> Path:
