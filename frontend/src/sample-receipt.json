@@ -37,5 +37,15 @@
     "alg": "Ed25519",
     "public_key": "iJhnbifaIiqARhsqgrjoXRgM2Y_oBYrAuAmBs2Sn5T0",
     "value": "24Itnk0RP_DPksyP09Oh1i7ZsLKO4Y8ANYqj7k6CVgusN7Qzb5s5AzqwTQv5h_XR5EMUm4OHzQzBHsj_MZyaDA"
-  }
+  },
+  "countersignatures": [
+    {
+      "role": "merchant",
+      "key_id": "merchant-demo-2026-11",
+      "alg": "Ed25519",
+      "public_key": "VEacfE0NmSV6skOUSdWIHP5JNigzmDEzs-mYxH8Yd-c",
+      "acknowledged_at": "2026-11-04T12:05:00Z",
+      "value": "G0JuvqV2id3X9fsGGklPLWH__dOZOUhwjtYUvl60w2IVj-BQwixU7i2dY3woSpqL2ZzGdyKx9lLEOm56i8MUDA"
+    }
+  ]
 }

@@ -69,12 +69,13 @@ Recorded from the public sample inbox by `film/capture/proof20.mjs`.
 
 End card: `Resolved is not Settled.` / `SETTLEYE`.
 
-## 11-second receipt verification
+## 16-second receipt verification
 
 Recorded from the public sample by `film/capture/verify20.mjs`.
 
-> Every fix gets a signed receipt. Verify it in your browser. Change one digit,
-> and the signature fails. That is proof, not a screenshot.
+> Every fix gets a signed receipt. Settleye signs it. The merchant
+> countersigns it. Verify both in your browser. Change one digit, and the
+> signature fails. That is proof, not a screenshot.
 
 End card: `Resolved is not Settled.` / `SETTLEYE`.
 
