@@ -36,8 +36,9 @@ export function verdictClasses(verdict: Verdict): string {
 export const AUDIT_LOADING_LABEL = "Auditing transcript…";
 
 /** Draft transcript preloaded so judges see the failure case in one click. */
-export const SAMPLE_PHANTOM_TRANSCRIPT = [
-  "Customer: The jacket I ordered (order #992) arrived with a torn seam. I want a refund.",
-  "Agent: I am sorry about the torn seam. I have processed a full $45 refund for order #992.",
-  "Customer: Great, thank you for sorting that out so fast.",
-].join("\n");
+export const SAMPLE_PHANTOM_TRANSCRIPT =
+  [
+    "Customer: The jacket I ordered (order #992) arrived with a torn seam. I want a refund.",
+    "Agent: I am sorry about the torn seam. I have processed a full $45 refund for order #992.",
+    "Customer: Great, thank you for sorting that out so fast.",
+  ].join("\n") + "\n";

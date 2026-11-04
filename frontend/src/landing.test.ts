@@ -147,12 +147,16 @@ describe("conversion path", () => {
     expect(sample).toBeLessThan(video);
   });
 
-  it("offers the 15-second proof before the full film", () => {
+  it("offers the 15-second proof and receipt verification before the full film", () => {
     const proof = page.indexOf("Watch the 15-second proof");
+    const verify = page.indexOf("Watch the receipt verify");
     const video = page.indexOf("<video");
     expect(proof).toBeGreaterThan(-1);
+    expect(verify).toBeGreaterThan(-1);
     expect(proof).toBeLessThan(video);
+    expect(verify).toBeLessThan(video);
     expect(page).toContain("settleye-proof.mp4");
+    expect(page).toContain("settleye-verify.mp4");
   });
 
   it("shows live proof before asking for a demo", () => {

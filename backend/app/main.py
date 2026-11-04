@@ -3,15 +3,17 @@
 import json
 import os
 from pathlib import Path
+from typing import Any
 
 from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
-from pydantic import BaseModel
+from pydantic import BaseModel, ConfigDict
 
 from app.audit import audit_transcript
 from app.extract.client import MODEL_ID, MetaModelClient, model_id
 from app.ledger.mock import MockLedgerAdapter
 from app.models import AuditReport, PromiseEntity, RemediationReceipt
+from app.receipt import VerifyResult, verify_receipt
 from app.remediate.service import (
     RemediationError,
     RemediationService,
@@ -156,6 +158,31 @@ def remediate(request: RemediateRequest) -> RemediationReceipt:
 @app.get("/value")
 def value() -> dict[str, float | int]:
     return summarize(get_value())
+
+
+class ReceiptVerifyRequest(BaseModel):
+    """Verify body: a wrapped envelope, or the bare envelope itself."""
+
+    model_config = ConfigDict(extra="allow")
+
+    receipt: dict[str, Any] | None = None
+    public_key: str | None = None
+    key_id: str | None = None
+
+    def envelope(self) -> dict[str, Any]:
+        if self.receipt is not None:
+            return self.receipt
+        return dict(self.model_extra or {})
+
+
+@app.post("/receipt/verify", response_model=VerifyResult)
+def verify_execution_receipt(request: ReceiptVerifyRequest) -> VerifyResult:
+    """Pure verification: no model call, no ledger read, always HTTP 200."""
+    return verify_receipt(
+        request.envelope(),
+        pinned_public_key=request.public_key,
+        expected_key_id=request.key_id,
+    )
 
 
 class ExplainResponse(BaseModel):

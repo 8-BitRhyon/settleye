@@ -22,7 +22,8 @@ Built for the Meta Global AI Developer Hackathon (Indie Developer Track, Push th
 - Eval set (`fixtures/eval/`, 12 cases): 12 of 12 verdicts correct, 11 of 12 entities exact. Zero non-binding drifts in four chances. See `docs/research/12-eval-results.md`.
 - Live Shopify run: dev-store order #1001 showed $6.00 settled of $50.00 promised. The daemon reported $44.00 at risk in 4.07 seconds.
 - Free gate bench: a 55 MB TinyBERT fine-tune kept 10 of 10 commitments on the 12-case eval. On 10,042 real ABCD support dialogues it discarded only 0.9% at threshold 0.20 and 1.7% at 0.50, with zero false clears in the four skipped refund threads. Safe, but not a cost saver. Bench-only, not wired into the API. See `docs/research/22-free-gate-finetune.md`.
-- Suite: 116 backend checks plus 37 frontend checks, green on every push.
+- Signed receipt: the sample's Ed25519 receipt verifies in the browser with the pinned demo key; a one-digit amount change fails. See `docs/receipt-spec.md`.
+- Suite: 144 backend checks plus 51 frontend checks, green on every push.
 
 ## Run it yourself (under five minutes)
 
@@ -81,6 +82,7 @@ Copy `.env.example` to `.env` and fill in test-mode credentials only. Never comm
 - `design.md` holds architecture, invariants, and key decisions.
 - `docs/research/12-eval-results.md` holds the measured eval results.
 - `docs/research/22-free-gate-finetune.md` holds the fine-tuned free-gate result.
+- `docs/receipt-spec.md` defines the signed execution receipt.
 - `docs/marketing/landing-copy.md` holds the landing page copy.
 - `docs/marketing/deploy-cloudflare.md` holds the static deploy path.
 - `AGENTS.md` holds the operating contract for coding agents.
