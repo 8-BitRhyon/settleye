@@ -1,0 +1,41 @@
+{
+  "version": 1,
+  "issued_at": "2026-11-04T12:00:00Z",
+  "issuer": {
+    "name": "Settleye",
+    "key_id": "settleye-demo-2026-11"
+  },
+  "agent": {
+    "model_id": "meta-models/muse-spark-open-1026"
+  },
+  "transcript": {
+    "sha256": "d8582e02599687ea9ce3377436f71b1551a599b881fdd1a5e07eabbb7bd02ef0",
+    "turns": 3
+  },
+  "promise": {
+    "action": "refund",
+    "order_id": "992",
+    "amount": "45.00",
+    "target_system": "stripe",
+    "terminal_status": "binding",
+    "evidence_span": "I have processed a full $45 refund for order #992. It should appear on your statement within 5 to 10 business days."
+  },
+  "ledger": {
+    "system": "stripe",
+    "order_id": "992",
+    "shortfall_usd": "45.00",
+    "summary": "Order 992: $0.00 settled of $45.00 promised.",
+    "checked_at": "2026-11-04T12:00:00Z"
+  },
+  "remediation": {
+    "idempotency_key": "refund:992:45.00",
+    "amount_usd": "45.00",
+    "status": "executed"
+  },
+  "receipt_id": "sha256:df3f410be43689329b69705c9534f14035a82b32c1b6383986788bf559e4347b",
+  "signature": {
+    "alg": "Ed25519",
+    "public_key": "iJhnbifaIiqARhsqgrjoXRgM2Y_oBYrAuAmBs2Sn5T0",
+    "value": "24Itnk0RP_DPksyP09Oh1i7ZsLKO4Y8ANYqj7k6CVgusN7Qzb5s5AzqwTQv5h_XR5EMUm4OHzQzBHsj_MZyaDA"
+  }
+}

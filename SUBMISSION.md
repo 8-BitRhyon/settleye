@@ -5,7 +5,7 @@
 Settleye is the execution auditor for AI support agents. It extracts binding
 promises from transcripts, reconciles each one against Stripe or Shopify ledger
 state, surfaces the gap in an exception inbox, and fixes the shortfall with a
-durable, idempotent receipt.
+durable, signed, idempotent receipt.
 
 ## Links
 
@@ -13,6 +13,7 @@ durable, idempotent receipt.
 - No-install sample inbox: https://8-bitrhyon.github.io/settleye/index.html?sample=1
 - 3-minute film with voiceover: https://github.com/8-BitRhyon/settleye/releases/download/demo-v1/settleye-film.mp4
 - 15-second proof: https://github.com/8-BitRhyon/settleye/releases/download/demo-v1/settleye-proof.mp4
+- Receipt verification clip: https://github.com/8-BitRhyon/settleye/releases/download/demo-v1/settleye-verify.mp4
 - Repository: https://github.com/8-BitRhyon/settleye
 
 ## 60-second judge path
@@ -20,8 +21,9 @@ durable, idempotent receipt.
 1. Open the sample inbox. It renders a real recorded audit with `1 drift · $45.00 at risk`.
 2. Click `Issue $45.00 refund`. The receipt shows `refund:992:45.00`, `$45.00 refunded`, and `Ledger matches`.
 3. Click `Retry the same fix`. It returns `Already executed. $0.00 additional movement.` with the same key.
-4. Watch the 15-second proof, then the 3-minute film for the full story.
-5. The live dev-store proof: order `#1001` has `$6.00` settled of a `$50.00` promise, and the daemon reports `$44.00` at risk in about 4 seconds.
+4. Scroll to `Signed execution receipt`. Click `Verify receipt` to see `Signature valid`. Click `Tamper with the amount` to see `Invalid receipt. The payload was altered.`
+5. Watch the 15-second proof, the receipt verification clip, and the 3-minute film.
+6. The live dev-store proof: order `#1001` has `$6.00` settled of a `$50.00` promise, and the daemon reports `$44.00` at risk in about 4 seconds.
 
 ## The wedge
 
@@ -46,13 +48,28 @@ Extraction is commodity. The refusal path is not:
 - A partial refund cannot mint a second key. A restart cannot forget the receipt.
 - A corrupt receipt store fails closed.
 - A retry returns the original receipt and moves $0.
+- A signed, canonical receipt binds the transcript digest, promise, ledger observation, idempotency key, and result to a pinned issuer key.
+
+## The new artifact: signed execution receipts
+
+A fix can emit a portable, tamper-evident receipt. It binds the transcript
+digest, the promise, the ledger observation, the idempotency key, and the
+remediation result. The browser verifier pins Settleye's demo key and checks the
+Ed25519 signature locally. Change one digit of the promised amount and the
+signature fails.
+
+Spec: `docs/receipt-spec.md`.
+
+This is the frontier claim. Not another audit dashboard. A proof artifact for
+agent execution.
 
 ## Evidence
 
 - `12 of 12` eval verdicts correct; `11 of 12` entities exact.
 - `0 of 4` non-binding cases reached drift: retracted, conditional, superseded, info-only.
 - Live dev-store order `#1001`: `$44.00` at risk in about 4 seconds, audit-only.
-- `116` backend checks and `37` frontend checks green.
+- `144` backend checks and `51` frontend checks green.
+- Signed sample receipt verifies in the browser with the pinned Ed25519 key; a one-digit amount change fails.
 - Frontier comparison: same prompt, same 12 cases. Both matched `11 of 12`; the frontier arm invented an order id that appears nowhere in the transcript. Settleye returned nothing.
 - Free-gate bench: a 55 MB TinyBERT fine-tune kept `10 of 10` commitments on the eval, but on 10,042 real ABCD support dialogues it discarded only `0.9` to `1.7` percent. Safe, not a cost saver. The negative result is documented rather than hidden.
 
@@ -60,6 +77,10 @@ Extraction is commodity. The refusal path is not:
 
 - Fixtures are synthetic. Ledgers are Stripe and Shopify test mode.
 - No live payments. No real merchant savings claimed.
+- The sample receipt is signed by a demo key. The signature proves Settleye
+  issued the payload; it does not independently prove Stripe or Shopify's state.
+- Signed receipts are demonstrated on the sample. The live `/remediate`
+  response returns the durable receipt, not yet the signed envelope.
 - The product path needs a transcript export and read-only ledger keys. The
   public sample and the 15-second proof need no install and no credentials.
 - SOC 2 is a roadmap item, not a claim.
@@ -78,8 +99,9 @@ Extraction is commodity. The refusal path is not:
 > AI support agents tell customers a refund is processed, then the tool call
 > fails silently. Settleye pulls every binding promise from the transcript,
 > diffs it against Stripe and Shopify ledger state, and fixes the shortfall with
-> an idempotent receipt that survives restarts. Resolved is not settled. We
-> prove it on a live dev store and a no-install public sample.
+> an idempotent receipt that survives restarts. The sample emits a signed,
+> tamper-evident envelope that verifies in the browser. Resolved is not settled.
+> We prove it on a live dev store and a no-install public sample.
 
 ## What the judge should remember
 

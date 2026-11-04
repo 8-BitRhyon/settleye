@@ -10,6 +10,13 @@ import {
 } from "./api";
 import { EyeIcon, type EyeIconHandle } from "./components/EyeIcon";
 import { isStaticDemo } from "./runtime";
+import sampleReceipt from "./sample-receipt.json";
+import { SAMPLE_KEY_ID, SAMPLE_PUBLIC_KEY } from "./sample-receipt-key";
+import {
+  tamperAmount,
+  verifyExecutionReceipt,
+  type ExecutionReceipt,
+} from "./receipt";
 import {
   SAMPLE_AUDIT_RESPONSE,
   SAMPLE_EXPLANATION,
@@ -27,6 +34,9 @@ import {
 
 type RemediateState = Record<string, "idle" | "sending" | "done" | string>;
 type ExplainState = Record<string, string | undefined>;
+type ReceiptCheck = { status: "idle" | "valid" | "invalid"; reason?: string };
+
+const SIGNED_SAMPLE = sampleReceipt as ExecutionReceipt;
 
 function DriftEye() {
   const ref = useRef<EyeIconHandle | null>(null);
@@ -47,6 +57,7 @@ export default function App() {
   const [isSample, setIsSample] = useState(false);
   const [sampleReceipt, setSampleReceipt] = useState<SampleReceiptState | null>(null);
   const [sampleDrift, setSampleDrift] = useState<DriftResult | null>(null);
+  const [receiptCheck, setReceiptCheck] = useState<ReceiptCheck>({ status: "idle" });
 
   // Deep link from the landing page: ?sample=1 opens the recorded audit
   // immediately so a visitor sees a drift without a single click.
@@ -72,6 +83,7 @@ export default function App() {
     setIsSample(false);
     setSampleReceipt(null);
     setSampleDrift(null);
+    setReceiptCheck({ status: "idle" });
     try {
       const next = await auditTranscript(transcript);
       setReport(next);
@@ -92,6 +104,7 @@ export default function App() {
     setExplanations({});
     setSampleReceipt(null);
     setSampleDrift(null);
+    setReceiptCheck({ status: "idle" });
   }
 
   async function onExplain(drift: DriftResult) {
@@ -182,6 +195,30 @@ export default function App() {
   function onSampleRetry() {
     if (sampleDrift === null) return;
     setSampleReceipt((prev) => nextSampleReceipt(prev, sampleDrift));
+  }
+
+  async function onVerifyReceipt() {
+    const result = await verifyExecutionReceipt(
+      SIGNED_SAMPLE,
+      SAMPLE_PUBLIC_KEY,
+      SAMPLE_KEY_ID,
+    );
+    setReceiptCheck({
+      status: result.valid ? "valid" : "invalid",
+      reason: result.reason,
+    });
+  }
+
+  async function onTamperReceipt() {
+    const result = await verifyExecutionReceipt(
+      tamperAmount(SIGNED_SAMPLE),
+      SAMPLE_PUBLIC_KEY,
+      SAMPLE_KEY_ID,
+    );
+    setReceiptCheck({
+      status: result.valid ? "valid" : "invalid",
+      reason: result.reason,
+    });
   }
 
   const staticDemo =
@@ -420,6 +457,56 @@ export default function App() {
                 Reload sample
               </button>
             </div>
+          </section>
+        )}
+
+        {isSample && sampleReceipt !== null && (
+          <section
+            id="signed-receipt"
+            className="mt-4 rounded-xl border border-emerald-700 bg-zinc-900 p-4"
+          >
+            <p className="text-xs font-semibold tracking-widest text-emerald-400 uppercase">
+              Signed execution receipt
+            </p>
+            <p className="mt-1 break-all font-mono text-[11px] text-zinc-300">
+              {SIGNED_SAMPLE.receipt_id}
+            </p>
+            <p className="mt-1 font-mono text-[10px] text-zinc-500">
+              pinned key {SIGNED_SAMPLE.issuer.key_id}
+            </p>
+            <div className="mt-3 flex flex-wrap items-center gap-3">
+              <button
+                type="button"
+                onClick={onVerifyReceipt}
+                className="rounded-full border border-emerald-600 px-4 py-1.5 text-xs font-bold text-emerald-300"
+              >
+                Verify receipt
+              </button>
+              <button
+                type="button"
+                onClick={onTamperReceipt}
+                className="text-xs font-semibold text-zinc-400 underline underline-offset-2"
+              >
+                Tamper with the amount
+              </button>
+            </div>
+            {receiptCheck.status !== "idle" && (
+              <p
+                role="status"
+                aria-live="polite"
+                className={`mt-2 text-xs ${receiptCheck.status === "valid" ? "text-emerald-200" : "text-red-300"}`}
+              >
+                {receiptCheck.status === "valid"
+                  ? "Signature valid. The promise, ledger state, and remediation key are bound."
+                  : "Invalid receipt. The payload was altered."}
+              </p>
+            )}
+            <p className="mt-2 text-[11px] text-zinc-500">
+              This sample receipt is signed by Settleye's demo key. The check
+              runs in your browser; it proves the payload was issued by that key
+              and has not changed. It does not independently prove Stripe's
+              state.
+            </p>
           </section>
         )}
 
