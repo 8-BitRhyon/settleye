@@ -15,6 +15,7 @@ durable, signed, idempotent receipt.
 - 15-second proof: https://github.com/8-BitRhyon/settleye/releases/download/demo-v1/settleye-proof.mp4
 - Receipt verification clip: https://github.com/8-BitRhyon/settleye/releases/download/demo-v1/settleye-verify.mp4
 - Repository: https://github.com/8-BitRhyon/settleye
+- Submission tag: https://github.com/8-BitRhyon/settleye/tree/submission-2026-11-04
 
 ## 60-second judge path
 
@@ -77,6 +78,7 @@ artifact for agent execution.
 
 ## Evidence
 
+- Repository history starts at `c629cb9` on 2026-10-26 09:00 CDT, after the Oct 26 kickoff.
 - `12 of 12` eval verdicts correct; `11 of 12` entities exact.
 - `0 of 4` non-binding cases reached drift: retracted, conditional, superseded, info-only.
 - Live dev-store order `#1001`: `$44.00` at risk in about 4 seconds, audit-only.
@@ -84,7 +86,7 @@ artifact for agent execution.
 - Live signed path, exercised on a real keyring: a binding refund for `#992` returned a signed envelope, `POST /receipt/verify` accepted it through the published active key, a restarted service returned the same envelope, and the replay moved `$0.00`.
 - Key lifecycle: a retired key still verifies its historical receipt, a revoked key fails with `revoked_key`, and an unregistered key fails with `unknown_key`.
 - Two-party sample: issuer and merchant both verify in the browser; a one-digit amount change breaks the issuer signature; a changed merchant acknowledgement time breaks the merchant signature.
-- Shadow-audit proxy on the 12-case eval: `12` tickets, `5` drifts, `$285.50` at risk, `$23,791.67` per 1,000 tickets, `0 of 8` false clears. This is recorded-output replay on synthetic cases with a mock ledger, not a merchant pilot.
+- Shadow-audit proxy on the 12-case eval: `12` tickets, `5` drifts, `$285.50` at risk, `0 of 8` false clears. This is recorded-output replay on synthetic cases with a mock ledger, not a merchant pilot and not a forecast.
 - Frontier comparison: same prompt, same 12 cases. Both matched `11 of 12`; the frontier arm invented an order id that appears nowhere in the transcript. Settleye returned nothing.
 - Free-gate bench: a 55 MB TinyBERT fine-tune kept `10 of 10` commitments on the eval, but on 10,042 real ABCD support dialogues it discarded only `0.9` to `1.7` percent. Safe, not a cost saver. The negative result is documented rather than hidden.
 

@@ -18,7 +18,7 @@ Every number the landing page shows, where it comes from, and what it does not c
 | Live signed remediation | Signed envelope, registry verify, restart replay, $0.00 additional | `backend/tests/test_signing_service.py`, `backend/tests/test_receipt_registry_api.py` | Local keyring and mock ledger. Proves the path, not a merchant deployment |
 | Key lifecycle | Retired verifies, revoked and unknown fail | `backend/tests/test_keyring.py` | Local JSON registry, not a hosted certificate authority |
 | Two-party sample receipt | Issuer and merchant valid; tamper fails each | `frontend/src/sample-receipt.test.ts`, `frontend/src/receipt-merchant.test.ts` | Frozen demo keys and synthetic payload |
-| Shadow-audit proxy | 12 tickets, 5 drifts, $285.50, $23,791.67 per 1,000, 0/8 false clears | `docs/research/23-shadow-audit.md` | Recorded live model output replay on synthetic eval cases with a mock ledger. Not a merchant pilot |
+| Shadow-audit proxy | 12 tickets, 5 drifts, $285.50, 0/8 false clears | `docs/research/23-shadow-audit.md` | Recorded live model output replay on synthetic eval cases with a mock ledger. Not a merchant pilot, not a forecast. The per-1,000 figure stays in the research note only |
 | Automated checks | 222 backend, 76 frontend | CI | Counted at the commit named in the run |
 
 ## Borrowed numbers, with qualifiers

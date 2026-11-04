@@ -20,10 +20,11 @@ The auditor never needs a card number. It needs an order id, a promised amount, 
 
 ## Idempotency
 
-Double refunding is the failure that ends a merchant relationship. Every remediation carries a key derived from the promise itself: `refund:<order>:<amount>`.
+Double refunding is the failure that ends a merchant relationship. Every remediation carries a durable key derived from the promise itself: `<action>:<order>:<rail>:<amount>`, for example `refund:992:stripe:45.00`.
 
-- A retried key returns the original receipt and does not touch the ledger.
-- The Shopify write path sends the same key to `refundCreate`. A repeat with a different payload is rejected by the provider. It is never silently applied.
+- Order ids are normalized at the key boundary, so `#992` and `992` produce the same key.
+- A retried key returns the original receipt and does not touch the ledger. Stores written before normalization are still checked for the legacy `#`-prefixed key.
+- The Shopify write path passes its provider idempotency key, `refund:<order>:<amount>`, to the `@idempotent` directive. The rail is implicit in that adapter.
 - Tests cover the double-call case directly, alongside an over-refund guard that refuses a request larger than the live shortfall.
 
 ## Autonomy boundary
