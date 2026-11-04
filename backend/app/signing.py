@@ -47,6 +47,7 @@ class ReceiptContext:
     audited_at: str
     ledger_summary: str
     model_id: str
+    ledger_checked_at: str = ""
 
 
 def _order_id(promise: PromiseEntity) -> str:
@@ -120,9 +121,9 @@ class ReceiptSigner:
                 "order_id": order_id,
                 "shortfall_usd": f"{amount_usd:.2f}",
                 "summary": context.ledger_summary,
-                # The service re-reads the ledger during this request, so the
-                # check time is the signing time, never the older audit time.
-                "checked_at": issued_at,
+                # The reconcile ran before the refund write; record when the
+                # observed state was read, not when the signature was made.
+                "checked_at": context.ledger_checked_at or issued_at,
             },
             "remediation": {
                 "idempotency_key": promise_key(promise, amount_usd),

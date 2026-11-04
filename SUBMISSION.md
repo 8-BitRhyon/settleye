@@ -4,8 +4,8 @@
 
 Settleye is the execution auditor for AI support agents. It extracts binding
 promises from transcripts, reconciles each one against Stripe or Shopify ledger
-state, surfaces the gap in an exception inbox, and fixes the shortfall with a
-durable, signed, idempotent receipt.
+state, surfaces the gap in an exception inbox, and fixes the shortfall against
+the demo's mock ledger with a durable, signed, idempotent receipt.
 
 ## Links
 
@@ -24,7 +24,7 @@ durable, signed, idempotent receipt.
 3. Click `Retry the same fix`. It returns `Already executed. $0.00 additional movement.` with the same key.
 4. Click `Try tamper demo`. Both signature rows turn invalid and the card reports the altered payload. `Reset` restores both valid rows.
 5. Watch the 15-second proof, the receipt verification clip, and the 3-minute film.
-6. The live dev-store proof: order `#1001` has `$6.00` settled of a `$50.00` promise, and the daemon reports `$44.00` at risk in about 4 seconds.
+6. The live dev-store proof is audit-only: order `#1001` has `$6.00` settled of a `$50.00` promise, and the daemon reports `$44.00` at risk in about 4 seconds. No money moves.
 
 ## The wedge
 
@@ -80,10 +80,13 @@ artifact for agent execution.
 
 - Repository history starts at `c629cb9` on 2026-10-26 09:00 CDT, after the Oct 26 kickoff.
 - `12 of 12` eval verdicts correct; `11 of 12` entities exact.
-- `0 of 4` non-binding cases reached drift: retracted, conditional, superseded, info-only.
+- `0 of 4` non-binding promises reached drift: retracted, conditional, superseded, info-only. The superseded case still drifts on its replacement binding promise.
 - Live dev-store order `#1001`: `$44.00` at risk in about 4 seconds, audit-only.
-- `222` backend checks and `76` frontend checks green.
+- `227` backend checks and `76` frontend checks green.
 - Live signed path, exercised on a real keyring: a binding refund for `#992` returned a signed envelope, `POST /receipt/verify` accepted it through the published active key, a restarted service returned the same envelope, and the replay moved `$0.00`.
+- Concurrent identical remediations: one `executed`, one `already_executed`, one receipt, one ledger refund.
+- Forged larger promise after a full refund: rejected with 422 by the charge ceiling, ledger unchanged.
+- HTTP verification without a caller pin or a registry returns `unpinned`, not `valid: true`.
 - Key lifecycle: a retired key still verifies its historical receipt, a revoked key fails with `revoked_key`, and an unregistered key fails with `unknown_key`.
 - Two-party sample: issuer and merchant both verify in the browser; a one-digit amount change breaks the issuer signature; a changed merchant acknowledgement time breaks the merchant signature.
 - Shadow-audit proxy on the 12-case eval: `12` tickets, `5` drifts, `$285.50` at risk, `0 of 8` false clears. This is recorded-output replay on synthetic cases with a mock ledger, not a merchant pilot and not a forecast.
@@ -92,11 +95,14 @@ artifact for agent execution.
 
 ## Scope
 
-- Fixtures are synthetic. Ledgers are Stripe and Shopify test mode.
+- Fixtures are synthetic. The HTTP one-click fix uses the mock fixture; Stripe and Shopify adapters are test-mode only.
 - No live payments. No real merchant savings claimed.
+- The HTTP one-click fix does not reach Shopify or Stripe. Those write adapters pass tests but are not selected by the API route. The live dev-store proof is read-only.
+- The HTTP API is a local demo without authentication and trusts the caller's promise shape. A charge ceiling blocks refunds beyond the captured amount, but production needs authentication and a server-stored audit binding.
+- The idempotency lock is process-local. Run one API worker, or add a shared file or database lock for a multi-process deployment.
 - The public sample receipt is signed by a demo issuer key and countersigned by a demo merchant key. The signatures prove those keys issued and acknowledged the payload; they do not independently prove Stripe or Shopify state.
 - The live `/remediate` path signs only when `backend/.tmp/keyring.json` and the issuer private key are configured and the request carries audit context. Without them, the durable receipt is still recorded and `receipt` is `null`.
-- The live path trusts the caller's transcript digest and audit time; it does not re-hash a stored audit. The signature binds the claim but does not prove the audit produced it.
+- The live path trusts the caller's transcript digest and audit time; it does not re-hash a stored audit. The signature binds the claim but does not prove the audit produced it. `audited_at` is transport metadata, not signed content.
 - The published key registry is a local JSON file and a read-only endpoint, not a hosted certificate authority. Rotation and revocation are CLI operations.
 - The shadow audit is a 12-case recorded-output replay, not a real merchant measurement. A real pilot needs a transcript export plus a Shopify read-only token or an exported ledger snapshot. The Stripe adapter is test-mode only, so a live Stripe pilot needs a new read-only adapter. The exact blocker and command are in `docs/research/23-shadow-audit.md`.
 - The product path needs a transcript export and read-only ledger keys. The public sample and the 15-second proof need no install and no credentials.

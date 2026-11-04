@@ -6,6 +6,8 @@ second identical remediation must be a no-op receipt, never a second refund.
 """
 
 import json
+import time
+from concurrent.futures import ThreadPoolExecutor
 from pathlib import Path
 
 import httpx
@@ -340,10 +342,19 @@ def test_two_different_promises_append_two_receipts(tmp_path) -> None:
     service = RemediationService(path)
 
     first = service.remediate(drift_result(), ledger, value)
-    second = service.remediate(partial_result(50.00, 44.00), ledger, value)
+    second_result = drift_result().model_copy(
+        update={
+            "promise": drift_result().promise.model_copy(
+                update={"order_id": "1042", "amount": 120.00}
+            ),
+            "amount_at_risk_usd": 120.00,
+            "ledger_summary": "Order 1042: $0.00 settled of $120.00 promised.",
+        }
+    )
+    second = service.remediate(second_result, ledger, value)
 
     assert first.idempotency_key != second.idempotency_key
-    assert ledger.refunds == [("992", 45.00), ("992", 44.00)]
+    assert ledger.refunds == [("992", 45.00), ("1042", 120.00)]
     assert len(receipt_lines(path)) == 2
 
     reloaded = RemediationService(path)
@@ -490,3 +501,78 @@ def test_tampered_amount_rejected_even_after_execution(isolated_receipts) -> Non
     assert ledger.refunded_usd("992") == 45.00
     assert len(receipt_lines(path)) == 1
 
+
+
+def test_concurrent_identical_remediations_move_money_once(tmp_path) -> None:
+    """Two threads that both pass `find` must not both reach the ledger."""
+    class SlowLedger(RecordingLedger):
+        def record_refund(self, order_id: str, amount_usd: float) -> dict:
+            time.sleep(0.1)
+            return super().record_refund(order_id, amount_usd)
+
+    path = tmp_path / "receipts.jsonl"
+    ledger = SlowLedger(json.loads((FIXTURES / "mock_ledger.json").read_text()))
+    service = RemediationService(path)
+    result = drift_result()
+
+    with ThreadPoolExecutor(max_workers=2) as pool:
+        statuses = list(
+            pool.map(
+                lambda _: service.remediate(
+                    result, ledger, ValueLedger()
+                ).status,
+                range(2),
+            )
+        )
+
+    assert sorted(statuses) == ["already_executed", "executed"]
+    assert ledger.refunds == [("992", 45.00)]
+    assert len(receipt_lines(path)) == 1
+
+
+def test_forged_promise_cannot_refund_past_the_charge() -> None:
+    """A larger promise after a full refund must not unlock more money."""
+    client = fresh_app_state()
+    first = client.post(
+        "/remediate",
+        json={
+            "promise": drift_result().promise.model_dump(),
+            "amount_usd": 45.00,
+            "transcript_sha256": "a" * 64,
+            "transcript_turns": 3,
+        },
+    )
+    assert first.status_code == 200
+
+    forged_promise = drift_result().promise.model_dump()
+    forged_promise["amount"] = 90.00
+    forged = client.post(
+        "/remediate",
+        json={
+            "promise": forged_promise,
+            "amount_usd": 45.00,
+            "transcript_sha256": "a" * 64,
+            "transcript_turns": 3,
+        },
+    )
+    assert forged.status_code == 422
+    assert "exceed the original charge" in forged.json()["detail"]
+    assert main_module.app.state.ledger.refunded_usd("992") == 45.00
+
+
+def test_legacy_pre_rail_key_is_still_found(tmp_path) -> None:
+    """A store from before the rail-qualified key must not re-execute."""
+    path = tmp_path / "receipts.jsonl"
+    legacy = RemediationReceipt(
+        idempotency_key="refund:992:45.00",
+        promise=drift_result().promise,
+        amount_usd=45.00,
+        status="executed",
+    )
+    path.write_text(legacy.model_dump_json() + "\n")
+    service = RemediationService(path)
+
+    found = service.find("refund:992:stripe:45.00")
+    assert found is not None
+    assert found.status == "already_executed"
+    assert found.idempotency_key == "refund:992:45.00"

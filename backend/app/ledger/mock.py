@@ -18,6 +18,13 @@ class MockLedgerAdapter:
             return None
         return float(charge.get("refunded_usd", 0.0))
 
+    def charge_amount_usd(self, order_id: str) -> float | None:
+        """Original captured amount, the hard ceiling for any refund."""
+        charge = self._charges.get(order_id)
+        if charge is None:
+            return None
+        return float(charge.get("amount_usd", 0.0))
+
     def record_refund(self, order_id: str, amount_usd: float) -> dict[str, Any]:
         charge = self._charges.get(order_id)
         if charge is None:

@@ -63,6 +63,7 @@ MERCHANT_KEY_ID_MISMATCH = "merchant_key_id_mismatch"
 MERCHANT_KEY_MISMATCH = "merchant_key_mismatch"
 MERCHANT_SIGNATURE_INVALID = "merchant_signature_invalid"
 MERCHANT_PUBLIC_KEY_INVALID = "merchant_public_key_invalid"
+UNPINNED = "unpinned"
 
 # Exact text bound by transcript.sha256. The trailing newline is part of the
 # binding: a verifier must hash these exact bytes, nothing normalized.

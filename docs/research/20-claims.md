@@ -11,15 +11,18 @@ Every number the landing page shows, where it comes from, and what it does not c
 
 | Eval verdicts | 12 of 12 | `docs/research/12-eval-results.md` | Our own 12-case set, written by us |
 | Exact entity matches | 11 of 12 | `fixtures/eval_live_output.json`, `backend/tests/test_eval_replay.py` | One documented miss: t07 returns an empty list where the manifest holds an info-only entity. Both are green |
-| Non-binding cases that drifted | 0 of 4 | `docs/research/12-eval-results.md` | Retracted, conditional, superseded, info-only |
+| Non-binding promises that drifted | 0 of 4 | `docs/research/12-eval-results.md` | Retracted, conditional, superseded, info-only. The superseded case can still drift on its replacement binding promise |
 | Wild transcripts processed | 300 of 300 | `docs/research/19-hf-benchmark.md` | Bitext sample, seed 7. Zero crashes, zero false binding promises |
 | Free gate discard on real support text | 0.9% at 0.20, 1.7% at 0.50 | `bench/finetune/results/abcd_gate.json` | ABCD public human-human retail support, not merchant transcripts. Four skipped refund threads inspected, zero false clears |
 | Live drift caught | $44.00 on order #1001 in 4.07s | `README.md` | Single test-mode dev-store order. Not a fleet sample |
 | Live signed remediation | Signed envelope, registry verify, restart replay, $0.00 additional | `backend/tests/test_signing_service.py`, `backend/tests/test_receipt_registry_api.py` | Local keyring and mock ledger. Proves the path, not a merchant deployment |
+| Concurrent duplicate remediation | One refund, one receipt | `backend/tests/test_remediate.py` | Single process. The HTTP demo runs one worker; multi-process needs a shared lock |
+| Forged larger promise | 422, ledger unchanged | `backend/tests/test_remediate.py` | Mock ledger charge ceiling. Production also needs authentication and a stored audit binding |
+| Unpinned HTTP verification | `unpinned`, not valid | `backend/tests/test_receipt_registry_api.py` | The HTTP endpoint requires a caller pin or a configured registry |
 | Key lifecycle | Retired verifies, revoked and unknown fail | `backend/tests/test_keyring.py` | Local JSON registry, not a hosted certificate authority |
 | Two-party sample receipt | Issuer and merchant valid; tamper fails each | `frontend/src/sample-receipt.test.ts`, `frontend/src/receipt-merchant.test.ts` | Frozen demo keys and synthetic payload |
 | Shadow-audit proxy | 12 tickets, 5 drifts, $285.50, 0/8 false clears | `docs/research/23-shadow-audit.md` | Recorded live model output replay on synthetic eval cases with a mock ledger. Not a merchant pilot, not a forecast. The per-1,000 figure stays in the research note only |
-| Automated checks | 222 backend, 76 frontend | CI | Counted at the commit named in the run |
+| Automated checks | 227 backend, 76 frontend | CI | Counted at the commit named in the run |
 
 ## Borrowed numbers, with qualifiers
 

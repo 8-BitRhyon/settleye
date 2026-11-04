@@ -15,6 +15,7 @@ refusing to remediate is always cheaper than a second refund.
 import json
 import logging
 import os
+import threading
 from pathlib import Path
 
 from app.ledger.base import LedgerAdapter
@@ -91,6 +92,10 @@ class RemediationService:
         )
         self._signer = signer
         self._executed: dict[str, RemediationReceipt] = {}
+        # FastAPI runs sync endpoints in a thread pool. The check, ledger
+        # write, and append must be one critical section, or two identical
+        # clicks can both pass `find` and refund twice.
+        self._lock = threading.Lock()
         self._load()
 
     @property
@@ -148,6 +153,11 @@ class RemediationService:
         parts = key.split(":")
         if len(parts) == 4 and not parts[1].startswith("#"):
             candidates.append(f"{parts[0]}:#{parts[1]}:{parts[2]}:{parts[3]}")
+            # Pre-rail key shape from the first signed sample and early
+            # stores: refund:992:45.00.
+            candidates.append(f"{parts[0]}:{parts[1]}:{parts[3]}")
+        if len(parts) == 3 and not parts[1].startswith("#"):
+            candidates.append(f"{parts[0]}:#{parts[1]}:{parts[2]}")
         for candidate in candidates:
             receipt = self._executed.get(candidate)
             if receipt is not None:
@@ -167,46 +177,65 @@ class RemediationService:
             )
         promise = result.promise
         key = promise_key(promise, result.amount_at_risk_usd)
-        found = self.find(key)
-        if found is not None:
-            return found
-        # Reconcile strips the spoken "#" before reading the ledger; writes
-        # must cross the same boundary with the same bare key.
-        ledger_order_id = _bare_order_id(promise.order_id)
-        ledger.record_refund(
-            order_id=ledger_order_id,
-            amount_usd=result.amount_at_risk_usd,
-        )
-        value.recoveries.append(
-            Recovery(
-                id=key,
+        with self._lock:
+            found = self.find(key)
+            if found is not None:
+                return found
+            # Reconcile strips the spoken "#" before reading the ledger;
+            # writes must cross the same boundary with the same bare key.
+            ledger_order_id = _bare_order_id(promise.order_id)
+            # A hard ceiling on the original charge stops a forged promise
+            # from refunding past the money that was actually captured.
+            charge_limit = getattr(ledger, "charge_amount_usd", None)
+            if callable(charge_limit):
+                charge_amount = charge_limit(ledger_order_id)
+                settled = ledger.refunded_usd(ledger_order_id) or 0.0
+                if (
+                    charge_amount is not None
+                    and settled + result.amount_at_risk_usd
+                    > charge_amount + 0.005
+                ):
+                    raise RemediationError(
+                        f"Refund would exceed the original charge: "
+                        f"${settled:.2f} settled + "
+                        f"${result.amount_at_risk_usd:.2f} requested of "
+                        f"${charge_amount:.2f}."
+                    )
+            ledger.record_refund(
+                order_id=ledger_order_id,
                 amount_usd=result.amount_at_risk_usd,
-                kind="refund_recovered",
             )
-        )
-        receipt = RemediationReceipt(
-            idempotency_key=key,
-            promise=promise,
-            amount_usd=result.amount_at_risk_usd,
-            status="executed",
-        )
-        # Sign only after the money moved and only for a new key. A signing
-        # failure is logged, not raised: refusing the receipt now would hide
-        # a refund that already happened and invite a second one.
-        if self._signer is not None and context is not None:
-            try:
-                envelope = self._signer.sign(
-                    promise,
-                    result.amount_at_risk_usd,
-                    "executed",
-                    context,
+            value.recoveries.append(
+                Recovery(
+                    id=key,
+                    amount_usd=result.amount_at_risk_usd,
+                    kind="refund_recovered",
                 )
-            except Exception as exc:  # noqa: BLE001 - the refund already moved
-                envelope = None
-                _LOGGER.warning(
-                    "Receipt signing failed for %s: %s", key, exc
-                )
-            if envelope is not None:
-                receipt = receipt.model_copy(update={"receipt": envelope})
-        self._append(receipt)
-        return receipt
+            )
+            receipt = RemediationReceipt(
+                idempotency_key=key,
+                promise=promise,
+                amount_usd=result.amount_at_risk_usd,
+                status="executed",
+            )
+            # Sign only after the money moved and only for a new key. A
+            # signing failure is logged, not raised: refusing the receipt now
+            # would hide a refund that already happened and invite a second
+            # one.
+            if self._signer is not None and context is not None:
+                try:
+                    envelope = self._signer.sign(
+                        promise,
+                        result.amount_at_risk_usd,
+                        "executed",
+                        context,
+                    )
+                except Exception as exc:  # noqa: BLE001 - money already moved
+                    envelope = None
+                    _LOGGER.warning(
+                        "Receipt signing failed for %s: %s", key, exc
+                    )
+                if envelope is not None:
+                    receipt = receipt.model_copy(update={"receipt": envelope})
+            self._append(receipt)
+            return receipt
