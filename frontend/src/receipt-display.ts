@@ -25,6 +25,21 @@ export const MERCHANT_PENDING_DETAIL =
  * First published key with active status, or null when no key can
  * attribute a live receipt in this browser. Never throws.
  */
+/**
+ * Select the registry record that signed a receipt. Active and retired keys
+ * are acceptable; a revoked key is not. The key id must match exactly, so a
+ * rotation cannot make an old receipt look like a new-key receipt.
+ */
+export function selectIssuerKey(
+  keys: ReceiptKeyRecord[] | null | undefined,
+  keyId: string,
+): ReceiptKeyRecord | null {
+  if (keys === null || keys === undefined) return null;
+  const record = keys.find((candidate) => candidate.key_id === keyId);
+  if (record === undefined || record.status === "revoked") return null;
+  return record;
+}
+
 export function selectActiveIssuerKey(
   keys: ReceiptKeyRecord[] | null | undefined,
 ): ReceiptKeyRecord | null {

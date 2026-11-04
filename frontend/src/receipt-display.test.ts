@@ -3,6 +3,7 @@ import {
   describeReceiptCard,
   MERCHANT_PENDING_DETAIL,
   selectActiveIssuerKey,
+  selectIssuerKey,
 } from "./receipt-display";
 import type { ReceiptKeyRecord } from "./api";
 import type { ExecutionReceipt, TwoPartyVerification } from "./receipt";
@@ -182,5 +183,38 @@ describe("selectActiveIssuerKey", () => {
   it("returns null for a missing or failed key list", () => {
     expect(selectActiveIssuerKey(null)).toBeNull();
     expect(selectActiveIssuerKey(undefined)).toBeNull();
+  });
+});
+
+
+describe("selectIssuerKey", () => {
+  function key(
+    keyId: string,
+    status: ReceiptKeyRecord["status"],
+  ): ReceiptKeyRecord {
+    return { key_id: keyId, public_key: `pub-${keyId}`, status };
+  }
+
+  it("selects the key that actually signed the receipt", () => {
+    expect(
+      selectIssuerKey(
+        [key("new-active", "active"), key("old-retired", "retired")],
+        "old-retired",
+      ),
+    ).toEqual(key("old-retired", "retired"));
+  });
+
+  it("does not select a revoked key", () => {
+    expect(selectIssuerKey([key("bad", "revoked")], "bad")).toBeNull();
+  });
+
+  it("does not select a different key id", () => {
+    expect(selectIssuerKey([key("other", "active")], "signed-by-me")).toBeNull();
+  });
+
+  it("returns null for a missing or failed key list", () => {
+    expect(selectIssuerKey(null, "any")).toBeNull();
+    expect(selectIssuerKey(undefined, "any")).toBeNull();
+    expect(selectIssuerKey([], "any")).toBeNull();
   });
 });

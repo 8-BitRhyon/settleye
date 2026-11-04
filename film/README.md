@@ -83,7 +83,7 @@ H.264/AAC) and the release asset `settleye-proof.mp4`. The VO is the
 `capture/verify20.mjs` records the two-party receipt check: the card
 auto-verifies `Issuer signature valid` and `Merchant countersigned`, then
 `Try tamper demo` invalidates both rows, and `Reset` restores them. The shipped
-cut is `out/settleye-verify2.mp4` (16.0s) and the release asset
+cut is `out/settleye-verify3.mp4` (16.0s) and the release asset
 `settleye-verify.mp4`.
 
 ## Voiceover

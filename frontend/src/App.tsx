@@ -19,7 +19,7 @@ import {
   SAMPLE_MERCHANT_PUBLIC_KEY,
 } from "./sample-receipt-merchant-key";
 import type { ExecutionReceipt } from "./receipt";
-import { selectActiveIssuerKey } from "./receipt-display";
+import { selectIssuerKey } from "./receipt-display";
 import ReceiptCard from "./ReceiptCard";
 import {
   SAMPLE_AUDIT_RESPONSE,
@@ -63,8 +63,8 @@ export default function App() {
   const [liveReceipt, setLiveReceipt] = useState<
     ExecutionReceipt | null | undefined
   >(undefined);
-  const [liveIssuerKey, setLiveIssuerKey] = useState<
-    ReceiptKeyRecord | null | undefined
+  const [liveIssuerKeys, setLiveIssuerKeys] = useState<
+    ReceiptKeyRecord[] | null | undefined
   >(undefined);
 
   // Deep link from the landing page: ?sample=1 opens the recorded audit
@@ -89,15 +89,15 @@ export default function App() {
     let cancelled = false;
     fetchReceiptKeys()
       .then((keys) => {
-        if (!cancelled) setLiveIssuerKey(selectActiveIssuerKey(keys));
+        if (!cancelled) setLiveIssuerKeys(keys);
       })
       .catch(() => {
-        if (!cancelled) setLiveIssuerKey(null);
+        if (!cancelled) setLiveIssuerKeys(null);
       });
     return () => {
       cancelled = true;
     };
-  }, []);
+  }, [liveReceipt?.receipt_id]);
 
   async function onAudit() {
     setAuditing(true);
@@ -229,6 +229,11 @@ export default function App() {
   const staticDemo =
     typeof window !== "undefined" &&
     isStaticDemo(window.location.hostname, import.meta.env.VITE_API_URL);
+
+  const liveIssuerKey =
+    liveReceipt === null || liveReceipt === undefined
+      ? null
+      : selectIssuerKey(liveIssuerKeys, liveReceipt.issuer.key_id);
 
   return (
     <main className="min-h-screen bg-zinc-950 text-zinc-100">
@@ -465,12 +470,15 @@ export default function App() {
 
         {liveReceipt !== undefined &&
           liveReceipt !== null &&
-          liveIssuerKey !== undefined &&
-          (liveIssuerKey === null ? (
+          (liveIssuerKeys === undefined ? (
+            <section className="mt-4 rounded-xl border border-zinc-700 bg-zinc-900 p-4">
+              <p className="text-sm text-zinc-300">Loading issuer key…</p>
+            </section>
+          ) : liveIssuerKey === null ? (
             <section className="mt-4 rounded-xl border border-zinc-700 bg-zinc-900 p-4">
               <p className="text-sm text-zinc-300">
-                No published issuer key. The receipt cannot be attributed in
-                this browser.
+                No active or retired issuer key matches this receipt. It cannot
+                be attributed in this browser.
               </p>
             </section>
           ) : (

@@ -58,6 +58,7 @@ SIGNATURE_INVALID = "signature_invalid"
 PINNED_KEY_MISMATCH = "pinned_key_mismatch"
 KEY_ID_MISMATCH = "key_id_mismatch"
 MERCHANT_MISSING = "merchant_missing"
+MERCHANT_UNPINNED = "merchant_unpinned"
 MERCHANT_KEY_ID_MISMATCH = "merchant_key_id_mismatch"
 MERCHANT_KEY_MISMATCH = "merchant_key_mismatch"
 MERCHANT_SIGNATURE_INVALID = "merchant_signature_invalid"
@@ -69,7 +70,8 @@ SAMPLE_TRANSCRIPT = (
     "Customer: The jacket I ordered (order #992) arrived with a torn seam."
     " I want a refund.\n"
     "Agent: I am sorry about the torn seam. I have processed a full $45"
-    " refund for order #992.\n"
+    " refund for order #992. It should appear on your statement within 5 to"
+    " 10 business days.\n"
     "Customer: Great, thank you for sorting that out so fast.\n"
 )
 
@@ -477,6 +479,30 @@ def verify_receipt(
             valid=True, reason=OK, receipt_id=recomputed, key_id=key_id
         )
 
+    # A signature checked against a key embedded in the same untrusted
+    # envelope is not a merchant trust decision. Without a pin, report the
+    # merchant as unverified rather than valid. Requiring a merchant signature
+    # without a merchant pin fails closed.
+    if merchant_public_key is None:
+        last_key_id = parsed.countersignatures[-1].key_id
+        if require_merchant:
+            return VerifyResult(
+                valid=False,
+                reason=MERCHANT_UNPINNED,
+                receipt_id=recomputed,
+                key_id=key_id,
+                merchant_valid=False,
+                merchant_key_id=last_key_id,
+            )
+        return VerifyResult(
+            valid=True,
+            reason=OK,
+            receipt_id=recomputed,
+            key_id=key_id,
+            merchant_valid=None,
+            merchant_key_id=last_key_id,
+        )
+
     for countersig in parsed.countersignatures:
         reason = _merchant_failure(
             countersig,
@@ -509,7 +535,7 @@ def sample_payload() -> dict[str, Any]:
     return {
         "version": RECEIPT_VERSION,
         "issued_at": "2026-11-04T12:00:00Z",
-        "issuer": {"name": "Settleye", "key_id": "settleye-demo-2026-11"},
+        "issuer": {"name": "Settleye", "key_id": "settleye-demo-2026-12"},
         "agent": {"model_id": "meta-models/muse-spark-open-1026"},
         "transcript": {
             "sha256": hashlib.sha256(
@@ -536,7 +562,7 @@ def sample_payload() -> dict[str, Any]:
             "checked_at": "2026-11-04T12:00:00Z",
         },
         "remediation": {
-            "idempotency_key": "refund:992:45.00",
+            "idempotency_key": "refund:992:stripe:45.00",
             "amount_usd": "45.00",
             "status": "executed",
         },

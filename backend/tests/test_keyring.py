@@ -276,3 +276,40 @@ def test_cli_unknown_revoke_exits_nonzero(
         == 1
     )
     assert "Unknown key id" in capsys.readouterr().err
+
+
+def test_rotate_restores_the_old_key_when_the_registry_save_fails(
+    isolated_keyring: Path, monkeypatch
+) -> None:
+    """A failed rotation must not leave the old active key unusable."""
+    registry = initialized(isolated_keyring)
+    path = key_path(isolated_keyring)
+    old_bytes = path.read_bytes()
+    old_public = registry.active_key().public_key
+
+    def fail_save() -> None:
+        raise KeyringError("simulated disk failure")
+
+    monkeypatch.setattr(registry, "save", fail_save)
+    with pytest.raises(KeyringError):
+        registry.rotate("key-2", path)
+
+    assert path.read_bytes() == old_bytes
+    assert stat.S_IMODE(path.stat().st_mode) == 0o600
+    assert KeyRegistry(isolated_keyring).active_key().public_key == old_public
+    assert build_signer_from_env() is not None
+
+
+def test_first_active_record_wins_on_a_hand_edited_registry(
+    isolated_keyring: Path,
+) -> None:
+    """`get` and `active_key` must agree when a file has two active rows."""
+    registry = KeyRegistry(
+        isolated_keyring,
+        records=[
+            KeyRecord(key_id="key-1", public_key="pub-1", status="active"),
+            KeyRecord(key_id="key-2", public_key="pub-2", status="active"),
+        ],
+    )
+    assert registry.get("key-1").public_key == "pub-1"
+    assert registry.active_key().key_id == "key-1"

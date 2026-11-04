@@ -21,6 +21,7 @@ from app.keyring import (
 from app.main import app
 from app.receipt import (
     MERCHANT_MISSING,
+    MERCHANT_UNPINNED,
     PINNED_KEY_MISMATCH,
     countersign_receipt,
     encode_public_key,
@@ -124,7 +125,9 @@ def test_malformed_registry_fails_closed_not_unpinned(
     assert response.status_code == 200
     assert response.json()["valid"] is False
     assert response.json()["reason"] == REGISTRY_ERROR
-    assert client().get("/receipt/keys").json() == []
+    keys = client().get("/receipt/keys")
+    assert keys.status_code == 503
+    assert "Key registry unavailable" in keys.json()["detail"]
 
 
 def test_explicit_pin_still_wins_over_registry() -> None:
@@ -236,3 +239,71 @@ def test_registry_path_passes_merchant_pins_through() -> None:
     assert body["valid"] is True
     assert body["merchant_valid"] is True
     assert body["merchant_key_id"] == "merchant-2"
+
+
+def test_key_id_alone_does_not_bypass_the_registry() -> None:
+    """A self-declared key id is not a public-key pin."""
+    init_key("api-key-1")
+    foreign_private, _ = generate_keypair()
+    envelope = sign_receipt(sample_payload(), foreign_private)
+
+    response = client().post(
+        "/receipt/verify",
+        json={"receipt": envelope, "key_id": envelope["issuer"]["key_id"]},
+    )
+    assert response.status_code == 200
+    body = response.json()
+    assert body["valid"] is False
+    assert body["reason"] == UNKNOWN_KEY
+
+
+def test_empty_registry_verification_fails_closed(tmp_path, monkeypatch) -> None:
+    path = tmp_path / "empty-keyring.json"
+    path.write_text(json.dumps({"version": 1, "keys": []}), encoding="utf-8")
+    monkeypatch.setenv("SETTLEYE_KEYRING_PATH", str(path))
+    foreign_private, _ = generate_keypair()
+    envelope = sign_receipt(sample_payload(), foreign_private)
+
+    response = client().post("/receipt/verify", json={"receipt": envelope})
+    assert response.status_code == 200
+    body = response.json()
+    assert body["valid"] is False
+    assert body["reason"] == REGISTRY_ERROR
+
+    keys = client().get("/receipt/keys")
+    assert keys.status_code == 503
+
+
+def test_merchant_key_id_alone_is_not_a_pin() -> None:
+    """An embedded merchant key is not trusted just because its id is named."""
+    issuer_private, _ = generate_keypair()
+    envelope = sign_receipt(sample_payload(), issuer_private)
+    merchant_private, _ = generate_keypair()
+    envelope = countersign_receipt(
+        envelope,
+        merchant_private,
+        "merchant-1",
+        "2026-11-04T12:00:00Z",
+    )
+
+    response = client().post(
+        "/receipt/verify",
+        json={"receipt": envelope, "merchant_key_id": "merchant-1"},
+    )
+    assert response.status_code == 200
+    body = response.json()
+    assert body["valid"] is True
+    assert body["merchant_valid"] is None
+
+    required = client().post(
+        "/receipt/verify",
+        json={
+            "receipt": envelope,
+            "merchant_key_id": "merchant-1",
+            "require_merchant": True,
+        },
+    )
+    assert required.status_code == 200
+    required_body = required.json()
+    assert required_body["valid"] is False
+    assert required_body["reason"] == MERCHANT_UNPINNED

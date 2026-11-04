@@ -216,8 +216,8 @@ class KeyRegistry:
         return None
 
     def active_key(self) -> KeyRecord | None:
-        """The newest active key, or None when no key may sign."""
-        for record in reversed(self._records):
+        """The first active key, matching first-record-wins elsewhere."""
+        for record in self._records:
             if record.status == "active":
                 return record
         return None
@@ -243,11 +243,19 @@ class KeyRegistry:
     def rotate(
         self, new_key_id: str, private_key_path: str | Path
     ) -> KeyRecord:
-        """Generate a replacement key, retire the old active one, save both."""
+        """Generate a replacement key, retire the old active one, save both.
+
+        The old private key is restored if the registry save fails. Losing the
+        old key while the registry still names it active would silently stop
+        signing until an operator noticed.
+        """
         if not new_key_id:
             raise KeyringError("A non-empty key id is required for rotation.")
         if self.get(new_key_id) is not None:
             raise KeyringError(f"Key id already registered: {new_key_id}.")
+        target = Path(private_key_path)
+        old_key_bytes = target.read_bytes() if target.exists() else None
+        old_records = list(self._records)
         private_key, public_key = generate_keypair()
         now = utc_now_iso()
         for index, record in enumerate(self._records):
@@ -255,7 +263,7 @@ class KeyRegistry:
                 self._records[index] = record.model_copy(
                     update={"status": "retired", "retired_at": now}
                 )
-        write_private_key(private_key_path, private_key)
+        write_private_key(target, private_key)
         record = KeyRecord(
             key_id=new_key_id,
             public_key=encode_public_key(public_key),
@@ -263,7 +271,16 @@ class KeyRegistry:
             created_at=now,
         )
         self._records.append(record)
-        self.save()
+        try:
+            self.save()
+        except Exception:
+            self._records = old_records
+            if old_key_bytes is not None:
+                target.write_bytes(old_key_bytes)
+                target.chmod(0o600)
+            else:
+                target.unlink(missing_ok=True)
+            raise
         return record
 
     def revoke(self, key_id: str) -> KeyRecord:

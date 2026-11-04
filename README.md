@@ -25,7 +25,7 @@ Built for the Meta Global AI Developer Hackathon (Indie Developer Track, Push th
 - Signed receipt: the sample's Ed25519 issuer and merchant signatures verify in the browser with pinned keys; a one-digit amount change or a changed merchant acknowledgement time fails. See `docs/receipt-spec.md`.
 - Live signed path: a binding refund for `#992` returned a signed envelope, the registry accepted it, a restarted service returned the same envelope, and the replay moved $0.00. A retired key still verifies its old receipt; a revoked or unknown key fails.
 - Shadow-audit proxy: 12 tickets, 5 drifts, $285.50 at risk, $23,791.67 per 1,000 tickets, 0 of 8 false clears. This is recorded-output replay on synthetic cases with a mock ledger, not a merchant pilot. See `docs/research/23-shadow-audit.md`.
-- Suite: 214 backend checks plus 71 frontend checks, green on every push.
+- Suite: 222 backend checks plus 76 frontend checks, green on every push.
 
 ## Run it yourself (under five minutes)
 

@@ -20,7 +20,12 @@ from app.keyring import (
 )
 from app.ledger.mock import MockLedgerAdapter
 from app.models import AuditReport, PromiseEntity, RemediationReceipt
-from app.receipt import VerifyResult, verify_receipt
+from app.receipt import (
+    INVALID_PINNED_KEY,
+    KEY_ID_MISMATCH,
+    VerifyResult,
+    verify_receipt,
+)
 from app.remediate.service import (
     RemediationError,
     RemediationService,
@@ -102,14 +107,17 @@ def get_remediation() -> RemediationService:
 def load_key_registry() -> KeyRegistry | None:
     """Registry at the configured path, or None when no keys are configured.
 
-    A malformed existing file raises KeyringError: verification must fail
-    closed rather than silently fall back to unpinned mode.
+    A file that exists but holds no records is a broken trust root, not an
+    invitation to fall back to unpinned verification. Raise so the caller can
+    fail closed.
     """
     path = default_registry_path()
     if not path.exists():
         return None
     registry = KeyRegistry.load(path)
-    return registry if registry.records else None
+    if not registry.records:
+        raise KeyringError(f"Key registry {path} exists but has no records.")
+    return registry
 
 
 def get_value() -> ValueLedger:
@@ -227,8 +235,10 @@ def receipt_keys() -> list[dict[str, Any]]:
     """Public key history only: ids, base64url keys, states, timestamps."""
     try:
         registry = load_key_registry()
-    except KeyringError:
-        return []
+    except KeyringError as exc:
+        raise HTTPException(
+            status_code=503, detail=f"Key registry unavailable: {exc}"
+        ) from exc
     if registry is None:
         return []
     return registry.public_records()
@@ -238,11 +248,13 @@ def receipt_keys() -> list[dict[str, Any]]:
 def verify_execution_receipt(request: ReceiptVerifyRequest) -> dict[str, Any]:
     """Pure verification: no model call, no ledger read, always HTTP 200.
 
-    A supplied pin keeps the caller-controlled path. With no pin, a configured
-    registry decides which public key may have signed; otherwise verification
-    remains unpinned and only proves internal consistency.
+    A supplied public key is a real pin. A `key_id` alone is not a trust
+    anchor: with a registry it is checked against the published record, and
+    without one the request fails closed. With no pin, a configured registry
+    decides which public key may have signed; otherwise verification remains
+    unpinned and only proves internal consistency.
     """
-    if request.public_key is not None or request.key_id is not None:
+    if request.public_key is not None:
         return verify_receipt(
             request.envelope(),
             pinned_public_key=request.public_key,
@@ -263,11 +275,24 @@ def verify_execution_receipt(request: ReceiptVerifyRequest) -> dict[str, Any]:
             expected_merchant_key_id=request.merchant_key_id,
             require_merchant=request.require_merchant,
         )
-        return {
-            key: value
-            for key, value in result.model_dump().items()
-            if value is not None
-        }
+        if (
+            request.key_id is not None
+            and result.key_id is not None
+            and result.key_id != request.key_id
+        ):
+            return VerifyResult(
+                valid=False,
+                reason=KEY_ID_MISMATCH,
+                receipt_id=result.receipt_id,
+                key_id=result.key_id,
+            ).model_dump()
+        return result.model_dump()
+    if request.key_id is not None:
+        return VerifyResult(
+            valid=False,
+            reason=INVALID_PINNED_KEY,
+            key_id=request.key_id,
+        ).model_dump()
     return verify_receipt(
         request.envelope(),
         merchant_public_key=request.merchant_public_key,

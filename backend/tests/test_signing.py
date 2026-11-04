@@ -81,11 +81,10 @@ def test_envelope_verifies_against_its_registered_public_key() -> None:
     assert envelope["transcript"] == {"sha256": DIGEST, "turns": 2}
     assert envelope["promise"]["order_id"] == "992"
     assert envelope["promise"]["amount"] == "45.00"
-    # The signed key must equal the durable receipt's key, which the service
-    # derives from the raw promise order id. The payload may normalize the
-    # display order id, but the idempotency key is never rewritten.
+    # The signed key must equal the durable receipt's key. Both normalize the
+    # spoken "#" so the same order cannot mint two keys.
     assert envelope["remediation"] == {
-        "idempotency_key": "refund:#992:stripe:45.00",
+        "idempotency_key": "refund:992:stripe:45.00",
         "amount_usd": "45.00",
         "status": "executed",
     }
@@ -136,7 +135,7 @@ def test_fallback_amount_when_promise_has_no_amount() -> None:
     assert envelope is not None
     assert envelope["promise"]["amount"] == "30.00"
     assert envelope["remediation"]["idempotency_key"] == (
-        "refund:#992:stripe:30.00"
+        "refund:992:stripe:30.00"
     )
 
 

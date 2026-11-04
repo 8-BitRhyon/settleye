@@ -5,7 +5,9 @@ import {
   SAMPLE_MERCHANT_KEY_ID,
   SAMPLE_MERCHANT_PUBLIC_KEY,
 } from "./sample-receipt-merchant-key";
+import { SAMPLE_PHANTOM_TRANSCRIPT } from "./format";
 import {
+  sha256Hex,
   tamperAmount,
   verifyExecutionReceipt,
   verifyTwoPartyReceipt,
@@ -37,9 +39,18 @@ describe("signed sample receipt", () => {
     expect(result.valid).toBe(true);
   });
 
+  it("binds the exact sample transcript and a verbatim evidence span", () => {
+    const digest = sha256Hex(
+      new TextEncoder().encode(SAMPLE_PHANTOM_TRANSCRIPT),
+    );
+    expect(SAMPLE.transcript.sha256).toBe(digest);
+    expect(SAMPLE.transcript.turns).toBe(3);
+    expect(SAMPLE_PHANTOM_TRANSCRIPT).toContain(SAMPLE.promise.evidence_span);
+  });
+
   it("keeps the frozen receipt id", () => {
     expect(SAMPLE.receipt_id).toBe(
-      "sha256:df3f410be43689329b69705c9534f14035a82b32c1b6383986788bf559e4347b",
+      "sha256:8551a4d8ad97c7585053d9b1259531be84ef4a8049751d4775b27aa741149d44",
     );
   });
 

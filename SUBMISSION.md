@@ -19,7 +19,7 @@ durable, signed, idempotent receipt.
 ## 60-second judge path
 
 1. Open the sample inbox. It renders a real recorded audit with `1 drift · $45.00 at risk`.
-2. Click `Issue $45.00 refund`. One `Remediation receipt` appears with `Issuer signature valid`, `Merchant countersigned`, the receipt id, and `refund:992:45.00`.
+2. Click `Issue $45.00 refund`. One `Remediation receipt` appears with `Issuer signature valid`, `Merchant countersigned`, the receipt id, and `refund:992:stripe:45.00`.
 3. Click `Retry the same fix`. It returns `Already executed. $0.00 additional movement.` with the same key.
 4. Click `Try tamper demo`. Both signature rows turn invalid and the card reports the altered payload. `Reset` restores both valid rows.
 5. Watch the 15-second proof, the receipt verification clip, and the 3-minute film.
@@ -80,7 +80,7 @@ artifact for agent execution.
 - `12 of 12` eval verdicts correct; `11 of 12` entities exact.
 - `0 of 4` non-binding cases reached drift: retracted, conditional, superseded, info-only.
 - Live dev-store order `#1001`: `$44.00` at risk in about 4 seconds, audit-only.
-- `214` backend checks and `71` frontend checks green.
+- `222` backend checks and `76` frontend checks green.
 - Live signed path, exercised on a real keyring: a binding refund for `#992` returned a signed envelope, `POST /receipt/verify` accepted it through the published active key, a restarted service returned the same envelope, and the replay moved `$0.00`.
 - Key lifecycle: a retired key still verifies its historical receipt, a revoked key fails with `revoked_key`, and an unregistered key fails with `unknown_key`.
 - Two-party sample: issuer and merchant both verify in the browser; a one-digit amount change breaks the issuer signature; a changed merchant acknowledgement time breaks the merchant signature.
@@ -94,6 +94,7 @@ artifact for agent execution.
 - No live payments. No real merchant savings claimed.
 - The public sample receipt is signed by a demo issuer key and countersigned by a demo merchant key. The signatures prove those keys issued and acknowledged the payload; they do not independently prove Stripe or Shopify state.
 - The live `/remediate` path signs only when `backend/.tmp/keyring.json` and the issuer private key are configured and the request carries audit context. Without them, the durable receipt is still recorded and `receipt` is `null`.
+- The live path trusts the caller's transcript digest and audit time; it does not re-hash a stored audit. The signature binds the claim but does not prove the audit produced it.
 - The published key registry is a local JSON file and a read-only endpoint, not a hosted certificate authority. Rotation and revocation are CLI operations.
 - The shadow audit is a 12-case recorded-output replay, not a real merchant measurement. A real pilot needs a transcript export plus a Shopify read-only token or an exported ledger snapshot. The Stripe adapter is test-mode only, so a live Stripe pilot needs a new read-only adapter. The exact blocker and command are in `docs/research/23-shadow-audit.md`.
 - The product path needs a transcript export and read-only ledger keys. The public sample and the 15-second proof need no install and no credentials.

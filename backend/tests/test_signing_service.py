@@ -132,7 +132,7 @@ def test_signed_key_equals_durable_key_for_hash_prefixed_order(
     assert receipt.receipt["remediation"]["idempotency_key"] == (
         receipt.idempotency_key
     )
-    assert receipt.idempotency_key == "refund:#992:stripe:45.00"
+    assert receipt.idempotency_key == "refund:992:stripe:45.00"
     # The ledger write used the bare id; the receipt kept the model's text.
     assert receipt.promise.order_id == "#992"
     assert ledger.refunded_usd("992") == 45.00

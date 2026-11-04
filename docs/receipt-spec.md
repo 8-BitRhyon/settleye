@@ -24,7 +24,7 @@ the receipt.
   "issued_at": "2026-11-04T12:00:00Z",
   "issuer": {
     "name": "Settleye",
-    "key_id": "settleye-demo-2026-11"
+    "key_id": "settleye-demo-2026-12"
   },
   "agent": {
     "model_id": "meta-models/muse-spark-open-1026"
@@ -49,7 +49,7 @@ the receipt.
     "checked_at": "2026-11-04T12:00:00Z"
   },
   "remediation": {
-    "idempotency_key": "refund:992:45.00",
+    "idempotency_key": "refund:992:stripe:45.00",
     "amount_usd": "45.00",
     "status": "executed"
   },
@@ -61,7 +61,7 @@ the receipt.
   "countersignatures": [
     {
       "role": "merchant",
-      "key_id": "merchant-demo-2026-11",
+      "key_id": "merchant-demo-2026-12",
       "alg": "Ed25519",
       "public_key": "base64url",
       "acknowledged_at": "2026-11-04T12:05:00Z",
@@ -135,7 +135,7 @@ The merchant signs canonical bytes of:
 {
   "receipt_id": "sha256:...",
   "role": "merchant",
-  "key_id": "merchant-demo-2026-11",
+  "key_id": "merchant-demo-2026-12",
   "acknowledged_at": "2026-11-04T12:05:00Z"
 }
 ```
@@ -186,10 +186,17 @@ old receipts can be identified as untrusted rather than unknown.
 The public registry is served by `GET /receipt/keys`. It contains public keys
 and status only. It never contains a private key or a private key path.
 
-`POST /receipt/verify` uses an explicit pin when `public_key` and `key_id` are
-supplied. Otherwise, if a registry is configured, it verifies against the
-registry and applies the status rules. If neither is available, it verifies
-internal consistency only and does not establish issuer authenticity.
+`POST /receipt/verify` uses an explicit pin when `public_key` is supplied.
+A `key_id` alone is not a trust anchor: with a registry it is checked against
+the published record, and without one the request fails closed. If no public
+key or registry is available, verification proves internal consistency only and
+does not establish issuer authenticity. A registry file that exists but has no
+records fails closed with `registry_error`; it is not treated as "no registry".
+
+A merchant countersignature is only a trust decision when a merchant public key
+is supplied. Without one, `merchant_valid` is `null`, not `true`, even if the
+signature is internally consistent. `require_merchant=true` without a merchant
+pin fails with `merchant_unpinned`.
 
 ## Live audit binding
 
@@ -201,12 +208,15 @@ The audit response carries:
 
 The remediation request may forward those fields plus `ledger_summary`. The
 server does not trust the client's ledger summary: it re-reads the ledger and
-signs its own fresh reconciliation summary. When the digest and turns are
-present and the issuer key is configured, `/remediate` signs the envelope and
-persists it with the durable receipt. When they are absent, the durable receipt
-is still recorded and `receipt` is `null`. Money already moved, so a signing
-failure never fails the refund; the response states that no signed receipt was
-produced.
+signs its own fresh reconciliation summary. The digest, turns, and audit time
+are caller-supplied: the server no longer holds the transcript, so it signs the
+binding, not the provenance. A production deployment should persist audit
+reports server-side keyed by digest and require `/remediate` to reference the
+stored report. When the digest and turns are present and the issuer key is
+configured, `/remediate` signs the envelope and persists it with the durable
+receipt. When they are absent, the durable receipt is still recorded and
+`receipt` is `null`. Money already moved, so a signing failure never fails the
+refund; the response states that no signed receipt was produced.
 
 ## What the signatures prove
 
@@ -223,6 +233,9 @@ produced.
   what Settleye observed at `checked_at`.
 - They do not prove the transcript is authentic. It binds a digest; the
   merchant must keep the source transcript.
+- In the live path, the transcript digest and audit time are supplied by the
+  caller and are not re-derived from a stored audit. The signature binds that
+  claim; it does not prove the audit produced it.
 - A merchant countersignature does not prove money moved. It proves the
   merchant key holder acknowledged the remediation receipt.
 - They are not a third-party audit or a legal attestation.

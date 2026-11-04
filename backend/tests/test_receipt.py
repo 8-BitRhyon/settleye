@@ -31,6 +31,7 @@ from app.receipt import (
     MERCHANT_MISSING,
     MERCHANT_PUBLIC_KEY_INVALID,
     MERCHANT_SIGNATURE_INVALID,
+    MERCHANT_UNPINNED,
     PINNED_KEY_MISMATCH,
     RECEIPT_ID_MISMATCH,
     SIGNATURE_INVALID,
@@ -54,19 +55,19 @@ SAMPLE_MERCHANT_PUBLIC_KEY = (
     FIXTURES / "sample_receipt_merchant_public_key.txt"
 )
 
-FROZEN_PUBLIC_KEY = "iJhnbifaIiqARhsqgrjoXRgM2Y_oBYrAuAmBs2Sn5T0"
+FROZEN_PUBLIC_KEY = "JExRZnUxqAtd4z8-56EFTbcUIb5p4MOriXHRtXmSk2A"
 FROZEN_RECEIPT_ID = (
-    "sha256:df3f410be43689329b69705c9534f14035a82b32c1b6383986788bf559e4347b"
+    "sha256:8551a4d8ad97c7585053d9b1259531be84ef4a8049751d4775b27aa741149d44"
 )
 FROZEN_ISSUER_SIGNATURE = (
-    "24Itnk0RP_DPksyP09Oh1i7ZsLKO4Y8ANYqj7k6CVgusN7Qzb5s5AzqwTQv5h_XR5EM"
-    "Um4OHzQzBHsj_MZyaDA"
+    "ccTYMOeAndLWnyMf2SBOfQQyoqdiC3AU1YygVWJpP5LkDsTgURvn9_vlJn_0RavJDx1m"
+    "ObJ2HMFAkgYh-YimBQ"
 )
 FROZEN_MERCHANT_PUBLIC_KEY = (
-    "VEacfE0NmSV6skOUSdWIHP5JNigzmDEzs-mYxH8Yd-c"
+    "lwzdcKUKA7AsmR4nRWPD2jfUgO90rlzlP5l-9fkmjAU"
 )
-KEY_ID = "settleye-demo-2026-11"
-MERCHANT_KEY_ID = "merchant-demo-2026-11"
+KEY_ID = "settleye-demo-2026-12"
+MERCHANT_KEY_ID = "merchant-demo-2026-12"
 MERCHANT_ACKED_AT = "2026-11-04T12:05:00Z"
 
 
@@ -412,10 +413,18 @@ def test_v1_receipt_without_countersignatures_still_verifies() -> None:
     assert result.merchant_key_id is None
 
 
-def test_valid_merchant_without_pins_reports_merchant_valid() -> None:
+def test_valid_merchant_without_pins_is_unverified() -> None:
     result = verify_receipt(sample())
     assert result.valid is True
-    assert result.merchant_valid is True
+    assert result.merchant_valid is None
+    assert result.merchant_key_id == MERCHANT_KEY_ID
+
+
+def test_require_merchant_without_a_pin_fails_closed() -> None:
+    result = verify_receipt(sample(), require_merchant=True)
+    assert result.valid is False
+    assert result.reason == MERCHANT_UNPINNED
+    assert result.merchant_valid is False
     assert result.merchant_key_id == MERCHANT_KEY_ID
 
 
@@ -569,7 +578,7 @@ def test_verify_endpoint_accepts_wrapped_envelope() -> None:
         "reason": "ok",
         "receipt_id": FROZEN_RECEIPT_ID,
         "key_id": KEY_ID,
-        "merchant_valid": True,
+        "merchant_valid": None,
         "merchant_key_id": MERCHANT_KEY_ID,
     }
 

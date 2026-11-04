@@ -34,15 +34,24 @@ class RemediationError(Exception):
     """The requested fix is not a drift or cannot be executed safely."""
 
 
+def _bare_order_id(order_id: str | None) -> str:
+    """Ledger key without the spoken hash or surrounding space."""
+    return (order_id or "").strip().lstrip("#") or "unknown"
+
+
 def idempotency_key(
     promise_action: str,
     order_id: str | None,
     amount_usd: float,
     target_system: str = "unknown",
 ) -> str:
-    """Stable key: action, order, refund rail, and promised amount."""
+    """Stable key: action, order, refund rail, and promised amount.
+
+    The order id is normalized exactly like the ledger boundary, so `#992`
+    and `992` can never mint two keys for the same promised refund.
+    """
     return (
-        f"{promise_action}:{order_id or 'unknown'}:"
+        f"{promise_action}:{_bare_order_id(order_id)}:"
         f"{target_system}:{amount_usd:.2f}"
     )
 
@@ -129,11 +138,21 @@ class RemediationService:
         self._executed[receipt.idempotency_key] = receipt
 
     def find(self, key: str) -> RemediationReceipt | None:
-        """Return the original receipt for a seen key, if any."""
-        receipt = self._executed.get(key)
-        if receipt is None:
-            return None
-        return receipt.model_copy(update={"status": "already_executed"})
+        """Return the original receipt for a seen key, if any.
+
+        Stores written before order normalization may hold `#992`. Check the
+        normalized key first, then the one legacy hash-prefixed variant, so an
+        upgrade cannot forget a refund that already moved money.
+        """
+        candidates = [key]
+        parts = key.split(":")
+        if len(parts) == 4 and not parts[1].startswith("#"):
+            candidates.append(f"{parts[0]}:#{parts[1]}:{parts[2]}:{parts[3]}")
+        for candidate in candidates:
+            receipt = self._executed.get(candidate)
+            if receipt is not None:
+                return receipt.model_copy(update={"status": "already_executed"})
+        return None
 
     def remediate(
         self,
@@ -148,15 +167,12 @@ class RemediationService:
             )
         promise = result.promise
         key = promise_key(promise, result.amount_at_risk_usd)
-        if key in self._executed:
-            found = self.find(key)
-            assert found is not None
+        found = self.find(key)
+        if found is not None:
             return found
         # Reconcile strips the spoken "#" before reading the ledger; writes
         # must cross the same boundary with the same bare key.
-        ledger_order_id = (
-            (promise.order_id or "").strip().lstrip("#") or "unknown"
-        )
+        ledger_order_id = _bare_order_id(promise.order_id)
         ledger.record_refund(
             order_id=ledger_order_id,
             amount_usd=result.amount_at_risk_usd,

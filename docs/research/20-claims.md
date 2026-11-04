@@ -19,7 +19,7 @@ Every number the landing page shows, where it comes from, and what it does not c
 | Key lifecycle | Retired verifies, revoked and unknown fail | `backend/tests/test_keyring.py` | Local JSON registry, not a hosted certificate authority |
 | Two-party sample receipt | Issuer and merchant valid; tamper fails each | `frontend/src/sample-receipt.test.ts`, `frontend/src/receipt-merchant.test.ts` | Frozen demo keys and synthetic payload |
 | Shadow-audit proxy | 12 tickets, 5 drifts, $285.50, $23,791.67 per 1,000, 0/8 false clears | `docs/research/23-shadow-audit.md` | Recorded live model output replay on synthetic eval cases with a mock ledger. Not a merchant pilot |
-| Automated checks | 214 backend, 71 frontend | CI | Counted at the commit named in the run |
+| Automated checks | 222 backend, 76 frontend | CI | Counted at the commit named in the run |
 
 ## Borrowed numbers, with qualifiers
 
