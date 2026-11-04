@@ -1,6 +1,6 @@
-/* Eclipse — motion background (your image, animated)
+/* Eclipse - motion background (your image, animated)
  * Usage: <canvas data-bg></canvas> inside any positioned container, then <script src="bg.js"></script>.
- * Keep scene.jpg next to this file. Serve over http(s) — browsers block textures from file://.
+ * Keep scene.jpg next to this file. Serve over http(s) - browsers block textures from file://.
  * Optional: <canvas data-bg data-focus="x,y"> picks which part of the image stays in view when cropped (0..1).
  */
 (() => {
@@ -65,7 +65,7 @@ vec2 drift(vec2 iu,float amp,float speed){
   iu+=d*exp(-dot(d,d)*7.)*amp*.9;
   return iu;
 }
-// sample with optional blur (mip bias) — gradients with baked grain read cleaner blurred, then fresh grain on top
+// sample with optional blur (mip bias) - gradients with baked grain read cleaner blurred, then fresh grain on top
 vec3 soft(vec2 iu,float lod){return textureLod(img,iu,lod*.2).rgb;}   // near-full detail: the image is the hero
 vec3 grain(vec3 c,float amt){return c+(hash(gl_FragCoord.xy+fract(t*7.)*91.)-.5)*amt*.55;}   // light dither only
 void main(){

@@ -12,8 +12,16 @@ from pathlib import Path
 
 import httpx
 
-from app.daemon import run_batch
+from app.daemon import (
+    BatchReplayClient,
+    ReplayClient,
+    load_replay,
+    main,
+    run_batch,
+)
 from app.extract.client import MetaModelClient
+from app.extract.live_check import load_transcript
+from app.extract.pipeline import ExtractionError
 from app.ledger.mock import MockLedgerAdapter
 from app.remediate.service import RemediationService
 from app.value import ValueLedger
@@ -233,3 +241,98 @@ def test_single_source_is_not_a_repeat() -> None:
         )
     )
     assert report.repeat_orders == []
+
+
+def test_batch_replay_client_lookup_and_missing() -> None:
+    client = BatchReplayClient({"a.json": PHANTOM_45})
+    replay = client.for_source("a.json")
+    assert isinstance(replay, ReplayClient)
+    assert replay.source == "a.json"
+
+    try:
+        client.for_source("missing.json")
+        assert False, "expected ExtractionError"
+    except ExtractionError as exc:
+        assert "no recorded output" in str(exc)
+
+    res = asyncio.run(client.chat([{"role": "user", "content": "hi"}]))
+    assert res == PHANTOM_45
+
+
+def test_run_batch_with_batch_replay_client() -> None:
+    ledger, service, value = fresh()
+    replay_file = FIXTURES / "eval_live_output.json"
+    replies, _ = load_replay(replay_file)
+    client = BatchReplayClient(replies)
+
+    eval_dir = FIXTURES / "eval"
+    paths = sorted(eval_dir.glob("*.json"))
+    transcripts = {p.name: load_transcript(str(p)) for p in paths}
+
+    report = asyncio.run(run_batch(transcripts, client, ledger, service, value))
+    assert report.verdict == "drift_found"
+    assert len(report.items) == 12
+    assert report.total_at_risk_usd == 285.50
+    assert len(report.drifts) == 5
+    assert len(report.repeat_orders) == 1
+    assert report.repeat_orders[0].order_id == "992"
+
+
+def test_daemon_cli_replay_offline(monkeypatch, capsys) -> None:
+    monkeypatch.delenv("BASETEN_API_KEY", raising=False)
+    exit_code = main([
+        "--dir",
+        str(FIXTURES / "eval"),
+        "--ledger",
+        "mock",
+        "--replay",
+        str(FIXTURES / "eval_live_output.json"),
+    ])
+    assert exit_code == 0
+    captured = capsys.readouterr()
+    assert "sources: 12" in captured.out
+    assert "verdict: drift_found" in captured.out
+    assert "total_at_risk: $285.50" in captured.out
+    assert "order #992" in captured.out
+
+
+def test_daemon_cli_replay_missing_file(monkeypatch, capsys) -> None:
+    monkeypatch.delenv("BASETEN_API_KEY", raising=False)
+    exit_code = main([
+        "--dir",
+        str(FIXTURES / "eval"),
+        "--ledger",
+        "mock",
+        "--replay",
+        "non_existent_file.json",
+    ])
+    assert exit_code == 2
+    captured = capsys.readouterr()
+    assert "Cannot read replay" in captured.err
+
+
+def test_daemon_cli_dir_defaults_to_eval_if_present(monkeypatch, capsys) -> None:
+    monkeypatch.delenv("BASETEN_API_KEY", raising=False)
+    exit_code = main([
+        "--ledger",
+        "mock",
+        "--replay",
+        str(FIXTURES / "eval_live_output.json"),
+    ])
+    assert exit_code == 0
+    captured = capsys.readouterr()
+    assert "sources: 12" in captured.out
+
+
+def test_daemon_cli_without_replay_or_api_key_fails(monkeypatch, capsys) -> None:
+    monkeypatch.delenv("BASETEN_API_KEY", raising=False)
+    monkeypatch.setattr("app.daemon.load_dotenv_file", lambda _: None)
+    exit_code = main([
+        "--dir",
+        str(FIXTURES / "eval"),
+        "--ledger",
+        "mock",
+    ])
+    assert exit_code == 2
+    captured = capsys.readouterr()
+    assert "BASETEN_API_KEY is not set" in captured.err

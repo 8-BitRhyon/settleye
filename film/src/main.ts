@@ -151,10 +151,29 @@ function receiptHTML(cue: Cue, sample: SampleReceipt | null, receipts: ReceiptDa
   </div>`;
 }
 
+function fleetHTML(cue: Cue): string {
+  const rows = (cue.facts ?? [])
+    .map(
+      (fact) =>
+        `<div class="fleet-row"><span>${esc(fact.label)}</span><b class="${toneClass(fact.tone)}">${esc(fact.value)}</b></div>`,
+    )
+    .join("");
+  return `<div class="scene-inner">
+    <div class="fleet-layout">
+      <div class="kicker">${esc(cue.label ?? "TIER 3 / MODELED")}</div>
+      <h2>${esc(cue.text)}</h2>
+      <div class="fleet-sub">${esc(cue.sub ?? "")}</div>
+      <div class="fleet-ladder">${rows}</div>
+      <div class="fleet-note">${esc(cue.highlight ?? "")}</div>
+    </div>
+  </div>`;
+}
+
 function cueHTML(cue: Cue, sample: SampleReceipt | null, receipts: ReceiptData): string {
   if (cue.kind === "hero") return heroHTML(cue);
   if (cue.kind === "image") return imageHTML(cue);
   if (cue.kind === "receipt") return receiptHTML(cue, sample, receipts);
+  if (cue.kind === "fleet") return fleetHTML(cue);
   if (cue.kind === "card") {
     return `<div class="scene-inner"><div class="case-card"><div class="case-label">${esc(cue.label ?? "CASE")}</div><div class="display ${toneClass(cue.tone)}">${esc(cue.text)}</div><div class="sub">${esc(cue.sub ?? "")}</div>${factRows(cue)}</div></div>`;
   }
@@ -232,6 +251,14 @@ async function boot(): Promise<void> {
           { x: 18, autoAlpha: 0 },
           { x: 0, autoAlpha: 1, duration: 0.8, ease: "power2.out" },
           t0 + 0.12,
+        );
+      }
+      if (cue.kind === "fleet") {
+        tl.fromTo(
+          `${selector} .fleet-row`,
+          { autoAlpha: 0, y: 14 },
+          { autoAlpha: 1, y: 0, duration: 0.45, stagger: 0.08, ease: "power2.out" },
+          t0 + 0.15,
         );
       }
       if (cue.kind === "receipt") {

@@ -4,8 +4,8 @@
 #   ./tools/judge_audit.sh
 #
 # Requires uv (backend) and node (frontend). The test, eval-replay, comparison,
-# and build steps need no API keys and no model access. The final sweep does call
-# the live model, so skip it if you have no BASETEN_API_KEY in .env.
+# benchmark, and build steps need no API keys and no model access. The live sweep calls
+# the live model only when BASETEN_API_KEY is present in the environment.
 
 set -euo pipefail
 
@@ -33,8 +33,19 @@ else
   echo "gitleaks not installed; CI runs it on every push."
 fi
 
-bold "Daemon sweep over the eval set (live model, mock ledger)"
-( cd backend && uv run python -m app.daemon --dir ../fixtures/eval --ledger mock )
+bold "Daemon sweep over the eval set (offline replay, mock ledger)"
+( cd backend && uv run python -m app.daemon --dir ../fixtures/eval --ledger mock --replay ../fixtures/eval_live_output.json )
+
+bold "Fleet throughput and latency benchmark"
+python3 bench/fleet_benchmark.py
+
+bold "Enterprise fleet impact projection"
+python3 bench/fleet_projection.py
+
+if [ -n "${BASETEN_API_KEY:-}" ]; then
+  bold "Daemon sweep over the eval set (live model, mock ledger)"
+  ( cd backend && uv run python -m app.daemon --dir ../fixtures/eval --ledger mock )
+fi
 
 bold "Done"
 echo "Landing page: https://8-bitrhyon.github.io/settleye/landing.html"

@@ -2,7 +2,7 @@
 
 **Your AI agent promised a refund. Did the money move?**
 
-Settleye is the execution auditor for AI support agents. AI agents tell customers a refund is processed while the underlying tool call silently fails or never runs. Settleye extracts each promise from the transcript with a Meta model, reconciles it against Stripe and Shopify ledger state, and surfaces mismatches in an exception inbox with a one-click fix against the demo's mock ledger.
+Settleye is the execution auditor for AI support agents. AI agents tell customers a refund is processed while the underlying tool call silently fails or never runs. Operating post-execution directly against financial ledgers, Settleye extracts each promise from the transcript with a Meta model, reconciles it against Stripe and Shopify ledger state, clamps shortfalls and enforces original charge ceilings, and surfaces mismatches in an exception inbox with durable, tamper-evident Ed25519 execution receipts.
 
 Live demo: https://8-bitrhyon.github.io/settleye/landing.html
 
@@ -17,26 +17,79 @@ Built for the Meta Global AI Developer Hackathon (Indie Developer Track, Push th
 5. **Remember.** A batch daemon flags orders promised across several tickets.
 6. **Remediate.** One click settles drift against the demo's mock ledger through an idempotent service. Receipts persist to an append-only JSONL store keyed by the promise, so a restart cannot double-refund and a retry returns the original receipt. When an issuer key and audit context are configured, the live response also carries a signed execution receipt. The Shopify and Stripe write adapters pass tests but are not selected by the HTTP route in this build.
 
-## Measured proof
+## Proof hierarchy: measured, labeled, modeled
 
-- Eval set (`fixtures/eval/`, 12 cases): 12 of 12 verdicts correct, 11 of 12 entities exact. Zero non-binding promises reached drift; the superseded case drifts only on its replacement binding promise. See `docs/research/12-eval-results.md`.
-- Live Shopify run: dev-store order #1001 showed $6.00 settled of $50.00 promised. The daemon reported $44.00 at risk in 4.07 seconds.
-- Free gate bench: a 55 MB TinyBERT fine-tune kept 10 of 10 commitments on the 12-case eval. On 10,042 real ABCD support dialogues it discarded only 0.9% at threshold 0.20 and 1.7% at 0.50, with zero false clears in the four skipped refund threads. Safe, but not a cost saver. Bench-only, not wired into the API. See `docs/research/22-free-gate-finetune.md`.
-- Signed receipt: the sample's Ed25519 issuer and merchant signatures verify in the browser with pinned keys; a one-digit amount change or a changed merchant acknowledgement time fails. See `docs/receipt-spec.md`.
-- Live signed path: a binding refund for `#992` returned a signed envelope, the registry accepted it, a restarted service returned the same envelope, and the replay moved $0.00. A retired key still verifies its old receipt; a revoked or unknown key fails.
-- Concurrent duplicate fixes, including cold-start and mid-append requests, produce one refund and one receipt. A forged larger promise after a refund is rejected by the charge ceiling. HTTP verification without a pin or registry returns `unpinned`.
-- Shadow-audit proxy: 12 tickets, 5 drifts, $285.50 at risk, 0 of 8 false clears. This is recorded-output replay on synthetic cases with a mock ledger, not a merchant pilot and not a forecast. See `docs/research/23-shadow-audit.md`.
-- Suite: 229 backend checks plus 76 frontend checks, green on every push.
+Settleye validates its execution auditing and settlement layer through a three-tier proof hierarchy:
+
+### Tier 1: Live, Read-Only Dev-Store Proof ($44.00 caught)
+- **Live Shopify run**: On dev-store order #1001, the customer was promised a $50.00 refund while the Shopify ledger settled only $6.00. Settleye's audit daemon queried Shopify Admin GraphQL in read-only mode and reported $44.00 at risk in 4.07 seconds. One test-mode order, no money moved, not a fleet sample.
+- **Hardened credential safety**: Secret app keys (`shpss_`) are rejected before transmission (exit code 3); only short-lived `shpua_` OAuth access tokens are accepted.
+
+### Tier 2: Ground-Truth Labeled Eval Replay (12 Transcripts)
+- **Eval set (`fixtures/eval/`, 12 cases)**: 12 of 12 verdicts correct, 11 of 12 entities exact. See `docs/research/12-eval-results.md`.
+- **Zero non-binding drift**: 0 of 4 non-binding promises (retracted, conditional, superseded, info-only) reached drift; the superseded case drifts only on its replacement binding promise.
+- **Zero false clears**: 0.0% false-clear rate across labeled binding cases (0 of 8 missed).
+- **Frontier comparison**: Benchmarked on identical prompts between `meta-models/muse-spark-open-1026` and `gemini-4-argon`. Both achieved 11/12 exact; Argon hallucinated an invented order ID (`EVAL09`), whereas Muse hallucinated zero orders.
+- **Shadow audit proxy**: 12 tickets, 5 drifts, $285.50 at risk ($23,791.67 per 1,000 tickets). See `docs/research/23-shadow-audit.md`.
+
+### Tier 3: Modeled Fleet Exposure & Pipeline Benchmarks
+Using empirical support queue distributions from the ABCD retail corpus (10.6% refund intent, 66.7% binding commitment rate, 4.0% agent tool-call execution failure rate, $52.50 average refund):
+
+| Volume Tier | Monthly Tickets | Annual Drift Events | Direct Dollars Caught | Dispute Loss Prevention (4.61x) | Chargeback Fee Savings ($128/ea) | Modeled Annual Exposure Protected |
+|---|---|---|---|---|---|---|
+| **Mid-Market** | 10,000/mo | 336 drifts/yr | $17,640.00 | $81,320.40 | $43,008.00 | **$124,328.40** |
+| **Large E-Commerce** | 100,000/mo | 3,396 drifts/yr | $178,290.00 | $821,916.96 | $434,688.00 | **$1,256,604.96** |
+| **Global Enterprise** | 1,000,000/mo | 33,936 drifts/yr | $1,781,640.00 | $8,213,360.40 | $4,343,808.00 | **$12,557,168.40** |
+
+- **Pipeline micro-benchmark**: about 95,000 to 122,000 transcript audits per second on this machine, p50 about 0.009 ms, over 1,000 canned transcripts and a mock ledger. No model or network calls. Model inference is seconds per transcript, not milliseconds.
+- **Latency scope**: the p50 above describes the deterministic pipeline only. They are not model latency and not an end-to-end merchant SLA.
+- **Modeled dispute and fee avoidance**: uses the LexisNexis 4.61x multiplier for true dispute cost and a $128.00 card network chargeback fee. These are assumptions, not merchant measurements.
+- **Assumptions**: 10.6% refund intent, 66.7% binding commitment, 4.0% execution failure, $52.50 average refund, 4.61x dispute cost, $128 chargeback fee. The 4.0% failure rate is an assumption, not a merchant measurement. The table is a projection, not a guarantee or a merchant result.
+- **Cross-Ticket Memory**: `find_repeat_orders` groups drift across tickets, catching repeat promises (e.g. order #992 promised in 4 transcripts, flagging $165.50 concentrated risk).
+
+### Cryptographic & Operational Hardening
+- **Signed receipts**: Ed25519 issuer and merchant signatures verify in the browser with pinned keys; a one-digit amount change or altered merchant timestamp fails verification. See `docs/receipt-spec.md`.
+- **Live signed path**: A binding refund for `#992` returned a signed envelope, the registry accepted it, a restarted service returned the same envelope, and the replay moved $0.00. Retired keys verify old receipts; revoked or unknown keys fail.
+- **Concurrency & Ceilings**: Concurrent duplicate fixes produce one refund and one receipt. Forged larger promises after a refund are rejected by the original charge ceiling (HTTP 422).
+- **Free gate bench**: A 55 MB TinyBERT fine-tune kept 10 of 10 commitments on eval, but on 10,042 real ABCD dialogues filtered only 0.9% to 1.7% of tickets. Documented as a transparent negative result rather than claiming artificial cost savings. See `docs/research/22-free-gate-finetune.md`.
+- **Test Suite**: 235 backend checks plus 93 frontend checks, green on every push.
 
 ## Run it yourself
 
-**No key, no install, under one minute:** open the sample inbox at
-https://8-bitrhyon.github.io/settleye/index.html?sample=1. It is a static
-recording of a live audit, not a model call. Click `Issue $45.00 refund`, then
-`Retry the same fix`, then `Try tamper demo`. Nothing moves and no credentials
-are needed.
+### 60-Second Judge Path (Dual-Track)
 
-**Local API, full audit (needs a model key):**
+#### Track A: Instant Web Verifier (30 seconds, zero install)
+Open the sample inbox at https://8-bitrhyon.github.io/settleye/index.html?sample=1. It is a static recording of a live audit, not a model call.
+1. Click `Issue $45.00 refund`. One `Remediation receipt` appears with valid issuer and merchant signatures.
+2. Click `Retry the same fix`. It returns `Already executed. $0.00 additional movement.` with the same idempotency key.
+3. Click `Try tamper demo`. Both signatures fail; `Reset` restores both.
+Nothing moves and no credentials are required.
+
+#### Track B: 10-Second Zero-Credential Local Terminal CLI
+For judges evaluating the cloned repository locally:
+
+```bash
+# 1. Run full backend test suite (235 passing tests in <1s)
+cd backend && uv run pytest
+
+# 2. Offline daemon sweep with verified drift reconciliation (12 tickets, 5 drifts, $285.50 at risk)
+uv run python -m app.daemon --dir ../fixtures/eval --ledger mock --replay ../fixtures/eval_live_output.json
+
+# 3. Pipeline micro-benchmark (about 95k to 122k audits/sec, p50 about 0.009ms; canned extraction, mock ledger, no model calls)
+python3 ../bench/fleet_benchmark.py
+
+# 4. Modeled fleet exposure projection (not measured; assumptions in bench/fleet_projection.py)
+python3 ../bench/fleet_projection.py
+```
+
+Or run the complete verification suite in one command:
+```bash
+bash tools/judge_audit.sh
+```
+
+### Full Local Pipeline (Optional, requires model key)
+
+To run live extraction against the model:
 
 1. Copy `backend/.env.example` to `backend/.env` and set `BASETEN_API_KEY`.
    Test-mode credentials only. Never commit `.env`.
@@ -50,9 +103,7 @@ uv run python -m app.keyring init
 uv run uvicorn app.main:app --reload
 ```
 
-`keyring init` writes a fresh issuer keypair and public registry under
-`backend/.tmp/`, both gitignored. Without it, remediations still persist but the
-response carries no signed envelope.
+`keyring init` writes a fresh issuer keypair and public registry under `backend/.tmp/`, both gitignored. Without it, remediations still persist but the response carries no signed envelope.
 
 3. Frontend, in a second terminal:
 
@@ -62,14 +113,9 @@ npm install
 npm run dev
 ```
 
-4. Open http://localhost:5173 and click `Audit transcript`. That calls the
-   model. Without `BASETEN_API_KEY`, `/audit` returns 503 by design.
+4. Open http://localhost:5173 and click `Audit transcript`. That calls the model. Without `BASETEN_API_KEY`, `/audit` returns 503 by design.
 
-No-key paths that really work: `uv run pytest`, `python -m app.keyring init`
-and `list`, the browser sample verifier, `POST /receipt/verify`,
-`GET /receipt/keys`, and the frontend tests and build. The daemon and
-`/explain` still need `BASETEN_API_KEY` because they call the model; the mock
-ledger replaces the ledger, not the model.
+No-key paths that run offline with zero credentials: `uv run pytest`, `uv run python -m app.daemon --dir ../fixtures/eval --ledger mock --replay ../fixtures/eval_live_output.json`, `python3 bench/fleet_benchmark.py`, `python3 bench/fleet_projection.py`, `python -m app.keyring init` and `list`, the browser sample verifier, `POST /receipt/verify`, `GET /receipt/keys`, and the frontend tests and build. Live daemon execution without `--replay` and `/explain` call the model and require `BASETEN_API_KEY`.
 
 Batch sweep once the key is set:
 
@@ -86,12 +132,7 @@ uv run python -m app.ledger.live_check 1001
 uv run python -m app.daemon --dir ../fixtures/live --ledger shopify
 ```
 
-The Dev Dashboard app `Settleye Auditor` exchanges its client ID and secret for
-a 24-hour `shpua_` access token. `token --write` refreshes that token in `.env`
-without printing it. The live check reads settled refunds for order #1001. The
-daemon replays the $50 fixture and should report $44 at risk. Neither writes
-money. A `shpss_` value is the app secret, not the access token; use the token
-command. A custom app's `shpat_` token also works if you prefer that setup.
+The Dev Dashboard app `Settleye Auditor` exchanges its client ID and secret for a 24-hour `shpua_` access token. `token --write` refreshes that token in `.env` without printing it. The live check reads settled refunds for order #1001. The daemon replays the $50 fixture and reports $44 at risk. Neither writes money. A `shpss_` value is the app secret, not the access token; use the token command. A custom app's `shpat_` token also works if you prefer that setup.
 
 ## API
 

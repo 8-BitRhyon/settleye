@@ -46,11 +46,20 @@ JetBrains Mono.
 
 ### 2:15-2:45 The numbers
 
-> The proof is not a projection. Forty-four dollars caught live on one test
-> order in four seconds. Twelve of twelve eval verdicts, eleven of twelve exact
-> entities, zero non-binding promises drifted. Three hundred wild transcripts,
-> zero false binding promises. Every dollar of dispute loss costs four sixty-one
-> all-in. This is evidence, not vibes.
+> The proof is not a projection. Forty-four dollars caught live on one test-mode
+> order in four seconds. Twelve of twelve eval verdicts, eleven of twelve
+> entities exact, zero of eight binding cases missed. Three hundred wild
+> transcripts, zero false binding promises. Then the fleet
+> model: one hundred twenty-four thousand a year at ten thousand tickets, twelve
+> point five million at a million. Stated assumptions, not a guarantee.
+
+The screen carries the fleet ladder: 10,000 tickets per month, $124,328.40
+modeled annual exposure protected; 100,000, $1,256,604.96; 1,000,000,
+$12,557,168.40. The label reads `TIER 3 / MODELED, NOT MEASURED`, and the
+assumption line stays visible: 10.6% refund intent, 66.7% binding commitment,
+4.0% execution failure, $52.50 average refund, 4.61x dispute cost, $128
+chargeback fee. The 4.0% failure rate is an assumption, not a merchant
+measurement.
 
 ### 2:45-3:00 Vision and end card
 

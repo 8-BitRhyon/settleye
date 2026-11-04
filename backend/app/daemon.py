@@ -25,6 +25,7 @@ import os
 import sys
 import time
 from pathlib import Path
+from typing import Any
 
 from app.audit import audit_transcript
 from app.extract.client import (
@@ -39,6 +40,77 @@ from app.ledger.mock import MockLedgerAdapter
 from app.models import BatchItemReport, BatchReport, RepeatOrder
 from app.remediate.service import RemediationError, RemediationService
 from app.value import ValueLedger
+
+
+class ReplayClient:
+    """Offline stand-in for MetaModelClient: one recorded reply, no network.
+
+    The reply came from a prior live run, so the extraction pipeline still
+    parses and validates real model output; only the transport is removed.
+    Keyed by transcript filename at the call site, so no prompt sniffing and
+    no ambiguity about which recording belongs to which file.
+    """
+
+    def __init__(self, reply: str, source: str = "") -> None:
+        self.reply = reply
+        self.source = source
+        self.calls = 0
+
+    async def chat(
+        self, messages: list[dict[str, str]], temperature: float = 0.2
+    ) -> str:
+        self.calls += 1
+        return self.reply
+
+
+class BatchReplayClient:
+    """Offline stand-in for MetaModelClient across a batch of transcripts.
+
+    Maps transcript filenames to recorded replies.
+    """
+
+    def __init__(self, replies: dict[str, str]) -> None:
+        self.replies = dict(replies)
+
+    def for_source(self, source: str) -> ReplayClient:
+        reply = self.replies.get(source)
+        if reply is None:
+            raise ExtractionError(
+                f"no recorded output for {source} in replay file"
+            )
+        return ReplayClient(reply, source=source)
+
+    async def chat(
+        self, messages: list[dict[str, str]], temperature: float = 0.2
+    ) -> str:
+        if len(self.replies) == 1:
+            return next(iter(self.replies.values()))
+        raise RuntimeError(
+            "BatchReplayClient requires for_source(source) when multiple replies are loaded"
+        )
+
+
+def load_replay(path: str | Path) -> tuple[dict[str, str], str]:
+    """Recorded live output as (filename -> JSON reply, model label).
+
+    Shape matches fixtures/eval_live_output.json:
+    {filename: {"entities": [...], "model": ..., "elapsed_s": ...}}.
+    """
+    payload = json.loads(Path(path).read_text(encoding="utf-8"))
+    if not isinstance(payload, dict):
+        raise ValueError("replay file must be a JSON object keyed by filename")
+    replies: dict[str, str] = {}
+    models: set[str] = set()
+    for source, entry in payload.items():
+        if not isinstance(entry, dict) or not isinstance(
+            entry.get("entities"), list
+        ):
+            raise ValueError(f"replay entry {source!r} needs an entities list")
+        replies[source] = json.dumps(entry["entities"])
+        if entry.get("model"):
+            models.add(str(entry["model"]))
+    model = models.pop() if len(models) == 1 else "replay"
+    return replies, model
 
 
 def find_repeat_orders(
@@ -78,7 +150,7 @@ def find_repeat_orders(
 
 async def run_batch(
     transcripts: dict[str, str],
-    client: MetaModelClient,
+    client: Any,
     ledger: LedgerAdapter,
     remediation: RemediationService,
     value: ValueLedger,
@@ -91,8 +163,13 @@ async def run_batch(
     remediation_errors: list[str] = []
     for source in sorted(transcripts):
         try:
+            case_client = (
+                client.for_source(source)
+                if hasattr(client, "for_source")
+                else client
+            )
             report = await audit_transcript(
-                transcripts[source], client, ledger
+                transcripts[source], case_client, ledger
             )
         except ExtractionError as exc:
             items.append(BatchItemReport(source=source, error=str(exc)))
@@ -178,14 +255,24 @@ def build_ledger(kind: str) -> LedgerAdapter:
 
 
 async def _run(args: argparse.Namespace) -> int:
-    api_key = args.api_key or os.environ.get("BASETEN_API_KEY")
-    if not api_key:
-        print(
-            "BASETEN_API_KEY is not set. Export it or pass --api-key. "
-            "No call was made.",
-            file=sys.stderr,
-        )
-        return 2
+    replay: dict[str, str] | None = None
+    if getattr(args, "replay", None):
+        try:
+            replay, _ = load_replay(args.replay)
+        except (OSError, json.JSONDecodeError, ValueError) as exc:
+            print(f"Cannot read replay {args.replay}: {exc}", file=sys.stderr)
+            return 2
+
+    api_key = None
+    if replay is None:
+        api_key = args.api_key or os.environ.get("BASETEN_API_KEY")
+        if not api_key:
+            print(
+                "BASETEN_API_KEY is not set. Export it or pass --api-key. "
+                "No call was made.",
+                file=sys.stderr,
+            )
+            return 2
     if args.auto_remediate and args.ledger != "mock":
         print(
             "Refusing: --auto-remediate runs only against --ledger mock. "
@@ -193,21 +280,42 @@ async def _run(args: argparse.Namespace) -> int:
             file=sys.stderr,
         )
         return 2
-    directory = Path(args.dir)
+
+    if not args.dir:
+        default_dir = Path(__file__).resolve().parents[2] / "fixtures" / "eval"
+        if default_dir.is_dir():
+            directory = default_dir
+        else:
+            print(
+                "Error: --dir is required. Specify path to transcript JSON folder.",
+                file=sys.stderr,
+            )
+            return 2
+    else:
+        directory = Path(args.dir)
+
+    if not directory.is_dir():
+        print(f"Not a directory: {directory}", file=sys.stderr)
+        return 2
     paths = sorted(directory.glob("*.json"))
     if not paths:
         print(f"No transcript JSON files in {directory}.", file=sys.stderr)
         return 2
     transcripts = {path.name: load_transcript(str(path)) for path in paths}
-    client = MetaModelClient(
-        api_key=api_key, base_url=args.base_url, model=args.model or model_id()
-    )
-    if not await client.health_check():
-        print(
-            f"Model endpoint unreachable at {args.base_url}.",
-            file=sys.stderr,
+
+    if replay is not None:
+        client = BatchReplayClient(replay)
+    else:
+        client = MetaModelClient(
+            api_key=api_key, base_url=args.base_url, model=args.model or model_id()
         )
-        return 3
+        if not await client.health_check():
+            print(
+                f"Model endpoint unreachable at {args.base_url}.",
+                file=sys.stderr,
+            )
+            return 3
+
     ledger = build_ledger(args.ledger)
     started = time.monotonic()
     report = await run_batch(
@@ -226,12 +334,21 @@ def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(
         description="Batch-audit transcripts and report money-sorted drift."
     )
-    parser.add_argument("--dir", required=True, help="Transcript JSON folder.")
+    parser.add_argument(
+        "--dir",
+        default=None,
+        help="Transcript JSON folder (defaults to fixtures/eval if present).",
+    )
     parser.add_argument("--ledger", default="mock", choices=["mock", "shopify"])
     parser.add_argument(
         "--auto-remediate",
         action="store_true",
         help="Settle drift unattended (mock ledger only).",
+    )
+    parser.add_argument(
+        "--replay",
+        default=None,
+        help="Path to pre-recorded model output JSON for offline replay.",
     )
     parser.add_argument("--api-key", default=None)
     parser.add_argument("--base-url", default=BASE_URL_DEFAULT)

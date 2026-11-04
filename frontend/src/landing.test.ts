@@ -237,3 +237,67 @@ describe("frontier model objection", () => {
     expect(claims).toMatch(/do not claim to beat it/i);
   });
 });
+
+describe("three-tier proof hierarchy and fleet impact", () => {
+  const page = readFileSync(resolve(root, "landing.html"), "utf8");
+
+  it("includes top navigation link for tiers", () => {
+    expect(page).toContain('href="#tiers"');
+  });
+
+  it("features Tier 1 live read-only proof", () => {
+    expect(page).toContain("Tier 1: Live, Read-Only");
+    expect(page).toContain("order #1001");
+    expect(page).toContain("4.07 seconds");
+    expect(page).toContain("$44.00");
+    expect(page).toContain("shpss_");
+    expect(page).toContain("Single order, not a fleet sample");
+  });
+
+  it("features Tier 2 ground-truth labeled eval replay", () => {
+    expect(page).toContain("Tier 2: Labeled Eval Replay");
+    expect(page).toContain("12 / 12");
+    expect(page).toContain("11 of 12 entity extractions exact");
+    expect(page).toContain("Zero false clears");
+    expect(page).toContain("EVAL09");
+    expect(page).toContain("$285.50");
+  });
+
+  it("features Tier 3 modeled fleet exposure and volume table", () => {
+    expect(page).toContain("Tier 3: Modeled, Not Measured");
+    expect(page).toContain("$124K to $12.5M");
+    expect(page).toContain("Modeled Annual Exposure Protected");
+    expect(page).toContain("4.0% failure rate is an assumption");
+    expect(page).toContain("$124,328.40");
+    expect(page).toContain("$1,256,604.96");
+    expect(page).toContain("$12,557,168.40");
+    expect(page).toContain("336 drifts/yr");
+    expect(page).toContain("3,396 drifts/yr");
+    expect(page).toContain("33,936 drifts/yr");
+  });
+
+  it("displays the 6 ABCD dialogue corpus grounding parameters", () => {
+    expect(page).toContain("10.6%");
+    expect(page).toContain("Refund Intent Rate");
+    expect(page).toContain("66.7%");
+    expect(page).toContain("Binding Commitment Rate");
+    expect(page).toContain("4.0%");
+    expect(page).toContain("Execution Failure Drift");
+    expect(page).toContain("$52.50");
+    expect(page).toContain("Average Refund Commitment");
+    expect(page).toContain("4.61x");
+    expect(page).toContain("Dispute Cost Multiplier");
+    expect(page).toContain("$128.00");
+    expect(page).toContain("Chargeback Administrative Fee");
+  });
+
+  it("labels the pipeline microbenchmark honestly", () => {
+    expect(page).toContain("about 95,000 to 122,000 transcripts/sec");
+    expect(page).toContain("p50 about 0.009 ms");
+    expect(page).toContain("1,000 canned transcripts");
+  });
+
+  it("guarantees zero em dashes (U+2014) in landing.html", () => {
+    expect(page).not.toContain("\u2014");
+  });
+});
