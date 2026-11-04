@@ -24,9 +24,9 @@ Built for the Meta Global AI Developer Hackathon (Indie Developer Track, Push th
 - Free gate bench: a 55 MB TinyBERT fine-tune kept 10 of 10 commitments on the 12-case eval. On 10,042 real ABCD support dialogues it discarded only 0.9% at threshold 0.20 and 1.7% at 0.50, with zero false clears in the four skipped refund threads. Safe, but not a cost saver. Bench-only, not wired into the API. See `docs/research/22-free-gate-finetune.md`.
 - Signed receipt: the sample's Ed25519 issuer and merchant signatures verify in the browser with pinned keys; a one-digit amount change or a changed merchant acknowledgement time fails. See `docs/receipt-spec.md`.
 - Live signed path: a binding refund for `#992` returned a signed envelope, the registry accepted it, a restarted service returned the same envelope, and the replay moved $0.00. A retired key still verifies its old receipt; a revoked or unknown key fails.
-- Concurrent duplicate fixes, including first requests after start-up, produce one refund and one receipt. A forged larger promise after a refund is rejected by the charge ceiling. HTTP verification without a pin or registry returns `unpinned`.
+- Concurrent duplicate fixes, including cold-start and mid-append requests, produce one refund and one receipt. A forged larger promise after a refund is rejected by the charge ceiling. HTTP verification without a pin or registry returns `unpinned`.
 - Shadow-audit proxy: 12 tickets, 5 drifts, $285.50 at risk, 0 of 8 false clears. This is recorded-output replay on synthetic cases with a mock ledger, not a merchant pilot and not a forecast. See `docs/research/23-shadow-audit.md`.
-- Suite: 228 backend checks plus 76 frontend checks, green on every push.
+- Suite: 229 backend checks plus 76 frontend checks, green on every push.
 
 ## Run it yourself
 
