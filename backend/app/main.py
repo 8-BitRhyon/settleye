@@ -2,6 +2,7 @@
 
 import json
 import os
+import threading
 from pathlib import Path
 from typing import Any
 
@@ -36,6 +37,10 @@ from app.signing import ReceiptContext, build_signer_from_env
 from app.value import ValueLedger, summarize
 
 app = FastAPI(title="Settleye", version="0.1.0")
+
+# Lazy singletons are created on the first request. Without a creation lock,
+# several cold-start requests can each build a separate service and lock.
+_init_lock = threading.Lock()
 
 # The judging demo runs the dashboard (Vite dev or static hosting) on a
 # different origin than the API. Extra origins come from ALLOWED_ORIGINS
@@ -91,17 +96,23 @@ def build_client() -> MetaModelClient:
 def get_ledger() -> MockLedgerAdapter:
     ledger = getattr(app.state, "ledger", None)
     if ledger is None:
-        data = json.loads(fixture_path().read_text())
-        ledger = MockLedgerAdapter(data)
-        app.state.ledger = ledger
+        with _init_lock:
+            ledger = getattr(app.state, "ledger", None)
+            if ledger is None:
+                data = json.loads(fixture_path().read_text())
+                ledger = MockLedgerAdapter(data)
+                app.state.ledger = ledger
     return ledger
 
 
 def get_remediation() -> RemediationService:
     service = getattr(app.state, "remediation", None)
     if service is None:
-        service = RemediationService(signer=build_signer_from_env())
-        app.state.remediation = service
+        with _init_lock:
+            service = getattr(app.state, "remediation", None)
+            if service is None:
+                service = RemediationService(signer=build_signer_from_env())
+                app.state.remediation = service
     return service
 
 
@@ -124,8 +135,11 @@ def load_key_registry() -> KeyRegistry | None:
 def get_value() -> ValueLedger:
     value = getattr(app.state, "value", None)
     if value is None:
-        value = ValueLedger()
-        app.state.value = value
+        with _init_lock:
+            value = getattr(app.state, "value", None)
+            if value is None:
+                value = ValueLedger()
+                app.state.value = value
     return value
 
 
