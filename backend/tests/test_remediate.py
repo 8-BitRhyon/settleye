@@ -576,3 +576,42 @@ def test_legacy_pre_rail_key_is_still_found(tmp_path) -> None:
     assert found is not None
     assert found.status == "already_executed"
     assert found.idempotency_key == "refund:992:45.00"
+
+
+def test_cold_start_concurrent_remediations_create_one_service(
+    monkeypatch, isolated_receipts
+) -> None:
+    """Several first requests must not each build their own service lock."""
+    for attribute in ("remediation", "ledger", "value"):
+        if hasattr(main_module.app.state, attribute):
+            delattr(main_module.app.state, attribute)
+
+    original_service = main_module.RemediationService
+
+    class SlowInitService(original_service):
+        def __init__(self, *args, **kwargs):
+            time.sleep(0.15)
+            super().__init__(*args, **kwargs)
+
+    monkeypatch.setattr(main_module, "RemediationService", SlowInitService)
+    client = TestClient(main_module.app)
+    body = {
+        "promise": drift_result().promise.model_dump(),
+        "amount_usd": 45.00,
+    }
+
+    with ThreadPoolExecutor(max_workers=4) as pool:
+        responses = list(
+            pool.map(lambda _: client.post("/remediate", json=body), range(4))
+        )
+
+    assert [response.status_code for response in responses] == [200] * 4
+    statuses = [response.json()["status"] for response in responses]
+    assert statuses.count("executed") == 1
+    assert statuses.count("already_executed") == 3
+    assert main_module.app.state.ledger.refunded_usd("992") == 45.00
+    assert len(receipt_lines(isolated_receipts)) == 1
+
+    for attribute in ("remediation", "ledger", "value"):
+        if hasattr(main_module.app.state, attribute):
+            delattr(main_module.app.state, attribute)
