@@ -4,3 +4,4 @@ out/
 capture/*.png
 capture/audit.json
 capture/capture.json
+capture/sample-receipt.json

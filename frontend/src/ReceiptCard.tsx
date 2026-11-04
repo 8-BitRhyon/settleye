@@ -34,9 +34,9 @@ function amountLabel(raw: string): string {
 }
 
 const ROW_TEXT: Record<ReceiptRowKind, string> = {
-  valid: "text-emerald-200",
-  neutral: "text-zinc-300",
-  invalid: "text-red-300",
+  valid: "text-mint",
+  neutral: "text-cream/70",
+  invalid: "text-alarm",
 };
 
 const ROW_ICON: Record<ReceiptRowKind, string> = {
@@ -54,7 +54,7 @@ function SignatureRow({ row }: { row: ReceiptRowDisplay }) {
       <span>
         <span className="font-semibold">{row.title}. </span>
         {row.detail !== "" && (
-          <span className="text-zinc-400">{row.detail}</span>
+          <span className="text-cream/45">{row.detail}</span>
         )}
       </span>
     </li>
@@ -147,21 +147,21 @@ export default function ReceiptCard({
 
   return (
     <section
-      className={`mt-4 rounded-xl border bg-zinc-900 p-4 ${
+      className={`mt-4 rounded-2xl border bg-cream/[0.04] p-5 backdrop-blur md:p-6 ${
         verificationPending
-          ? "border-zinc-700"
+          ? "border-cream/10"
           : verificationFailed
-            ? "border-red-800"
-            : "border-emerald-800"
+            ? "border-alarm/40"
+            : "border-mint/30"
       }`}
     >
       <p
-        className={`text-xs font-semibold tracking-widest uppercase ${
+        className={`font-mono text-[11px] font-semibold uppercase tracking-[0.16em] ${
           verificationPending
-            ? "text-zinc-400"
+            ? "text-cream/50"
             : verificationFailed
-              ? "text-red-400"
-              : "text-emerald-400"
+              ? "text-alarm"
+              : "text-mint"
         }`}
       >
         {verificationPending
@@ -171,30 +171,30 @@ export default function ReceiptCard({
             : "Remediation receipt"}
       </p>
       {originNote !== undefined && originNote !== "" && (
-        <p className="mt-1 text-[11px] text-amber-200">{originNote}</p>
+        <p className="mt-2 font-mono text-[11px] leading-relaxed text-cream/45">{originNote}</p>
       )}
-      <p className="mt-1 break-all font-mono text-[11px] text-zinc-300">
+      <p className="mt-2 break-all font-mono text-[11px] text-cream/60">
         {receipt.receipt_id}
       </p>
-      <p className="mt-1 font-mono text-[10px] text-zinc-500">
+      <p className="mt-1 font-mono text-[10px] uppercase tracking-[0.12em] text-cream/40">
         issuer key {issuerKeyId}
       </p>
-      <p className="mt-2 text-sm text-zinc-100" aria-live="polite">
+      <p className="mt-3 font-display text-xl font-light" aria-live="polite">
         Durable receipt: {statusLine ?? fallbackStatusLine}
       </p>
-      <p className="mt-1 font-mono text-xs text-zinc-300">
+      <p className="mt-1 break-all font-mono text-xs text-cream/60">
         {receipt.remediation.idempotency_key}
       </p>
       {attemptsNote !== undefined && attemptsNote !== "" && (
-        <p className="mt-1 text-xs text-zinc-500">{attemptsNote}</p>
+        <p className="mt-1 font-mono text-[11px] text-cream/45">{attemptsNote}</p>
       )}
       {(onRetry !== undefined || onReload !== undefined) && (
-        <div className="mt-3 flex items-center gap-3">
+        <div className="mt-4 flex flex-wrap items-center gap-3">
           {onRetry !== undefined && (
             <button
               type="button"
               onClick={onRetry}
-              className="rounded-full border border-emerald-600 px-4 py-1.5 text-xs font-bold text-emerald-300"
+              className="rounded-full border border-mint/50 px-4 py-1.5 font-mono text-xs font-semibold text-mint transition hover:bg-mint/10"
             >
               {retryLabel}
             </button>
@@ -203,7 +203,7 @@ export default function ReceiptCard({
             <button
               type="button"
               onClick={onReload}
-              className="text-xs font-semibold text-zinc-400 underline underline-offset-2"
+              className="text-xs font-semibold text-cream/60 underline decoration-mint/60 underline-offset-4"
             >
               {reloadLabel}
             </button>
@@ -214,10 +214,10 @@ export default function ReceiptCard({
       <div
         role="status"
         aria-live="polite"
-        className="mt-3 rounded-lg bg-zinc-950 p-3"
+        className="mt-4 rounded-xl border border-cream/10 bg-night p-4"
       >
         {display === null ? (
-          <p className="text-xs text-zinc-400">Verifying receipt…</p>
+          <p className="font-mono text-xs text-cream/45">Verifying receipt…</p>
         ) : (
           <ul className="space-y-2">
             <SignatureRow row={display.issuer} />
@@ -227,19 +227,19 @@ export default function ReceiptCard({
         <button
           type="button"
           onClick={onReverify}
-          className="mt-2 text-xs font-semibold text-emerald-300 underline underline-offset-2"
+          className="mt-3 text-xs font-semibold text-mint underline underline-offset-4"
         >
           Re-verify
         </button>
       </div>
 
       {allowTamper && (
-        <div className="mt-2">
+        <div className="mt-3">
           {tampered ? (
             <button
               type="button"
               onClick={() => setTampered(false)}
-              className="text-xs font-semibold text-zinc-200 underline underline-offset-2"
+              className="text-xs font-semibold text-cream underline underline-offset-4"
             >
               Reset
             </button>
@@ -248,19 +248,19 @@ export default function ReceiptCard({
               type="button"
               onClick={() => setTampered(true)}
               aria-describedby={tamperNoteId}
-              className="text-xs font-semibold text-zinc-400 underline underline-offset-2"
+              className="text-xs font-semibold text-cream/60 underline underline-offset-4"
             >
               Try tamper demo
             </button>
           )}
-          <p id={tamperNoteId} className="mt-1 text-[11px] text-zinc-500">
+          <p id={tamperNoteId} className="mt-1 font-mono text-[11px] leading-relaxed text-cream/40">
             Local demo: tampers a copy of the amount in your browser. The
             saved receipt is unchanged.
           </p>
         </div>
       )}
 
-      <p className="mt-2 text-[11px] text-zinc-500">
+      <p className="mt-3 font-mono text-[11px] leading-relaxed text-cream/40">
         The signature proves the pinned key issued these bytes and they did
         not change. It does not independently prove Stripe or Shopify state.
       </p>

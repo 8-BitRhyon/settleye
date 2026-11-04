@@ -5,8 +5,8 @@ import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 
 const here = dirname(fileURLToPath(import.meta.url));
-const mp4 = join(here, "out", "settleye-film.mp4");
-if (!existsSync(mp4)) { console.error("BLOCKED: no MP4. Run npm run render first."); process.exit(2); }
+const mp4 = process.env.FILM_PATH || join(here, "out", "settleye-film-v2.mp4");
+if (!existsSync(mp4)) { console.error("BLOCKED: no MP4. Run npm run render and the voiceover step first."); process.exit(2); }
 const dur = Number(execFileSync("ffprobe", ["-v", "error", "-show_entries", "format=duration", "-of", "csv=p=0", mp4]).toString().trim());
 console.log(`duration=${dur.toFixed(2)}s`);
 if (!(dur >= 150 && dur <= 190)) { console.error("FAIL: runtime outside 150-190s"); process.exit(3); }

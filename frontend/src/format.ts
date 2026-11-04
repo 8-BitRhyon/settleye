@@ -22,13 +22,13 @@ export function verdictLabel(verdict: Verdict): string {
 export function verdictClasses(verdict: Verdict): string {
   switch (verdict) {
     case "verified":
-      return "bg-emerald-500/15 text-emerald-300";
+      return "pill pill-mint";
     case "drift":
-      return "bg-red-500/15 text-red-300";
+      return "pill pill-red";
     case "unverifiable":
-      return "bg-amber-500/15 text-amber-300";
+      return "pill pill-gold";
     case "not_binding":
-      return "bg-zinc-500/15 text-zinc-300";
+      return "pill pill-dim";
   }
 }
 

@@ -46,7 +46,7 @@ function DriftEye() {
   useEffect(() => {
     ref.current?.startAnimation();
   }, []);
-  return <EyeIcon ref={ref} size={14} className="text-red-400" />;
+  return <EyeIcon ref={ref} size={14} className="text-[#f0837f]" />;
 }
 
 export default function App() {
@@ -166,6 +166,13 @@ export default function App() {
       setSampleDrift(drift);
       setFixes((prev) => ({ ...prev, [key]: "done" }));
       if (next.status === "executed") {
+        setValue((prev) => ({
+          total_recovered_usd:
+            (prev?.total_recovered_usd ?? 0) + next.amount_usd,
+          disputes_avoided: prev?.disputes_avoided ?? 0,
+          dispute_cost_avoided_usd: prev?.dispute_cost_avoided_usd ?? 0,
+          grand_total_usd: (prev?.grand_total_usd ?? 0) + next.amount_usd,
+        }));
         setReport((prev) =>
           prev === null
             ? prev
@@ -246,14 +253,14 @@ export default function App() {
       : selectIssuerKey(liveIssuerKeys, liveReceipt.issuer.key_id);
 
   return (
-    <main className="min-h-screen bg-zinc-950 text-zinc-100">
-      <div className="mx-auto max-w-3xl px-6 py-10">
-        <header className="flex items-end justify-between gap-4">
+    <main className="min-h-screen bg-night font-body text-cream">
+      <div className="mx-auto max-w-3xl px-5 py-12 md:px-8 md:py-16">
+        <header className="flex flex-wrap items-end justify-between gap-4">
           <div>
-            <p className="text-xs font-semibold tracking-widest text-emerald-400 uppercase">
+            <p className="font-mono text-[11px] font-semibold uppercase tracking-[0.16em] text-mint">
               Settleye exception inbox
             </p>
-            <h1 className="mt-1 text-2xl font-bold">
+            <h1 className="mt-3 font-display text-[clamp(2.5rem,6vw,3.75rem)] leading-[1.02] font-light tracking-[-0.02em]">
               {value === null
                 ? "Recovered $0.00 so far"
                 : `Recovered ${formatUSD(value.grand_total_usd)} so far`}
@@ -261,7 +268,7 @@ export default function App() {
           </div>
           {report !== null && (
             <span
-              className={`rounded-full px-3 py-1 text-xs font-bold ${verdictClasses(report.drifts.length > 0 ? "drift" : "verified")}`}
+              className={`${verdictClasses(report.drifts.length > 0 ? "drift" : "verified")} mb-2`}
             >
               {report.drifts.length > 0
                 ? `${report.drifts.length} drift${report.drifts.length > 1 ? "s" : ""} · ${formatUSD(report.total_at_risk_usd)} at risk`
@@ -270,10 +277,10 @@ export default function App() {
           )}
         </header>
 
-        <section className="mt-6 rounded-xl bg-zinc-900 p-4">
+        <section className="mt-10 rounded-2xl border border-cream/10 bg-cream/[0.04] p-5 backdrop-blur md:p-7">
           <label
             htmlFor="transcript"
-            className="text-xs font-semibold text-zinc-400 uppercase"
+            className="font-mono text-[11px] font-semibold uppercase tracking-[0.14em] text-cream/55"
           >
             Support transcript
           </label>
@@ -282,15 +289,15 @@ export default function App() {
             value={transcript}
             onChange={(event) => setTranscript(event.target.value)}
             rows={6}
-            className="mt-2 w-full rounded-lg bg-zinc-950 p-3 font-mono text-xs text-zinc-200 outline-none ring-zinc-700 focus:ring-1"
+            className="mt-3 w-full rounded-xl border border-cream/10 bg-night p-4 font-mono text-[13px] leading-relaxed text-cream/90 outline-none focus:border-mint/60"
           />
-          <div className="mt-3 flex flex-wrap items-center gap-3">
+          <div className="mt-5 flex flex-wrap items-center gap-3">
             {staticDemo ? (
               <>
                 <button
                   type="button"
                   onClick={onSample}
-                  className="rounded-full bg-emerald-500 px-5 py-2 text-sm font-bold text-black"
+                  className="rounded-full bg-mint px-6 py-2.5 text-sm font-bold text-night transition hover:brightness-110"
                 >
                   Load sample result
                 </button>
@@ -298,7 +305,7 @@ export default function App() {
                   type="button"
                   disabled
                   title="Start the backend locally to run a live audit"
-                  className="rounded-full border border-zinc-700 px-5 py-2 text-sm font-bold text-zinc-500 opacity-50"
+                  className="rounded-full border border-cream/20 px-6 py-2.5 text-sm font-bold text-cream/35 opacity-60"
                 >
                   Audit transcript (local API)
                 </button>
@@ -309,23 +316,23 @@ export default function App() {
                   type="button"
                   onClick={onAudit}
                   disabled={auditing || transcript.trim().length === 0}
-                  className="rounded-full bg-emerald-500 px-5 py-2 text-sm font-bold text-black disabled:opacity-40"
+                  className="rounded-full bg-mint px-6 py-2.5 text-sm font-bold text-night transition hover:brightness-110 disabled:opacity-40"
                 >
                   {auditing ? AUDIT_LOADING_LABEL : "Audit transcript"}
                 </button>
                 <button
                   type="button"
                   onClick={onSample}
-                  className="rounded-full border border-zinc-700 px-5 py-2 text-sm font-bold text-zinc-200"
+                  className="rounded-full border border-cream/25 px-6 py-2.5 text-sm font-bold text-cream transition hover:border-cream/60"
                 >
                   Load sample result
                 </button>
               </>
             )}
             {error !== null && (
-              <p role="alert" className="text-xs text-red-300">
+              <p role="alert" className="text-xs text-alarm">
                 {error}{" "}
-                <span className="text-zinc-400">
+                <span className="text-cream/50">
                   Live audits run against the local API. Use Load sample result
                   to see a recorded audit.
                 </span>
@@ -333,11 +340,11 @@ export default function App() {
             )}
           </div>
           {staticDemo ? (
-            <p className="mt-2 rounded-lg border border-amber-700/60 bg-amber-950/20 p-3 text-[11px] text-amber-200">
+            <p className="mt-4 font-mono text-[11px] leading-relaxed text-cream/45">
               Static demo. The sample is a recorded live audit, not a live model
               call.{" "}
               <a
-                className="underline"
+                className="text-cream underline decoration-mint/60 underline-offset-2"
                 href="https://github.com/8-BitRhyon/settleye#run-it-yourself-under-five-minutes"
                 target="_blank"
                 rel="noopener"
@@ -347,7 +354,7 @@ export default function App() {
               to audit your own transcript.
             </p>
           ) : (
-            <p className="mt-2 text-[11px] text-zinc-500">
+            <p className="mt-4 font-mono text-[11px] leading-relaxed text-cream/45">
               Live audits run against the local API (see README). Load sample
               result shows a recorded live audit.
             </p>
@@ -355,9 +362,9 @@ export default function App() {
         </section>
 
         {report !== null && (
-          <section className="mt-4 space-y-3">
+          <section className="mt-6 space-y-4">
             {isSample && (
-              <p className="rounded-xl border border-amber-700 bg-zinc-900 p-3 text-xs text-amber-200">
+              <p className="border-l border-gold/50 pl-3 font-mono text-[11px] leading-relaxed text-cream/50">
                 Sample data: recorded live audit, not a live result.{" "}
                 {staticDemo
                   ? "The public copy is a static demo; run the API locally to audit your own transcript."
@@ -365,63 +372,78 @@ export default function App() {
               </p>
             )}
             {report.results.length === 0 && (
-              <p className="rounded-xl bg-zinc-900 p-4 text-sm text-zinc-400">
+              <p className="rounded-2xl border border-cream/10 bg-cream/[0.03] p-6 text-sm text-cream/60">
                 No promises detected. Nothing to reconcile.
               </p>
             )}
             {report.results.map((result, index) => {
               const fixKey = `${result.promise.order_id}:${result.amount_at_risk_usd}`;
               const fixState = fixes[fixKey] ?? "idle";
+              const isDrift = result.verdict === "drift";
               return (
                 <article
                   key={`${fixKey}:${index}`}
-                  className="rounded-xl bg-zinc-900 p-4"
+                  className={`rounded-2xl border bg-cream/[0.04] p-5 backdrop-blur md:p-7 ${
+                    isDrift ? "border-alarm/30" : "border-cream/10"
+                  }`}
                 >
-                  <div className="flex items-center justify-between gap-3">
+                  <div className="flex flex-wrap items-center justify-between gap-3">
                     <span
-                      className={`flex items-center gap-1.5 rounded-full px-2 py-0.5 text-xs font-bold ${verdictClasses(result.verdict)}`}
+                      className={verdictClasses(result.verdict)}
                     >
                       {result.verdict === "drift" && <DriftEye />}
                       {verdictLabel(result.verdict)}
                     </span>
-                    <span className="font-mono text-xs text-zinc-400">
+                    <span className="font-mono text-[11px] text-cream/50">
                       {result.promise.action} · order #{result.promise.order_id ?? "?"}
                       {result.promise.amount !== null &&
                         ` · ${formatUSD(result.promise.amount)}`}
                     </span>
                   </div>
                   {result.promise.evidence_span !== "" && (
-                    <blockquote className="mt-2 border-l-2 border-zinc-700 pl-3 font-mono text-xs text-zinc-300">
+                    <blockquote
+                      className={`mt-4 border-l-2 pl-4 font-mono text-[13px] leading-relaxed text-cream/85 ${
+                        isDrift ? "border-alarm/60" : "border-cream/25"
+                      }`}
+                    >
                       “{result.promise.evidence_span}”
                     </blockquote>
                   )}
-                  <p className="mt-2 text-xs text-zinc-400">
+                  <p className="mt-3 text-[13px] leading-relaxed text-cream/60">
                     {result.ledger_summary}
                   </p>
+                  {isDrift && (
+                    <p className="mt-4 font-display text-[2rem] leading-none font-light">
+                      <span className="tabular-nums">
+                        {formatUSD(result.amount_at_risk_usd)}
+                      </span>{" "}
+                      <span className="text-lg text-cream/60">at risk</span>
+                    </p>
+                  )}
                   {result.verdict === "drift" && (
-                    <div className="mt-2">
+                    <div className="mt-3">
                       {explanations[fixKey] === undefined ? (
                         <button
                           type="button"
                           onClick={() => onExplain(result)}
-                          className="text-xs font-semibold text-emerald-400 underline underline-offset-2"
+                          className="text-[13px] font-semibold text-mint underline underline-offset-4"
                         >
                           Why does this matter?
                         </button>
                       ) : (
-                        <p className="text-xs text-emerald-200">
+                        <p className="text-[13px] leading-relaxed text-mint/90">
                           {explanations[fixKey]}
                         </p>
                       )}
                     </div>
                   )}
                   {result.verdict === "drift" && (
-                    <div className="mt-3 flex items-center gap-3">
+                    <div className="mt-4 flex flex-wrap items-center gap-3">
                       <button
                         type="button"
                         onClick={() => onRemediate(result)}
                         disabled={fixState === "sending" || fixState === "done"}
-                        className="rounded-full bg-red-400 px-4 py-1.5 text-xs font-bold text-black disabled:opacity-40"
+                        className="rounded-full bg-mint px-5 py-2 text-[13px] font-bold text-night transition hover:brightness-110 disabled:opacity-40"
                       >
                         {fixState === "sending"
                           ? "Fixing…"
@@ -432,7 +454,7 @@ export default function App() {
                       {fixState !== "idle" &&
                         fixState !== "sending" &&
                         fixState !== "done" && (
-                          <p role="alert" className="text-xs text-red-300">
+                          <p role="alert" className="text-xs text-alarm">
                             {fixState}
                           </p>
                         )}
@@ -468,11 +490,11 @@ export default function App() {
         )}
 
         {liveReceipt === null && (
-          <section className="mt-4 rounded-xl border border-zinc-700 bg-zinc-900 p-4">
-            <p className="text-sm text-zinc-300">
+          <section className="mt-4 rounded-2xl border border-cream/10 bg-cream/[0.03] p-5">
+            <p className="text-sm text-cream/70">
               No signed receipt for this fix.
             </p>
-            <p className="mt-1 text-xs text-zinc-500">
+            <p className="mt-1 font-mono text-[11px] text-cream/45">
               Durable receipt is recorded; signing is not configured.
             </p>
           </section>
@@ -481,12 +503,12 @@ export default function App() {
         {liveReceipt !== undefined &&
           liveReceipt !== null &&
           (liveIssuerKeys === undefined ? (
-            <section className="mt-4 rounded-xl border border-zinc-700 bg-zinc-900 p-4">
-              <p className="text-sm text-zinc-300">Loading issuer key…</p>
+            <section className="mt-4 rounded-2xl border border-cream/10 bg-cream/[0.03] p-5">
+              <p className="text-sm text-cream/70">Loading issuer key…</p>
             </section>
           ) : liveIssuerKey === null ? (
-            <section className="mt-4 rounded-xl border border-zinc-700 bg-zinc-900 p-4">
-              <p className="text-sm text-zinc-300">
+            <section className="mt-4 rounded-2xl border border-cream/10 bg-cream/[0.03] p-5">
+              <p className="text-sm text-cream/70">
                 No active or retired issuer key matches this receipt. It cannot
                 be attributed in this browser.
               </p>
@@ -503,8 +525,8 @@ export default function App() {
             />
           ))}
 
-        <footer className="mt-8 border-t border-zinc-800 pt-3">
-          <p className="text-[11px] text-zinc-500">
+        <footer className="mt-12 border-t border-cream/10 pt-4">
+          <p className="font-mono text-[11px] leading-relaxed text-cream/40">
             Built with Muse Spark Open. Extraction by Meta open-weight model
             via Baseten; fixtures are synthetic, test ledgers only.
           </p>

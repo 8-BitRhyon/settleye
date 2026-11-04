@@ -16,11 +16,11 @@ import { fileURLToPath } from "node:url";
 const here = dirname(fileURLToPath(import.meta.url));
 const FPS = 24;
 const DURATION = 180;
-const OUT = join(here, "out", "settleye-film.mp4");
+const OUT = join(here, "out", "settleye-film-v2-silent.mp4");
 
-for (const f of ["capture/01-inbox.png", "capture/03-drift.png", "capture/04-explain.png", "capture/05-verified.png", "capture/receipts.json", "dist/main.js"]) {
+for (const f of ["capture/01-inbox.png", "capture/03-drift.png", "capture/04-explain.png", "capture/05-verified.png", "capture/06-receipt.png", "capture/receipts.json", "capture/sample-receipt.json", "dist/main.js"]) {
   if (!existsSync(join(here, f))) {
-    console.error(`BLOCKED: missing ${f}. Run: npm run build && npm run capture (with the live stack up).`);
+    console.error(`BLOCKED: missing ${f}. Run: npm run build && npm run capture:sample.`);
     process.exit(2);
   }
 }

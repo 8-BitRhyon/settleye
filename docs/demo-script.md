@@ -1,54 +1,56 @@
 # Settleye demo script (3:00)
 
-The film is code-driven from `film/src/storyboard.ts`. This file is the spoken
-script and the timing contract. The shipped cut uses a synthetic scratch
-voiceover rendered by `film/voiceover.py`; replace it with a human take when
-one is available.
+The film is code-driven from `film/src/storyboard.ts`. This file is the
+spoken script and the timing contract. The visual system now matches
+`frontend/landing.html`: ink, cream, mint, alarm, Fraunces, Manrope,
+JetBrains Mono.
 
 - Runtime: 180 seconds, 1920x1080, 24 fps.
 - Voice: one narrator, natural pace. Leave the tail of each beat silent.
-- Placeholders: `[name]` is the presenter. `[dates]` is October 26 to November
-  4, 2026.
+- Placeholders: `[name]` is the presenter. `[dates]` is October 26 to
+  November 4, 2026.
 - On-screen text already carries the full meaning with sound off.
 
 ## Beats
 
 ### 0:00-0:20 The hook
 
-> Every AI support agent will eventually tell a customer "your refund is
-> processed" when nothing was processed. The agent is not lying. It just never
-> checks. Each phantom refund costs $45, plus a $128 chargeback. I'm [name],
-> and this is Settleye: the auditor for AI agents.
+> Your AI support agent told the customer the refund was processed. The ticket
+> closed. The ledger says zero dollars moved. The agent is not lying. It just
+> never checks. Each phantom refund is forty-five dollars, plus a chargeback.
+> I'm [name], and this is Settleye.
 
 ### 0:20-0:45 The pain, quantified
 
-> Air Canada's chatbot invented a refund policy and the tribunal made them honor
-> it. Priceline's bot promised refunds on non-refundable bookings. One phantom
-> refund a week leaks $2,340 a year per merchant, approaching $4,700 once
-> chargebacks land.
+> Air Canada's chatbot invented a refund policy. A tribunal made them honor it.
+> Priceline's bot promised refunds on non-refundable bookings. One phantom
+> refund a week leaks two thousand three hundred forty dollars a year. Add
+> chargebacks and it approaches four thousand seven hundred. The industry
+> grades the conversation. The customer waits for the money.
 
 ### 0:45-1:30 The Meta core
 
-> Watch the middle panel. The Meta model, muse-spark-open, reads the messy
-> dialogue and returns structured promise objects: action, amount, order,
-> system, confidence, and the exact quote. No regex anywhere. The model is the
-> only path from words to promises. Output is Pydantic-validated, repairs
-> itself twice, then fails loudly instead of guessing.
+> Watch the screen. Muse Spark Open reads the messy dialogue and returns
+> structured promises: action, amount, order, system, confidence, and the exact
+> quote. No regex. The model is the only path from words to promises. Every
+> reply is Pydantic-validated, repaired at most twice, then fails loudly. The
+> model never decides whether money moved. Reconciliation is deterministic code.
 
 ### 1:30-2:15 The fix
 
-> One click executes the corrective refund against the test ledger. Receipt
-> carries an idempotency key. Watch me click it again: same key, original
-> receipt, ledger untouched. No double refunds, ever. Card flips to Verified,
-> savings header moves to $45. That is the firewall: promise, proof, patch.
+> One click executes the corrective refund against the test ledger. The receipt
+> carries an idempotency key. Click again: same key, original receipt, ledger
+> untouched. A concurrent duplicate is serialized. A charge ceiling stops a
+> forged promise. The card flips to Verified, the recovered total moves to
+> forty-five dollars. That is the firewall: promise, proof, patch.
 
 ### 2:15-2:45 The numbers
 
-> This inbox pays for itself the first time it fires in a month. Mid-market
-> math: about $494 of monthly value against a $99 plan, six-day payback. Every
-> $1 of dispute loss costs merchants $4.61 all-in. Our open eval scores 12 of
-> 12 verdicts correct, and no retracted promise ever reported drift. And every
-> save is itemized, not vibes.
+> The proof is not a projection. Forty-four dollars caught live on one test
+> order in four seconds. Twelve of twelve eval verdicts, eleven of twelve exact
+> entities, zero non-binding promises drifted. Three hundred wild transcripts,
+> zero false binding promises. Every dollar of dispute loss costs four sixty-one
+> all-in. This is evidence, not vibes.
 
 ### 2:45-3:00 Vision and end card
 
@@ -56,8 +58,7 @@ one is available.
 > catches orders promised across several tickets. Built [dates] for this event
 > on Meta open weights.
 
-The end card on screen carries the repo link, setup time, and the synthetic
-data and test-ledger scope.
+The end card carries the sample inbox, repo, and model ID.
 
 ## 15-second proof
 
@@ -79,20 +80,40 @@ Recorded from the public sample by `film/capture/verify20.mjs`.
 
 End card: `Resolved is not Settled.` / `SETTLEYE`.
 
-## Re-render the voiceover
+## Record the human voiceover
+
+Record one full 3:00 take, or one take per beat. Do not speed-read to fill a
+beat; the film has headroom. Keep the room quiet, the mic close, and the level
+consistent.
+
+Full take:
 
 ```bash
 cd film
-python3 voiceover.py --voice Samantha
+python3 voiceover.py \
+  --audio ~/Downloads/settleye-vo.wav \
+  --film out/settleye-film-v2-silent.mp4 \
+  --output out/settleye-film-v2-human.mp4
 ```
 
-Set the presenter name and dates in `voiceover.py` (they are substituted from
-the `[name]` and `[dates]` placeholders). The script prints each scene's VO
-duration and refuses to claim a fit when a take exceeds its scene. Upload the
-voiced cut with:
+The script normalizes to about -16 LUFS, pads or trims to 180 seconds, and
+copies the video track without re-encoding. Check the result:
 
 ```bash
-gh release upload demo-v1 out/settleye-film.mp4 --clobber
+FILM_PATH=out/settleye-film-v2-human.mp4 npm run verify
 ```
 
-Keep `out/settleye-film-silent.mp4` as the silent master.
+If a take is too long for its beat, shorten the read, not the visual. The
+timings above are the contract.
+
+## Re-render the visuals
+
+```bash
+cd film
+npm run build
+npm run capture:sample   # recapture the public sample UI states
+npm run render           # silent master, out/settleye-film-v2-silent.mp4
+python3 voiceover.py     # synthetic preview, out/settleye-film-v2-preview.mp4
+```
+
+Upload the human cut after you check it. Keep the silent master.

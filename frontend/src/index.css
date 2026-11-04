@@ -1,1 +1,78 @@
 @import "tailwindcss";
+
+@theme {
+  --color-night: #0a1014;
+  --color-ink: #0d1b1e;
+  --color-cream: #e9ece6;
+  --color-mint: #9fd8c2;
+  --color-alarm: #f0837f;
+  --color-gold: #d6a45e;
+  --font-display: "Fraunces", Georgia, serif;
+  --font-body: "Manrope", system-ui, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, monospace;
+}
+
+body {
+  background: #0a1014;
+  color: #e9ece6;
+  font-family: "Manrope", system-ui, sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+:root {
+  color-scheme: dark;
+}
+
+:focus-visible {
+  outline: 2px solid #9fd8c2;
+  outline-offset: 3px;
+}
+
+/* Verdict pills in the landing palette. The class names keep the
+   "red" / "mint" / "gold" tokens the format tests assert on. */
+.pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  border-radius: 999px;
+  border: 1px solid transparent;
+  padding: 4px 12px;
+  font-family: "JetBrains Mono", monospace;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  white-space: nowrap;
+}
+
+.pill-mint {
+  background: rgba(159, 216, 194, 0.12);
+  border-color: rgba(159, 216, 194, 0.35);
+  color: #9fd8c2;
+}
+
+.pill-red {
+  background: rgba(240, 131, 127, 0.12);
+  border-color: rgba(240, 131, 127, 0.4);
+  color: #f0837f;
+}
+
+.pill-gold {
+  background: rgba(214, 164, 94, 0.12);
+  border-color: rgba(214, 164, 94, 0.4);
+  color: #d6a45e;
+}
+
+.pill-dim {
+  background: rgba(233, 236, 230, 0.07);
+  border-color: rgba(233, 236, 230, 0.2);
+  color: rgba(233, 236, 230, 0.65);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}

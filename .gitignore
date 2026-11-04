@@ -52,3 +52,10 @@ bench/finetune/data/
 bench/finetune/out/
 bench/finetune/laya_base/
 bench/finetune/*.log
+
+# Internal teamwork briefs
+.agents/teamwork/
+
+# Internal strategy notes, kept out of the public tree
+ALPHA.md
+TEAMWORK.md

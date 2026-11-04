@@ -22,9 +22,9 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent
 STORYBOARD = ROOT / "src" / "storyboard.ts"
-FILM = ROOT / "out" / "settleye-film.mp4"
+FILM = ROOT / "out" / "settleye-film-v2-silent.mp4"
 OUT_DIR = ROOT / "out" / "vo"
-OUTPUT = ROOT / "out" / "settleye-film-voiced.mp4"
+OUTPUT = ROOT / "out" / "settleye-film-v2-preview.mp4"
 
 # Scene-specific pace. The tight beats are the hook and the vision card.
 RATES = {
@@ -110,12 +110,53 @@ def main() -> None:
     parser.add_argument("--voice", default="Samantha")
     parser.add_argument("--film", default=str(FILM))
     parser.add_argument("--output", default=str(OUTPUT))
+    parser.add_argument(
+        "--audio",
+        default=None,
+        help="Full human voiceover track. Skips synthetic generation and muxes this file.",
+    )
     args = parser.parse_args()
 
     film = Path(args.film)
     output = Path(args.output)
     if not film.exists():
         raise SystemExit(f"Missing silent film: {film}")
+
+    if args.audio:
+        audio = Path(args.audio)
+        if not audio.exists():
+            raise SystemExit(f"Missing voiceover audio: {audio}")
+        seconds = duration(film)
+        run(
+            [
+                "ffmpeg",
+                "-y",
+                "-i",
+                str(film),
+                "-i",
+                str(audio),
+                "-filter_complex",
+                "[1:a]loudnorm=I=-16:TP=-1.5:LRA=11,apad[a]",
+                "-map",
+                "0:v:0",
+                "-map",
+                "[a]",
+                "-c:v",
+                "copy",
+                "-c:a",
+                "aac",
+                "-b:a",
+                "192k",
+                "-t",
+                f"{seconds:.3f}",
+                "-movflags",
+                "+faststart",
+                str(output),
+            ]
+        )
+        print(f"wrote {output}")
+        print(f"video {seconds:.2f}s  human voiceover muxed")
+        return
 
     scenes = parse_scenes()
     OUT_DIR.mkdir(parents=True, exist_ok=True)

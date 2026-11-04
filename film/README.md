@@ -1,104 +1,84 @@
 # Settleye product film (3:00, 1080p, code-driven)
 
-A code-driven product film in the Polar style: storyboard as TypeScript
-data, GSAP DOM scenes, Playwright frame-stepping into ffmpeg. No After
-Effects, no screen-recording software, no faked app UI.
+A code-driven product film matched to the live landing page: ink, cream,
+mint, alarm, Fraunces display, Manrope body, JetBrains Mono labels and money.
+Storyboard as TypeScript data, GSAP DOM scenes, Playwright frame-stepping into
+ffmpeg. No After Effects, no stock footage, no generative video.
 
-- Code scenes (GSAP): hook 0:00, pain 0:20, math 2:15, vision + end card 2:45.
-- Real captured beats: extraction + explain 0:45, fix + idempotent re-click
-  1:30. These are real screenshots and real API receipts from the live
-  local stack, driven by `capture/capture.mjs`. Nothing in those beats is
-  recreated markup.
-- Every claim on screen already exists in `../docs/demo-script.md`.
-- The shipped cut has a synthetic scratch voiceover rendered by
-  `voiceover.py`. Replace it with a human take when one is available. Each
-  scene in `src/storyboard.ts` carries a verbatim `vo` slot paced to its beat,
-  and kinetic text carries the full meaning with the sound off.
+- Code scenes: hook, pain, proof, end card.
+- Real product beats: the redesigned sample inbox, drift, explain, verified
+  state, and signed receipt, captured by `capture/sample-captures.mjs`.
+- Voiceover: synthetic scratch take from `voiceover.py`, or a human take muxed
+  with `--audio`.
 
 ## Layout
 
-- `src/storyboard.ts` - timed beats, cues, VO slots. Total 180s (24 fps).
-- `src/main.ts` - builds scenes from the storyboard, exposes `window.__film.seek(t)`.
-- `src/style.css` - brand tokens from `frontend/src/landing.css` @theme:
-  cream #f7f6f3, ink #131316, pine #047857, alarm #b91c1c, gold #b45309;
-  Chakra Petch display, system body, IBM Plex Mono for money.
-- `capture/capture.mjs` - Playwright harness against the live stack.
+- `src/storyboard.ts` - timed beats, cues, facts, VO slots. Total 180s, 24 fps.
+- `src/main.ts` - builds the landing-style scenes, exposes `window.__film.seek(t)`.
+- `src/style.css` - landing tokens: ink #0a1014, cream #e9ece6, mint #9fd8c2,
+  alarm #f0837f, gold #d6a45e. Fraunces, Manrope, JetBrains Mono.
 - `render.mjs` - frame-steps the GSAP timeline and pipes frames to ffmpeg.
-- `verify.mjs` - checks runtime (150-190s) and extracts 5 stills.
-- `voiceover.py` - extracts the `vo` slots, renders the scratch voiceover, and
-  muxes it onto the silent film.
-- `out/settleye-film.mp4` - shipped film (1920x1080, H.264, scratch voiceover).
-- `out/settleye-film-voiced.mp4` - newest voiced render from `voiceover.py`.
-- `out/settleye-film-silent.mp4` - silent master kept for re-voicing.
+- `capture/sample-captures.mjs` - recaptures the public sample UI states.
+- `capture/receipt20.mjs` - captures the signed receipt card at 2x.
+- `voiceover.py` - synthetic scratch VO or human audio mux.
+- `verify.mjs` - checks runtime and extracts stills.
 
-## Render from scratch
-
-Prerequisites: `ffmpeg` on PATH (`brew install ffmpeg`), Node + npm.
-
-Terminal 1, backend with repo-root credentials (real model calls):
+## Render the new cut
 
 ```bash
-cd ../backend
-set -a; source ../.env; set +a
-uv run uvicorn app.main:app --port 8000
-```
-
-Terminal 2, frontend:
-
-```bash
-cd ../frontend
-npm run dev -- --port 5173 --host 127.0.0.1
-```
-
-Terminal 3, film (deps live only in this folder):
-
-```bash
-cd ../film
+cd film
 npm install
-npx playwright install chromium   # only if no Chromium is cached
-npm run capture                   # real audit, explain, fix, re-click
-npm run render                    # writes out/settleye-film.mp4 (silent)
-npm run verify                    # duration + stills to /tmp/settleye-film-*.png
-python3 voiceover.py --voice Samantha  # writes out/settleye-film-voiced.mp4
+npx playwright install chromium
+npm run build
+npm run capture:sample   # expects the built app on 127.0.0.1:8091
+npm run render           # out/settleye-film-v2-silent.mp4
+python3 voiceover.py     # out/settleye-film-v2-preview.mp4
 ```
 
-Important: the mock ledger is in-memory, but remediation receipts are now a
-durable JSONL store. To recapture the fix beat, restart the backend and point
-`SETTLEYE_RECEIPTS_PATH` at a fresh file (or delete
-`backend/.tmp/receipts.jsonl`). Otherwise the backend correctly returns
-`already_executed` for order #992 and capture stops instead of faking the beat.
+`capture:sample` needs the frontend preview server:
 
-If the stack or a model call fails, `capture.mjs` exits non-zero and says
-exactly what blocked. Fix that; never hand-make a capture frame.
+```bash
+cd frontend
+npm run build
+python3 -m http.server 8091 --bind 127.0.0.1 --directory dist
+```
+
+The capture uses the public sample path, so no model key and no backend are
+needed. It never fakes a product state.
+
+## Human voiceover
+
+Record one full 3:00 take with the script in `../docs/demo-script.md`.
+
+```bash
+cd film
+python3 voiceover.py \
+  --audio ~/Downloads/settleye-vo.wav \
+  --film out/settleye-film-v2-silent.mp4 \
+  --output out/settleye-film-v2-human.mp4
+FILM_PATH=out/settleye-film-v2-human.mp4 npm run verify
+```
+
+The mux normalizes to about -16 LUFS, pads or trims to 180 seconds, and copies
+the video track. Keep `out/settleye-film-v2-silent.mp4` as the master.
 
 ## 15-second proof
 
-`capture/proof20.mjs` drives the public sample inbox and records
-`out/settleye-proof.webm`: drift, issue refund, receipt, retry, already
-executed. `capture/endcard.mjs` renders the end card to
-`out/proof-endcard.png`. The shipped cut is `out/settleye-proof.mp4` (14.9s,
-H.264/AAC) and the release asset `settleye-proof.mp4`. The VO is the
-15-second script in `../docs/demo-script.md`.
+`capture/proof20.mjs` records the public sample inbox: drift, issue refund,
+receipt, retry, already executed. The shipped cut is `out/settleye-proof.mp4`
+and the release asset `settleye-proof.mp4`.
 
-`capture/verify20.mjs` records the two-party receipt check: the card
-auto-verifies `Issuer signature valid` and `Merchant countersigned`, then
-`Try tamper demo` invalidates both rows, and `Reset` restores them. The shipped
-cut is `out/settleye-verify3.mp4` (16.0s) and the release asset
-`settleye-verify.mp4`.
+## 16-second receipt verification
 
-## Voiceover
+`capture/verify20.mjs` records the sample card: issuer valid, merchant
+countersigned, tamper invalid, reset valid. The shipped cut is
+`out/settleye-verify3.mp4` and the release asset `settleye-verify.mp4`.
 
-The shipped cut has a synthetic scratch take generated by `voiceover.py` from
-the `vo` strings in `src/storyboard.ts`. `docs/demo-script.md` is the readable
-script and timing contract. For a human take:
+## Notes
 
-1. Record one take per beat. Beats are 20s, 25s, 45s, 45s, 30s, 15s: read at a
-   natural pace and leave the tail of each beat silent. The film was paced with
-   that headroom; do not speed-read to fill it.
-2. Replace `[name]` in the hook with the presenter's name and `[dates]` with
-   October 26 to November 4, 2026.
-3. Lay the takes on `out/settleye-film-silent.mp4`. The voiced cut and the
-   release asset are `out/settleye-film.mp4`.
-4. Keep captions as rendered: they already carry the full meaning muted.
-5. Upload the replacement with
-   `gh release upload demo-v1 out/settleye-film.mp4 --clobber`.
+- The old `out/settleye-film.mp4` is the previous cut. The new master is
+  `out/settleye-film-v2-silent.mp4`; the synthetic preview is
+  `out/settleye-film-v2-preview.mp4`; the human cut is
+  `out/settleye-film-v2-human.mp4`.
+- Every on-screen claim exists in `../docs/demo-script.md` or the claim ledger.
+- The sample is a test-ledger demo. No real merchant data or live payments.
