@@ -244,6 +244,34 @@ def test_receipts_survive_process_restart(tmp_path) -> None:
     assert len(receipt_lines(path)) == 1
 
 
+def test_hash_prefixed_order_reaches_the_ledger_without_the_hash(
+    tmp_path,
+) -> None:
+    """The model speaks "#992"; reconciliation and writes use the bare key."""
+    path = tmp_path / "receipts.jsonl"
+    ledger = recording_ledger()
+    service = RemediationService(path)
+    result = drift_result().model_copy(
+        update={
+            "promise": drift_result().promise.model_copy(
+                update={"order_id": "#992"}
+            )
+        }
+    )
+
+    first = service.remediate(result, ledger, ValueLedger())
+    assert first.status == "executed"
+    assert first.promise.order_id == "#992"
+    assert ledger.refunds == [("992", 45.00)]
+    assert ledger.refunded_usd("992") == 45.00
+
+    replay = service.remediate(result, ledger, ValueLedger())
+    assert replay.status == "already_executed"
+    assert replay.idempotency_key == first.idempotency_key
+    assert ledger.refunds == [("992", 45.00)]
+    assert len(receipt_lines(path)) == 1
+
+
 def test_partial_refund_never_authorizes_a_second_refund(tmp_path) -> None:
     path = tmp_path / "receipts.jsonl"
     ledger = recording_ledger()

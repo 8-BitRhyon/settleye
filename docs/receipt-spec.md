@@ -10,8 +10,9 @@ remediation. The receipt binds five things:
 5. The remediation result.
 
 Anyone with the receipt and the pinned issuer key can verify that the payload
-was issued by Settleye and was not altered. The receipt is self-contained for
-transport, but trust comes from the pinned key, not from the key embedded in
+was issued by Settleye and was not altered. A merchant can add a second
+signature to acknowledge the remediation. The receipt is self-contained for
+transport, but trust comes from the pinned keys, not from the keys embedded in
 the receipt.
 
 ## Envelope
@@ -56,16 +57,31 @@ the receipt.
     "alg": "Ed25519",
     "public_key": "base64url",
     "value": "base64url"
-  }
+  },
+  "countersignatures": [
+    {
+      "role": "merchant",
+      "key_id": "merchant-demo-2026-11",
+      "alg": "Ed25519",
+      "public_key": "base64url",
+      "acknowledged_at": "2026-11-04T12:05:00Z",
+      "value": "base64url"
+    }
+  ]
 }
 ```
+
+`countersignatures` is optional. A v1 receipt with no merchant signature still
+verifies. The field is outside the issuer payload, so adding or removing a
+merchant signature does not change the issuer signature or the receipt id.
 
 Money is a decimal string with two places. The receipt never stores the full
 transcript, only its SHA-256 and the evidence span.
 
 ## Canonical bytes
 
-The signed payload is the envelope without `receipt_id` and `signature`.
+The signed payload is the envelope without `receipt_id`, `signature`, and
+`countersignatures`.
 
 Canonical bytes are UTF-8 JSON with:
 
@@ -98,40 +114,125 @@ the verifier.
 
 ## Verification
 
-1. Remove `receipt_id` and `signature` from the envelope.
+1. Remove `receipt_id`, `signature`, and `countersignatures` from the envelope.
 2. Canonicalize the remaining payload.
 3. Recompute the receipt id and compare it.
 4. Require `signature.alg == "Ed25519"`.
 5. Require `issuer.key_id` and `signature.public_key` to match the pinned key.
 6. Verify the signature over the canonical bytes.
-7. Return a structured result with `valid`, `reason`, `receipt_id`, and
-   `key_id`.
+7. If merchant countersignatures are present, verify each one.
+8. Return a structured result with `valid`, `reason`, `receipt_id`, `key_id`,
+   `merchant_valid`, and `merchant_key_id`.
 
 Any failure is a fail-closed result. A tampered amount, order, ledger state,
 key id, or receipt id must fail.
 
-## What the signature proves
+## Merchant countersignature
+
+The merchant signs canonical bytes of:
+
+```json
+{
+  "receipt_id": "sha256:...",
+  "role": "merchant",
+  "key_id": "merchant-demo-2026-11",
+  "acknowledged_at": "2026-11-04T12:05:00Z"
+}
+```
+
+The message is short on purpose. The amount, promise, and ledger observation
+are already bound by `receipt_id`; restating them would create a second place
+for the parties to disagree.
+
+Verification rules:
+
+- `role` must be `merchant`; `alg` must be `Ed25519`.
+- The key id and public key must match the merchant pin.
+- The signature must verify over the countersign message.
+- A malformed or invalid present signature fails the receipt.
+- Missing countersignatures are a provisional state, not a failure, unless the
+  caller requires a merchant signature.
+- A merchant signature never makes an invalid issuer payload trusted. The
+  issuer check runs first, and the overall result cannot be valid when the
+  issuer is invalid.
+
+## Key registry
+
+Issuer keys live in a JSON registry, one record per key id:
+
+```json
+{
+  "key_id": "settleye-2026-11",
+  "public_key": "base64url",
+  "status": "active",
+  "created_at": "2026-11-04T12:00:00Z",
+  "retired_at": null,
+  "revoked_at": null
+}
+```
+
+Statuses:
+
+- `active`: current signing key. Exactly one key should be active.
+- `retired`: no new signatures, but historical receipts still verify. The
+  verifier reports `retired` as a note, not a failure.
+- `revoked`: never trust a receipt from this key. Verification fails.
+
+Rotation generates a new keypair, writes the private key to the issuer key path
+with owner-only permissions, marks the old key `retired`, and adds the new key
+as `active`. Revocation marks a key `revoked` and keeps the public record so
+old receipts can be identified as untrusted rather than unknown.
+
+The public registry is served by `GET /receipt/keys`. It contains public keys
+and status only. It never contains a private key or a private key path.
+
+`POST /receipt/verify` uses an explicit pin when `public_key` and `key_id` are
+supplied. Otherwise, if a registry is configured, it verifies against the
+registry and applies the status rules. If neither is available, it verifies
+internal consistency only and does not establish issuer authenticity.
+
+## Live audit binding
+
+The audit response carries:
+
+- `transcript_sha256`: SHA-256 of the exact transcript bytes.
+- `transcript_turns`: non-empty transcript lines.
+- `audited_at`: UTC ISO 8601 time of the audit.
+
+The remediation request may forward those fields plus `ledger_summary`. The
+server does not trust the client's ledger summary: it re-reads the ledger and
+signs its own fresh reconciliation summary. When the digest and turns are
+present and the issuer key is configured, `/remediate` signs the envelope and
+persists it with the durable receipt. When they are absent, the durable receipt
+is still recorded and `receipt` is `null`. Money already moved, so a signing
+failure never fails the refund; the response states that no signed receipt was
+produced.
+
+## What the signatures prove
 
 - The payload was signed by the holder of the pinned Settleye key.
 - The payload has not changed since signing.
 - The promise, transcript digest, ledger observation, remediation key, and
   status are bound together.
+- A merchant countersignature proves the holder of the pinned merchant key
+  acknowledged this receipt id at `acknowledged_at`.
 
-## What it does not prove
+## What they do not prove
 
-- It does not prove that Stripe or Shopify's state is true. It records what
-  Settleye observed at `checked_at`.
-- It does not prove the transcript is authentic. It binds a digest; the
+- They do not prove that Stripe or Shopify's state is true. The receipt records
+  what Settleye observed at `checked_at`.
+- They do not prove the transcript is authentic. It binds a digest; the
   merchant must keep the source transcript.
-- It is not a third-party audit or a legal attestation.
-- It is not a substitute for ledger-side idempotency.
-
-The next steps are ledger countersignatures, a public key registry, and a
-merchant countersignature on the same payload.
+- A merchant countersignature does not prove money moved. It proves the
+  merchant key holder acknowledged the remediation receipt.
+- They are not a third-party audit or a legal attestation.
+- They are not a substitute for ledger-side idempotency.
 
 ## Sample verification
 
-The public sample receipt is signed by the demo key. The browser verifier pins
-`settleye-demo-2026-11` and checks the signature locally. The sample also
-offers a tamper button: changing the promised amount changes the canonical
-bytes and the signature fails.
+The public sample receipt is signed by the demo issuer key and countersigned by
+the demo merchant key. The browser verifier pins both key ids and checks both
+signatures locally. The sample also offers a tamper button: changing the
+promised amount changes the canonical issuer bytes and the issuer signature
+fails. Changing the merchant acknowledgement time breaks the merchant
+signature.

@@ -11,6 +11,13 @@ from pydantic import BaseModel, ConfigDict
 
 from app.audit import audit_transcript
 from app.extract.client import MODEL_ID, MetaModelClient, model_id
+from app.keyring import (
+    REGISTRY_ERROR,
+    KeyRegistry,
+    KeyringError,
+    default_registry_path,
+    verify_with_registry,
+)
 from app.ledger.mock import MockLedgerAdapter
 from app.models import AuditReport, PromiseEntity, RemediationReceipt
 from app.receipt import VerifyResult, verify_receipt
@@ -19,6 +26,7 @@ from app.remediate.service import (
     RemediationService,
     promise_key,
 )
+from app.signing import ReceiptContext, build_signer_from_env
 from app.value import ValueLedger, summarize
 
 app = FastAPI(title="Settleye", version="0.1.0")
@@ -46,6 +54,13 @@ class AuditRequest(BaseModel):
 class RemediateRequest(BaseModel):
     promise: PromiseEntity
     amount_usd: float
+    # Optional audit provenance. When digest and turns are present, the
+    # service attaches a signed v1 receipt; when absent, the durable receipt
+    # still works and stays unsigned for backward compatibility.
+    transcript_sha256: str | None = None
+    transcript_turns: int | None = None
+    audited_at: str | None = None
+    ledger_summary: str | None = None
 
 
 class ExplainRequest(BaseModel):
@@ -79,9 +94,22 @@ def get_ledger() -> MockLedgerAdapter:
 def get_remediation() -> RemediationService:
     service = getattr(app.state, "remediation", None)
     if service is None:
-        service = RemediationService()
+        service = RemediationService(signer=build_signer_from_env())
         app.state.remediation = service
     return service
+
+
+def load_key_registry() -> KeyRegistry | None:
+    """Registry at the configured path, or None when no keys are configured.
+
+    A malformed existing file raises KeyringError: verification must fail
+    closed rather than silently fall back to unpinned mode.
+    """
+    path = default_registry_path()
+    if not path.exists():
+        return None
+    registry = KeyRegistry.load(path)
+    return registry if registry.records else None
 
 
 def get_value() -> ValueLedger:
@@ -150,7 +178,23 @@ def remediate(request: RemediateRequest) -> RemediationReceipt:
             ),
         )
     try:
-        return service.remediate(result, get_ledger(), get_value())
+        context: ReceiptContext | None = None
+        if (
+            request.transcript_sha256
+            and request.transcript_turns is not None
+        ):
+            context = ReceiptContext(
+                transcript_sha256=request.transcript_sha256,
+                transcript_turns=request.transcript_turns,
+                audited_at=request.audited_at or "",
+                # Never sign a client-supplied observation. The issuer signs
+                # only the ledger summary its own reconcile just produced.
+                ledger_summary=result.ledger_summary,
+                model_id=model_id(),
+            )
+        return service.remediate(
+            result, get_ledger(), get_value(), context=context
+        )
     except RemediationError as exc:
         raise HTTPException(status_code=422, detail=str(exc))
 
@@ -168,6 +212,9 @@ class ReceiptVerifyRequest(BaseModel):
     receipt: dict[str, Any] | None = None
     public_key: str | None = None
     key_id: str | None = None
+    merchant_public_key: str | None = None
+    merchant_key_id: str | None = None
+    require_merchant: bool = False
 
     def envelope(self) -> dict[str, Any]:
         if self.receipt is not None:
@@ -175,14 +222,58 @@ class ReceiptVerifyRequest(BaseModel):
         return dict(self.model_extra or {})
 
 
-@app.post("/receipt/verify", response_model=VerifyResult)
-def verify_execution_receipt(request: ReceiptVerifyRequest) -> VerifyResult:
-    """Pure verification: no model call, no ledger read, always HTTP 200."""
+@app.get("/receipt/keys")
+def receipt_keys() -> list[dict[str, Any]]:
+    """Public key history only: ids, base64url keys, states, timestamps."""
+    try:
+        registry = load_key_registry()
+    except KeyringError:
+        return []
+    if registry is None:
+        return []
+    return registry.public_records()
+
+
+@app.post("/receipt/verify", response_model=None)
+def verify_execution_receipt(request: ReceiptVerifyRequest) -> dict[str, Any]:
+    """Pure verification: no model call, no ledger read, always HTTP 200.
+
+    A supplied pin keeps the caller-controlled path. With no pin, a configured
+    registry decides which public key may have signed; otherwise verification
+    remains unpinned and only proves internal consistency.
+    """
+    if request.public_key is not None or request.key_id is not None:
+        return verify_receipt(
+            request.envelope(),
+            pinned_public_key=request.public_key,
+            expected_key_id=request.key_id,
+            merchant_public_key=request.merchant_public_key,
+            expected_merchant_key_id=request.merchant_key_id,
+            require_merchant=request.require_merchant,
+        ).model_dump()
+    try:
+        registry = load_key_registry()
+    except KeyringError:
+        return VerifyResult(valid=False, reason=REGISTRY_ERROR).model_dump()
+    if registry is not None:
+        result = verify_with_registry(
+            request.envelope(),
+            registry,
+            merchant_public_key=request.merchant_public_key,
+            expected_merchant_key_id=request.merchant_key_id,
+            require_merchant=request.require_merchant,
+        )
+        return {
+            key: value
+            for key, value in result.model_dump().items()
+            if value is not None
+        }
     return verify_receipt(
         request.envelope(),
-        pinned_public_key=request.public_key,
-        expected_key_id=request.key_id,
-    )
+        merchant_public_key=request.merchant_public_key,
+        expected_merchant_key_id=request.merchant_key_id,
+        require_merchant=request.require_merchant,
+    ).model_dump()
 
 
 class ExplainResponse(BaseModel):
