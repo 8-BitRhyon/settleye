@@ -242,8 +242,8 @@ def test_live_remediate_signs_only_the_reconciled_ledger_summary(
     assert envelope is not None
     assert envelope["ledger"]["summary"] == RECONCILED_SUMMARY
     assert "BOGUS" not in envelope["ledger"]["summary"]
-    assert envelope["ledger"]["checked_at"] == envelope["issued_at"]
     assert envelope["ledger"]["checked_at"] != AUDITED_AT
+    assert envelope["ledger"]["checked_at"].endswith("Z")
 
     registry = KeyRegistry(default_registry_path())
     assert verify_with_registry(envelope, registry).valid is True

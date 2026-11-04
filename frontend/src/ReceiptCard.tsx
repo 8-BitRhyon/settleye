@@ -102,7 +102,19 @@ export default function ReceiptCard({
         if (!cancelled) setVerification(result);
       })
       .catch(() => {
-        if (!cancelled) setVerification(null);
+        if (!cancelled) {
+          setVerification({
+            issuer: {
+              valid: false,
+              reason: "Verification failed. The receipt could not be read.",
+            },
+            merchant: {
+              status: "invalid",
+              reason: "Verification failed. The receipt could not be read.",
+            },
+            valid: false,
+          });
+        }
       });
     return () => {
       cancelled = true;
@@ -130,11 +142,33 @@ export default function ReceiptCard({
     receipt.remediation.status === "executed"
       ? `${amountLabel(receipt.remediation.amount_usd)} refunded.`
       : "Already executed. No additional movement.";
+  const verificationFailed = display !== null && !display.trusted;
+  const verificationPending = display === null;
 
   return (
-    <section className="mt-4 rounded-xl border border-emerald-800 bg-zinc-900 p-4">
-      <p className="text-xs font-semibold tracking-widest text-emerald-400 uppercase">
-        Remediation receipt
+    <section
+      className={`mt-4 rounded-xl border bg-zinc-900 p-4 ${
+        verificationPending
+          ? "border-zinc-700"
+          : verificationFailed
+            ? "border-red-800"
+            : "border-emerald-800"
+      }`}
+    >
+      <p
+        className={`text-xs font-semibold tracking-widest uppercase ${
+          verificationPending
+            ? "text-zinc-400"
+            : verificationFailed
+              ? "text-red-400"
+              : "text-emerald-400"
+        }`}
+      >
+        {verificationPending
+          ? "Verifying receipt"
+          : verificationFailed
+            ? "Receipt not verified"
+            : "Remediation receipt"}
       </p>
       {originNote !== undefined && originNote !== "" && (
         <p className="mt-1 text-[11px] text-amber-200">{originNote}</p>
@@ -143,10 +177,10 @@ export default function ReceiptCard({
         {receipt.receipt_id}
       </p>
       <p className="mt-1 font-mono text-[10px] text-zinc-500">
-        pinned key {receipt.issuer.key_id}
+        issuer key {issuerKeyId}
       </p>
       <p className="mt-2 text-sm text-zinc-100" aria-live="polite">
-        {statusLine ?? fallbackStatusLine}
+        Durable receipt: {statusLine ?? fallbackStatusLine}
       </p>
       <p className="mt-1 font-mono text-xs text-zinc-300">
         {receipt.remediation.idempotency_key}

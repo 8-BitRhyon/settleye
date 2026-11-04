@@ -29,7 +29,13 @@ Double refunding is the failure that ends a merchant relationship. Every remedia
 
 ## Autonomy boundary
 
-The batch daemon is audit-only by default. `--auto-remediate` refuses to run against a live ledger. Scheduled autonomy only reads. Money moves only through a human action.
+The batch daemon is audit-only by default. `--auto-remediate` refuses to run against a live ledger. Scheduled autonomy only reads.
+
+The HTTP one-click fix is a local demo, not a production service. It has no authentication, selects the mock ledger, and trusts the caller's promise shape. A charge ceiling blocks refunds beyond the captured amount, and a process-local lock stops concurrent duplicate calls, but a real deployment needs authentication, a server-stored audit binding, and a shared lock across workers. Run the demo on localhost.
+
+## Receipt trust boundary
+
+A receipt signature proves the pinned issuer key signed the exact payload and that nothing changed after signing. It does not prove the transcript is authentic, that the ledger read was correct, or that money left a real rail. The live request's `audited_at` is transport metadata and is not signed. The registry is a local JSON file, not a certificate authority.
 
 ## What is not claimed
 

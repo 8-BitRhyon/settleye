@@ -94,13 +94,23 @@ def test_envelope_verifies_against_its_registered_public_key() -> None:
     )
 
 
-def test_checked_at_is_signing_time_not_older_audit_time() -> None:
+def test_checked_at_uses_the_ledger_observation_time() -> None:
+    signer = registered_signer()
+    observed = "2026-11-04T11:59:00Z"
+    envelope = signer.sign(
+        promise(), 45.0, "executed", context(ledger_checked_at=observed)
+    )
+    assert envelope is not None
+    assert envelope["ledger"]["checked_at"] == observed
+    assert envelope["ledger"]["checked_at"] != envelope["issued_at"]
+    assert envelope["ledger"]["checked_at"] != AUDITED_AT
+
+
+def test_checked_at_falls_back_to_signing_time_without_an_observation() -> None:
     signer = registered_signer()
     envelope = signer.sign(promise(), 45.0, "executed", context())
     assert envelope is not None
     assert envelope["ledger"]["checked_at"] == envelope["issued_at"]
-    assert envelope["ledger"]["checked_at"] != AUDITED_AT
-    assert envelope["ledger"]["checked_at"].endswith("Z")
 
 
 def test_bad_digest_or_zero_turns_returns_none() -> None:

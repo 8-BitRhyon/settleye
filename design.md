@@ -4,7 +4,7 @@ One-page architecture note. Update when structure changes. This file owns archit
 
 ## Purpose
 
-Settleye catches silent execution drift. AI support agents promise ledger actions (refunds, cancellations) that never settle. It extracts promise entities from transcripts with a Meta model. It diffs them against live Stripe and Shopify state. It surfaces mismatches in an exception inbox with one-click remediation.
+Settleye catches silent execution drift. AI support agents promise ledger actions (refunds, cancellations) that never settle. It extracts promise entities from transcripts with a Meta model. It diffs them against Stripe and Shopify ledger state. It surfaces mismatches in an exception inbox with one-click remediation against the demo's mock ledger. The Shopify and Stripe write adapters are tested but not selected by the HTTP route in this build.
 
 ## Structure
 

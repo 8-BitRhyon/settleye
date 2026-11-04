@@ -189,9 +189,11 @@ and status only. It never contains a private key or a private key path.
 `POST /receipt/verify` uses an explicit pin when `public_key` is supplied.
 A `key_id` alone is not a trust anchor: with a registry it is checked against
 the published record, and without one the request fails closed. If no public
-key or registry is available, verification proves internal consistency only and
-does not establish issuer authenticity. A registry file that exists but has no
-records fails closed with `registry_error`; it is not treated as "no registry".
+key and no registry are available, the HTTP endpoint returns `unpinned` and
+does not certify issuer authenticity. The library and CLI can still check
+internal consistency, but that result is not an attribution. A registry file
+that exists but has no records fails closed with `registry_error`; it is not
+treated as "no registry".
 
 A merchant countersignature is only a trust decision when a merchant public key
 is supplied. Without one, `merchant_valid` is `null`, not `true`, even if the
@@ -208,8 +210,9 @@ The audit response carries:
 
 The remediation request may forward those fields plus `ledger_summary`. The
 server does not trust the client's ledger summary: it re-reads the ledger and
-signs its own fresh reconciliation summary. The digest, turns, and audit time
-are caller-supplied: the server no longer holds the transcript, so it signs the
+signs its own fresh reconciliation summary. The digest and turns are
+caller-supplied, and `audited_at` is transport metadata that is not part of the
+signed payload. The server no longer holds the transcript, so it signs the
 binding, not the provenance. A production deployment should persist audit
 reports server-side keyed by digest and require `/remediate` to reference the
 stored report. When the digest and turns are present and the issuer key is
@@ -217,6 +220,9 @@ configured, `/remediate` signs the envelope and persists it with the durable
 receipt. When they are absent, the durable receipt is still recorded and
 `receipt` is `null`. Money already moved, so a signing failure never fails the
 refund; the response states that no signed receipt was produced.
+
+`ledger.checked_at` is the time the reconciler read the ledger, captured before
+the refund write. It is not the signing time and not the audit time.
 
 ## What the signatures prove
 

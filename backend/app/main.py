@@ -9,7 +9,7 @@ from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel, ConfigDict
 
-from app.audit import audit_transcript
+from app.audit import audit_transcript, utc_now_iso
 from app.extract.client import MODEL_ID, MetaModelClient, model_id
 from app.keyring import (
     REGISTRY_ERROR,
@@ -23,6 +23,7 @@ from app.models import AuditReport, PromiseEntity, RemediationReceipt
 from app.receipt import (
     INVALID_PINNED_KEY,
     KEY_ID_MISMATCH,
+    UNPINNED,
     VerifyResult,
     verify_receipt,
 )
@@ -170,6 +171,7 @@ def remediate(request: RemediateRequest) -> RemediationReceipt:
     # touching the ledger, even though the drift is now settled.
     if (existing := service.find(key)) is not None:
         return existing
+    ledger_checked_at = utc_now_iso()
     result = reconcile(request.promise, get_ledger())
     if result.verdict != "drift":
         raise HTTPException(
@@ -198,6 +200,7 @@ def remediate(request: RemediateRequest) -> RemediationReceipt:
                 # Never sign a client-supplied observation. The issuer signs
                 # only the ledger summary its own reconcile just produced.
                 ledger_summary=result.ledger_summary,
+                ledger_checked_at=ledger_checked_at,
                 model_id=model_id(),
             )
         return service.remediate(
@@ -293,12 +296,22 @@ def verify_execution_receipt(request: ReceiptVerifyRequest) -> dict[str, Any]:
             reason=INVALID_PINNED_KEY,
             key_id=request.key_id,
         ).model_dump()
-    return verify_receipt(
+    result = verify_receipt(
         request.envelope(),
         merchant_public_key=request.merchant_public_key,
         expected_merchant_key_id=request.merchant_key_id,
         require_merchant=request.require_merchant,
-    ).model_dump()
+    )
+    if result.valid:
+        # No caller pin and no registry: the signature is internally
+        # consistent but has no issuer attribution. Do not certify it.
+        return VerifyResult(
+            valid=False,
+            reason=UNPINNED,
+            receipt_id=result.receipt_id,
+            key_id=result.key_id,
+        ).model_dump()
+    return result.model_dump()
 
 
 class ExplainResponse(BaseModel):

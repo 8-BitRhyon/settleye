@@ -2,7 +2,7 @@
 
 **Your AI agent promised a refund. Did the money move?**
 
-Settleye is the execution auditor for AI support agents. AI agents tell customers a refund is processed while the underlying tool call silently fails or never runs. Settleye extracts each promise from the transcript with a Meta model, reconciles it against Stripe and Shopify ledger state, and surfaces mismatches in an exception inbox with a one-click fix.
+Settleye is the execution auditor for AI support agents. AI agents tell customers a refund is processed while the underlying tool call silently fails or never runs. Settleye extracts each promise from the transcript with a Meta model, reconciles it against Stripe and Shopify ledger state, and surfaces mismatches in an exception inbox with a one-click fix against the demo's mock ledger.
 
 Live demo: https://8-bitrhyon.github.io/settleye/landing.html
 
@@ -15,17 +15,18 @@ Built for the Meta Global AI Developer Hackathon (Indie Developer Track, Push th
 3. **Reconcile.** Each binding refund diffs against settled ledger state: verified, drift, unverifiable, or not binding.
 4. **Explain.** Each drift gets a plain-English summary on demand.
 5. **Remember.** A batch daemon flags orders promised across several tickets.
-6. **Remediate.** One click settles drift through an idempotent service. Receipts persist to an append-only JSONL store keyed by the promise, so a restart cannot double-refund and a retry returns the original receipt. When an issuer key and audit context are configured, the live response also carries a signed two-party execution receipt.
+6. **Remediate.** One click settles drift against the demo's mock ledger through an idempotent service. Receipts persist to an append-only JSONL store keyed by the promise, so a restart cannot double-refund and a retry returns the original receipt. When an issuer key and audit context are configured, the live response also carries a signed execution receipt. The Shopify and Stripe write adapters pass tests but are not selected by the HTTP route in this build.
 
 ## Measured proof
 
-- Eval set (`fixtures/eval/`, 12 cases): 12 of 12 verdicts correct, 11 of 12 entities exact. Zero non-binding drifts in four chances. See `docs/research/12-eval-results.md`.
+- Eval set (`fixtures/eval/`, 12 cases): 12 of 12 verdicts correct, 11 of 12 entities exact. Zero non-binding promises reached drift; the superseded case drifts only on its replacement binding promise. See `docs/research/12-eval-results.md`.
 - Live Shopify run: dev-store order #1001 showed $6.00 settled of $50.00 promised. The daemon reported $44.00 at risk in 4.07 seconds.
 - Free gate bench: a 55 MB TinyBERT fine-tune kept 10 of 10 commitments on the 12-case eval. On 10,042 real ABCD support dialogues it discarded only 0.9% at threshold 0.20 and 1.7% at 0.50, with zero false clears in the four skipped refund threads. Safe, but not a cost saver. Bench-only, not wired into the API. See `docs/research/22-free-gate-finetune.md`.
 - Signed receipt: the sample's Ed25519 issuer and merchant signatures verify in the browser with pinned keys; a one-digit amount change or a changed merchant acknowledgement time fails. See `docs/receipt-spec.md`.
 - Live signed path: a binding refund for `#992` returned a signed envelope, the registry accepted it, a restarted service returned the same envelope, and the replay moved $0.00. A retired key still verifies its old receipt; a revoked or unknown key fails.
+- Concurrent duplicate fixes produce one refund and one receipt. A forged larger promise after a refund is rejected by the charge ceiling. HTTP verification without a pin or registry returns `unpinned`.
 - Shadow-audit proxy: 12 tickets, 5 drifts, $285.50 at risk, 0 of 8 false clears. This is recorded-output replay on synthetic cases with a mock ledger, not a merchant pilot and not a forecast. See `docs/research/23-shadow-audit.md`.
-- Suite: 222 backend checks plus 76 frontend checks, green on every push.
+- Suite: 227 backend checks plus 76 frontend checks, green on every push.
 
 ## Run it yourself
 

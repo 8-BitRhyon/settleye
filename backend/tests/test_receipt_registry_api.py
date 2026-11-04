@@ -23,6 +23,7 @@ from app.receipt import (
     MERCHANT_MISSING,
     MERCHANT_UNPINNED,
     PINNED_KEY_MISMATCH,
+    UNPINNED,
     countersign_receipt,
     encode_public_key,
     generate_keypair,
@@ -276,8 +277,8 @@ def test_empty_registry_verification_fails_closed(tmp_path, monkeypatch) -> None
 
 def test_merchant_key_id_alone_is_not_a_pin() -> None:
     """An embedded merchant key is not trusted just because its id is named."""
-    issuer_private, _ = generate_keypair()
-    envelope = sign_receipt(sample_payload(), issuer_private)
+    init_key()
+    envelope = signed_by_registered_key()
     merchant_private, _ = generate_keypair()
     envelope = countersign_receipt(
         envelope,
@@ -307,3 +308,16 @@ def test_merchant_key_id_alone_is_not_a_pin() -> None:
     required_body = required.json()
     assert required_body["valid"] is False
     assert required_body["reason"] == MERCHANT_UNPINNED
+
+
+def test_verify_endpoint_requires_a_trust_anchor() -> None:
+    """No pin and no registry must not certify a self-signed receipt."""
+    foreign_private, _ = generate_keypair()
+    envelope = sign_receipt(sample_payload(), foreign_private)
+
+    response = client().post("/receipt/verify", json={"receipt": envelope})
+    assert response.status_code == 200
+    body = response.json()
+    assert body["valid"] is False
+    assert body["reason"] == UNPINNED
+    assert body["receipt_id"] == envelope["receipt_id"]

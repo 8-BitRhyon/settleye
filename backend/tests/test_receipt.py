@@ -36,6 +36,7 @@ from app.receipt import (
     RECEIPT_ID_MISMATCH,
     SIGNATURE_INVALID,
     SAMPLE_TRANSCRIPT,
+    UNPINNED,
     UNSUPPORTED_ALG,
     canonical_payload,
     countersign_message,
@@ -587,7 +588,8 @@ def test_verify_endpoint_accepts_bare_envelope_and_rejects_tamper() -> None:
     client = TestClient(app)
     response = client.post("/receipt/verify", json=sample())
     assert response.status_code == 200
-    assert response.json()["valid"] is True
+    assert response.json()["valid"] is False
+    assert response.json()["reason"] == UNPINNED
 
     tampered = sample()
     tampered["promise"]["amount"] = "145.00"
