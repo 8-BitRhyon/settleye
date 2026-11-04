@@ -1,57 +1,118 @@
 # Settleye demo script (3:00)
 
-The film is code-driven from `film/src/storyboard.ts`. This file is the
-spoken script and the timing contract. The visual system now matches
-`frontend/landing.html`: ink, cream, mint, alarm, Fraunces, Manrope,
-JetBrains Mono.
+This is the spoken script and the timing contract for the film. The film is
+code-driven from `film/src/storyboard.ts`; the words below are the VO slots.
 
 - Runtime: 180 seconds, 1920x1080, 24 fps.
-- Voice: one narrator, natural pace. Leave the tail of each beat silent.
-- Placeholders: `[name]` is the presenter. `[dates]` is October 26 to
-  November 4, 2026.
+- Voice: one narrator, natural pace. Do not speed-read to fill a beat.
+- Read the short lines as sentences. `[pause]` means let the screen land.
 - On-screen text already carries the full meaning with sound off.
 
-## Beats
+## Read this, not the screen
 
-### 0:00-0:20 The hook
+The voiceover is a guide, not a transcript of the interface. Say the plain
+version. Let the screen carry labels, JSON, and table numbers.
 
-> Your AI support agent told the customer the refund was processed. The ticket
-> closed. The ledger says zero dollars moved. The agent is not lying. It just
-> never checks. Each phantom refund is forty-five dollars, plus a chargeback.
-> I'm [name], and this is Settleye.
+## Beat map
 
-### 0:20-0:45 The pain, quantified
+| Beat | Time | Words | Target read | Screen time |
+|---|---|---:|---:|---:|
+| Hook | 0:00-0:20 | 38 | 16-17s | 3-4s |
+| Pain | 0:20-0:45 | 55 | 23-24s | 1-2s |
+| Meta core | 0:45-1:30 | 83 | 34-37s | 8-11s |
+| Fix | 1:30-2:15 | 84 | 35-37s | 8-10s |
+| Numbers | 2:15-2:45 | 64 | 26-28s | 2-4s |
+| Vision | 2:45-3:00 | 27 | 11-12s | 3-4s |
+
+The read times assume 135-145 words per minute. The demo beats intentionally
+leave 8-11 seconds of silence for the screen.
+
+## 0:00-0:20 The hook
+
+> Your AI agent told the customer, "Your refund is processed."
+>
+> [pause]
+>
+> The ticket closed. The ledger says zero dollars moved.
+>
+> The agent isn't lying. It just never checked.
+>
+> [pause]
+>
+> That gap is what we audit.
+>
+> I'm Rhyon. This is Settleye.
+
+## 0:20-0:45 The pain
 
 > Air Canada's chatbot invented a refund policy. A tribunal made them honor it.
-> Priceline's bot promised refunds on non-refundable bookings. One phantom
-> refund a week leaks two thousand three hundred forty dollars a year. Add
-> chargebacks and it approaches four thousand seven hundred. The industry
-> grades the conversation. The customer waits for the money.
+>
+> Priceline's bot promised refunds on bookings that weren't refundable.
+>
+> [pause]
+>
+> One phantom refund a week costs twenty-three hundred forty dollars a year.
+> Add chargebacks, and it's closer to four thousand seven hundred.
+>
+> The industry grades the conversation. The customer waits for the money.
 
-### 0:45-1:30 The Meta core
+## 0:45-1:30 The Meta core
 
-> Watch the screen. Muse Spark Open reads the messy dialogue and returns
-> structured promises: action, amount, order, system, confidence, and the exact
-> quote. No regex. The model is the only path from words to promises. Every
-> reply is Pydantic-validated, repaired at most twice, then fails loudly. The
-> model never decides whether money moved. Reconciliation is deterministic code.
+> Watch the screen.
+>
+> [pause]
+>
+> The transcript is messy. The model reads it and returns structured promises:
+> the action, the amount, the order, the system, and the exact quote.
+>
+> That's the only job the model has. No regex. No guessing.
+>
+> Every reply is validated. If it doesn't fit the format, it fails loudly.
+>
+> Then a separate check compares the promise to the ledger.
+>
+> Here's the drift: the promise says forty-five dollars. The ledger says zero.
+>
+> The model never decides whether money moved. The ledger does.
 
-### 1:30-2:15 The fix
+## 1:30-2:15 The fix
 
-> One click executes the corrective refund against the test ledger. The receipt
-> carries an idempotency key. Click again: same key, original receipt, ledger
-> untouched. A concurrent duplicate is serialized. A charge ceiling stops a
-> forged promise. The card flips to Verified, the recovered total moves to
-> forty-five dollars. That is the firewall: promise, proof, patch.
+> Here's the fix.
+>
+> One click refunds the exact shortfall against the test ledger.
+>
+> The receipt carries a retry key. Click again, and you get the same receipt.
+> No second refund.
+>
+> [pause]
+>
+> Two clicks at once still produce one refund. A charge ceiling blocks a
+> promise bigger than the order.
+>
+> The receipt is signed by Settleye and countersigned by the merchant. Change
+> one digit, and the signature fails.
+>
+> The card flips to Verified. The recovered total moves to forty-five dollars.
+>
+> That's the firewall: promise, proof, patch.
 
-### 2:15-2:45 The numbers
+## 2:15-2:45 The numbers
 
-> The proof is not a projection. Forty-four dollars caught live on one test-mode
-> order in four seconds. Twelve of twelve eval verdicts, eleven of twelve
-> entities exact, zero of eight binding cases missed. Three hundred wild
-> transcripts, zero false binding promises. Then the fleet
-> model: one hundred twenty-four thousand a year at ten thousand tickets, twelve
-> point five million at a million. Stated assumptions, not a guarantee.
+> The proof isn't a projection.
+>
+> Forty-four dollars caught live on one test order, in four seconds.
+>
+> Twelve of twelve eval verdicts. Eleven of twelve entities exact. Zero of
+> eight real promises missed.
+>
+> Three hundred wild transcripts. Zero false binding promises.
+>
+> [pause]
+>
+> Then the fleet model: one hundred twenty-four thousand at ten thousand
+> tickets. Twelve point five million at a million.
+>
+> Stated assumptions, not a guarantee.
 
 The screen carries the fleet ladder: 10,000 tickets per month, $124,328.40
 modeled annual exposure protected; 100,000, $1,256,604.96; 1,000,000,
@@ -61,11 +122,15 @@ assumption line stays visible: 10.6% refund intent, 66.7% binding commitment,
 chargeback fee. The 4.0% failure rate is an assumption, not a merchant
 measurement.
 
-### 2:45-3:00 Vision and end card
+## 2:45-3:00 Vision and end card
 
-> Every payment needs a ledger. Every agent needs an auditor. The nightly sweep
-> catches orders promised across several tickets. Built [dates] for this event
-> on Meta open weights.
+> Every payment needs a ledger. Every agent needs an auditor.
+>
+> [pause]
+>
+> A nightly sweep catches orders promised across several tickets.
+>
+> Built for this event on Meta open weights.
 
 The end card carries the sample inbox, repo, and model ID.
 
@@ -91,9 +156,8 @@ End card: `Resolved is not Settled.` / `SETTLEYE`.
 
 ## Record the human voiceover
 
-Record one full 3:00 take, or one take per beat. Do not speed-read to fill a
-beat; the film has headroom. Keep the room quiet, the mic close, and the level
-consistent.
+Record one full 3:00 take, or one take per beat. Keep the room quiet, the mic
+close, and the level consistent. Do not compress or limit the file.
 
 Full take:
 
@@ -114,6 +178,9 @@ FILM_PATH=out/settleye-film-v2-human.mp4 npm run verify
 
 If a take is too long for its beat, shorten the read, not the visual. The
 timings above are the contract.
+
+Per-beat files are also fine. Name them `00-hook`, `01-pain`, `02-extraction`,
+`03-fix`, `04-math`, and `05-vision`. I will place each at its beat start.
 
 ## Re-render the visuals
 

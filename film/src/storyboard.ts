@@ -74,7 +74,7 @@ export const storyboard: Scene[] = [
     duration: 20,
     mode: "code",
     tone: "light",
-    vo: "Your AI support agent told the customer the refund was processed. The ticket closed. The ledger says zero dollars moved. The agent is not lying. It just never checks. Each phantom refund is forty-five dollars, plus a chargeback. I'm Rhyon, and this is Settleye.",
+    vo: "Your AI agent told the customer, 'Your refund is processed.' The ticket closed. The ledger says zero dollars moved. The agent isn't lying. It just never checked. That gap is what we audit. I'm Rhyon. This is Settleye.",
     cues: [
       {
         at: 0.3,
@@ -115,7 +115,7 @@ export const storyboard: Scene[] = [
     duration: 25,
     mode: "code",
     tone: "dark",
-    vo: "Air Canada's chatbot invented a refund policy. A tribunal made them honor it. Priceline's bot promised refunds on non-refundable bookings. One phantom refund a week leaks two thousand three hundred forty dollars a year. Add chargebacks and it approaches four thousand seven hundred. The industry grades the conversation. The customer waits for the money.",
+    vo: "Air Canada's chatbot invented a refund policy. A tribunal made them honor it. Priceline's bot promised refunds on bookings that weren't refundable. One phantom refund a week costs twenty-three hundred forty dollars a year. Add chargebacks, and it's closer to four thousand seven hundred. The industry grades the conversation. The customer waits for the money.",
     cues: [
       {
         at: 0.4,
@@ -162,7 +162,7 @@ export const storyboard: Scene[] = [
     duration: 45,
     mode: "capture",
     tone: "dark",
-    vo: "Watch the screen. Muse Spark Open reads the messy dialogue and returns structured promises: action, amount, order, system, confidence, and the exact quote. No regex. The model is the only path from words to promises. Every reply is Pydantic-validated, repaired at most twice, then fails loudly. The model never decides whether money moved. Reconciliation is deterministic code.",
+    vo: "Watch the screen. The transcript is messy. The model reads it and returns structured promises: the action, the amount, the order, the system, and the exact quote. That's the only job the model has. No regex. No guessing. Every reply is validated. If it doesn't fit the format, it fails loudly. Then a separate check compares the promise to the ledger. Here's the drift: the promise says forty-five dollars. The ledger says zero. The model never decides whether money moved. The ledger does.",
     cues: [
       {
         at: 0.3,
@@ -231,7 +231,7 @@ export const storyboard: Scene[] = [
     duration: 45,
     mode: "capture",
     tone: "dark",
-    vo: "One click executes the corrective refund against the test ledger. The receipt carries an idempotency key. Click again: same key, original receipt, ledger untouched. A concurrent duplicate is serialized. A charge ceiling stops a forged promise. The card flips to Verified, the recovered total moves to forty-five dollars. That is the firewall: promise, proof, patch.",
+    vo: "Here's the fix. One click refunds the exact shortfall against the test ledger. The receipt carries a retry key. Click again, and you get the same receipt. No second refund. Two clicks at once still produce one refund. A charge ceiling blocks a promise bigger than the order. The receipt is signed by Settleye and countersigned by the merchant. Change one digit, and the signature fails. The card flips to Verified. The recovered total moves to forty-five dollars. That's the firewall: promise, proof, patch.",
     cues: [
       {
         at: 0.3,
@@ -295,7 +295,7 @@ export const storyboard: Scene[] = [
     duration: 30,
     mode: "code",
     tone: "dark",
-    vo: "The proof is not a projection. Forty-four dollars caught live on one test-mode order in four seconds. Twelve of twelve eval verdicts, eleven of twelve entities exact, zero of eight binding cases missed. Three hundred wild transcripts, zero false binding promises. Then the fleet model: one hundred twenty-four thousand a year at ten thousand tickets, twelve point five million at a million. Stated assumptions, not a guarantee.",
+    vo: "The proof isn't a projection. Forty-four dollars caught live on one test order, in four seconds. Twelve of twelve eval verdicts. Eleven of twelve entities exact. Zero of eight real promises missed. Three hundred wild transcripts. Zero false binding promises. Then the fleet model: one hundred twenty-four thousand at ten thousand tickets. Twelve point five million at a million. Stated assumptions, not a guarantee.",
     cues: [
       {
         at: 0.4,
@@ -347,7 +347,7 @@ export const storyboard: Scene[] = [
     duration: 15,
     mode: "code",
     tone: "dark",
-    vo: "Every payment needs a ledger. Every agent needs an auditor. The nightly sweep catches orders promised across several tickets. Built for this event on Meta open weights.",
+    vo: "Every payment needs a ledger. Every agent needs an auditor. A nightly sweep catches orders promised across several tickets. Built for this event on Meta open weights.",
     cues: [
       {
         at: 0.3,
