@@ -70,16 +70,16 @@ For judges evaluating the cloned repository locally:
 
 ```bash
 # 1. Run full backend test suite (235 passing tests in <1s)
-cd backend && uv run pytest
+(cd backend && uv run pytest)
 
 # 2. Offline daemon sweep with verified drift reconciliation (12 tickets, 5 drifts, $285.50 at risk)
-uv run python -m app.daemon --dir ../fixtures/eval --ledger mock --replay ../fixtures/eval_live_output.json
+(cd backend && uv run python -m app.daemon --dir ../fixtures/eval --ledger mock --replay ../fixtures/eval_live_output.json)
 
 # 3. Pipeline micro-benchmark (about 95k to 122k audits/sec, p50 about 0.009ms; canned extraction, mock ledger, no model calls)
-python3 ../bench/fleet_benchmark.py
+python3 bench/fleet_benchmark.py
 
 # 4. Modeled fleet exposure projection (not measured; assumptions in bench/fleet_projection.py)
-python3 ../bench/fleet_projection.py
+python3 bench/fleet_projection.py
 ```
 
 Or run the complete verification suite in one command:
