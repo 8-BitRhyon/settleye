@@ -116,12 +116,12 @@ Settleye separates its proof into three tiers: one live, one labeled, and one mo
 - **Zero False Clears**: 0.0% false-clear rate across labeled binding cases (0 of 8 missed).
 - **100% Non-Binding Refutation**: 0 of 4 non-binding promises reached drift. A superseded promise drifts only on its final binding commitment.
 - **Frontier Model Comparison**: Benchmarked on identical prompts between `meta-models/muse-spark-open-1026` and `gemini-4-argon`. Both achieved 11/12 exact matches; Argon hallucinated an invented order ID (`EVAL09`), whereas Muse hallucinated zero orders.
-- **Eval Drift Rate**: 5 drifts caught totaling $285.50 at risk ($23,791.67 per 1,000 tickets).
+- **Eval Drift Rate**: 5 drifts caught totaling $285.50 at risk.
 
 ### Tier 3: Modeled Fleet Exposure & Pipeline Benchmarks
 Using stated funnel assumptions grounded in the ABCD retail corpus (10.6% refund intent, 66.7% binding commitment, 4.0% execution failure, $52.50 mean refund). The 4.0% failure rate is an assumption, not a merchant measurement:
 
-| Volume Tier | Monthly Tickets | Annual Drift Events | Direct Dollars Caught | Dispute Loss Prevention (4.61x) | Chargeback Fee Savings ($128/ea) | Modeled Annual Exposure Protected |
+| Volume Tier | Monthly Tickets | Annual Drift Events | Direct Exposure | Dispute Exposure (4.61x) | Chargeback Fees ($128/ea) | Modeled Annual Exposure Protected |
 |---|---|---|---|---|---|---|
 | **Mid-Market** | 10,000/mo | 336 drifts/yr | $17,640.00 | $81,320.40 | $43,008.00 | **$124,328.40** |
 | **Large E-Commerce** | 100,000/mo | 3,396 drifts/yr | $178,290.00 | $821,916.96 | $434,688.00 | **$1,256,604.96** |
