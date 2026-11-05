@@ -3,7 +3,7 @@
   <h3>Your AI agent promised a refund. Did the money move?</h3>
   <p>
     <a href="https://8-bitrhyon.github.io/settleye/index.html?sample=1"><img src="https://img.shields.io/badge/Open%20the%20sample%20inbox-0a1014?style=for-the-badge&logo=googlechrome&logoColor=e9ece6" alt="Open the sample inbox" /></a>
-    <a href="https://youtu.be/rsf70ZVFdz0"><img src="https://img.shields.io/badge/Watch%20the%20film-0a1014?style=for-the-badge&logo=youtube&logoColor=f0837f" alt="Watch the 3-minute film" /></a>
+    <a href="https://youtu.be/AZPUVhGFr0A"><img src="https://img.shields.io/badge/Watch%20the%20film-0a1014?style=for-the-badge&logo=youtube&logoColor=f0837f" alt="Watch the 3-minute film" /></a>
   </p>
   <p>
     <img src="https://img.shields.io/badge/backend-235%20tests-9fd8c2?style=flat-square" alt="235 backend tests" />
@@ -21,7 +21,7 @@ Built for the Meta Global AI Developer Hackathon (Indie Developer Track, Push th
 
 ## Watch the film
 
-[![Watch the 3-minute Settleye film](https://img.youtube.com/vi/rsf70ZVFdz0/maxresdefault.jpg)](https://youtu.be/rsf70ZVFdz0)
+[![Watch the 3-minute Settleye film](https://img.youtube.com/vi/AZPUVhGFr0A/maxresdefault.jpg)](https://youtu.be/AZPUVhGFr0A)
 
 Three minutes. One promise. One ledger. One receipt.
 
