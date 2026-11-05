@@ -130,7 +130,13 @@
   .rails .rails-label { font-family:"JetBrains Mono",monospace; font-size:10.5px; letter-spacing:.14em; text-transform:uppercase; color:rgba(159,216,194,.9); }
   .rails .sep { opacity:.35; }
   .rails .rail-scope { color:rgba(233,236,230,.62); }
-  .cmp { margin-top:34px; width:100%; border-collapse:collapse; font-size:14px; }
+  .cmp { margin-top:0; width:100%; border-collapse:collapse; font-size:14px; }
+  #compare .cmp { table-layout:fixed; }
+  #compare .cmp th:nth-child(1), #compare .cmp td:nth-child(1) { width:28%; }
+  #compare .cmp th:nth-child(2), #compare .cmp td:nth-child(2) { width:32%; }
+  #compare .cmp th:nth-child(3), #compare .cmp td:nth-child(3) { width:40%; }
+  #compare .cmp th, #compare .cmp td { padding:12px 14px; line-height:1.45; }
+  #compare .note { max-width:100%; }
   .cmp th, .cmp td { text-align:left; padding:14px 16px; border-bottom:1px solid rgba(233,236,230,.12); vertical-align:top; }
   .cmp th { font-family:"JetBrains Mono",monospace; font-size:10.5px; letter-spacing:.12em; text-transform:uppercase; color:rgba(233,236,230,.55); font-weight:400; }
   .cmp td:first-child { color:rgba(233,236,230,.92); }
@@ -141,6 +147,7 @@
   .frows { margin-top:34px; }
   .frow { display:grid; grid-template-columns:1fr 1fr; gap:32px; align-items:start; padding:26px 0; border-top:1px solid rgba(233,236,230,.12); }
   .frow:last-child { border-bottom:1px solid rgba(233,236,230,.12); }
+  .frow .n { margin-top:0; }
   .frow h3 { font-family:Fraunces,serif; font-size:22px; font-weight:400; letter-spacing:-.01em; margin-top:10px; }
   .frow p { margin-top:10px; font-size:14.5px; line-height:1.65; color:rgba(233,236,230,.78); }
   .snip { margin:0; padding:18px 20px; background:rgba(233,236,230,.045); border:1px solid rgba(233,236,230,.13); border-radius:12px; font-family:"JetBrains Mono",monospace; font-size:11.5px; line-height:1.75; color:rgba(233,236,230,.86); white-space:pre; overflow-x:auto; }
@@ -161,6 +168,11 @@
     .cmp td::before { content:attr(data-label); font-family:"JetBrains Mono",monospace; font-size:9.5px; letter-spacing:.1em; text-transform:uppercase; color:rgba(233,236,230,.5); text-align:left; }
     .cmp td:first-child { display:block; padding-top:10px; text-align:left; font-size:15px; font-weight:600; }
     .cmp td:first-child::before { display:none; }
+    #compare .cmp td { display:block; padding:9px 0; text-align:left; }
+    #compare .cmp td::before { display:block; margin-bottom:4px; }
+    #compare .cmp td:first-child::before { display:none; }
+    .cmp tr.us { background:rgba(159,216,194,.07); }
+    .cmp tr.us td { background:transparent; }
   }
   .band h2 { margin-top:18px; font-family:Fraunces,serif; font-weight:350; letter-spacing:-.025em; font-size:clamp(30px,3.6vw,48px); line-height:1.04; max-width:20ch; }
   .band h2 em { font-style:italic; font-weight:300; color:#9fd8c2; }
@@ -173,13 +185,18 @@
   .card .n { font-family:"JetBrains Mono",monospace; font-size:12px; letter-spacing:.12em; color:#9fd8c2; }
   .tick { display:block; width:36px; height:2px; border-radius:2px; background:#9fd8c2; opacity:.8; margin-bottom:16px; }
   .footnote { margin-top:22px; padding-left:14px; border-left:1px solid rgba(233,236,230,.25); font-size:13px; line-height:1.6; color:rgba(233,236,230,.66); max-width:70ch; }
-  .chapters-label { margin-top:28px; font-family:"JetBrains Mono",monospace; font-size:10px; letter-spacing:.14em; text-transform:uppercase; color:rgba(233,236,230,.45); }
-  .chapters { margin-top:10px; list-style:none; display:grid; gap:10px; max-width:560px; }
-  .chapters li { background:rgba(233,236,230,.05); border:1px solid rgba(233,236,230,.14); border-radius:14px; overflow:hidden; backdrop-filter:blur(12px); }
-  .chapters button { display:flex; align-items:center; gap:14px; width:100%; padding:12px 16px; border:0; background:transparent; color:rgba(233,236,230,.85); font:inherit; font-size:15px; text-align:left; cursor:pointer; transition:background-color .2s, color .2s; }
+  .chapters-label { margin-top:20px; font-family:"JetBrains Mono",monospace; font-size:10px; letter-spacing:.14em; text-transform:uppercase; color:rgba(233,236,230,.45); }
+  .chapters { margin-top:8px; list-style:none; display:flex; flex-wrap:wrap; gap:8px; max-width:none; }
+  .chapters li { background:rgba(233,236,230,.05); border:1px solid rgba(233,236,230,.14); border-radius:999px; overflow:hidden; backdrop-filter:blur(12px); }
+  .chapters button { display:flex; align-items:center; gap:7px; width:100%; padding:7px 14px 7px 7px; border:0; background:transparent; color:rgba(233,236,230,.85); font:inherit; font-size:12.5px; line-height:1.2; text-align:left; white-space:nowrap; cursor:pointer; transition:background-color .2s, color .2s; }
   .chapters button:hover { background:rgba(159,216,194,.08); color:#e9ece6; }
   .chapters button:focus-visible { outline:2px solid #9fd8c2; outline-offset:-2px; }
-  .chap-time { font-family:"JetBrains Mono",monospace; font-size:12px; color:#0a1014; background:#9fd8c2; border-radius:999px; padding:4px 10px; min-width:52px; text-align:center; font-variant-numeric:tabular-nums; flex:0 0 auto; }
+  .chap-time { font-family:"JetBrains Mono",monospace; font-size:10.5px; color:#0a1014; background:#9fd8c2; border-radius:999px; padding:3px 8px; min-width:40px; text-align:center; font-variant-numeric:tabular-nums; flex:0 0 auto; }
+  @media (max-width:720px){
+    .chapters { flex-wrap:nowrap; overflow-x:auto; padding-bottom:6px; scrollbar-width:none; -webkit-overflow-scrolling:touch; }
+    .chapters::-webkit-scrollbar { display:none; }
+    .chapters li { flex:0 0 auto; }
+  }
   .placeholder { margin-top:36px; border:1px dashed rgba(233,236,230,.3); border-radius:20px; padding:40px 28px; text-align:center; background:rgba(233,236,230,.03); }
   .placeholder p { font-family:Fraunces,serif; font-size:clamp(20px,2.4vw,26px); font-weight:400; }
   .proofgrid { margin-top:36px; display:grid; gap:16px; grid-template-columns:repeat(4,1fr); list-style:none; }
@@ -370,29 +387,29 @@
         </thead>
         <tbody>
           <tr>
-            <td>Do nothing</td>
-            <td>The agent says it worked</td>
-            <td>Everything. The gap surfaces as a chargeback</td>
+            <td data-label="Approach">Do nothing</td>
+            <td data-label="What it sees">The agent says it worked</td>
+            <td data-label="What it misses">Everything. The gap surfaces as a chargeback</td>
           </tr>
           <tr>
-            <td>Helpdesk guardrails (Gorgias, Zendesk, Intercom)</td>
-            <td>The outgoing message, before send</td>
-            <td>Whether the write ever landed. One vendor only</td>
+            <td data-label="Approach">Helpdesk guardrails (Gorgias, Zendesk, Intercom)</td>
+            <td data-label="What it sees">The outgoing message, before send</td>
+            <td data-label="What it misses">Whether the write ever landed. One vendor only</td>
           </tr>
           <tr>
-            <td>QA and eval tools (Klaus, LangSmith, Braintrust)</td>
-            <td>Transcript quality and tone</td>
-            <td>Ledger state. A polite transcript can still be unpaid</td>
+            <td data-label="Approach">QA and eval tools (Klaus, LangSmith, Braintrust)</td>
+            <td data-label="What it sees">Transcript quality and tone</td>
+            <td data-label="What it misses">Ledger state. A polite transcript can still be unpaid</td>
           </tr>
           <tr>
-            <td>Chargeback services (Chargeflow, Justt)</td>
-            <td>Disputes already filed</td>
-            <td>The 10 to 45 days before the customer gives up</td>
+            <td data-label="Approach">Chargeback services (Chargeflow, Justt)</td>
+            <td data-label="What it sees">Disputes already filed</td>
+            <td data-label="What it misses">The 10 to 45 days before the customer gives up</td>
           </tr>
           <tr class="us">
-            <td>Settleye</td>
-            <td>Transcript promise, ledger fact, and the gap between them</td>
-            <td>Not a guardrail and not a payment rail. Runs after execution, across vendors</td>
+            <td data-label="Approach">Settleye</td>
+            <td data-label="What it sees">Transcript promise, ledger fact, and the gap between them</td>
+            <td data-label="What it misses">Not a guardrail and not a payment rail. Runs after execution, across vendors</td>
           </tr>
         </tbody>
       </table>
@@ -457,7 +474,7 @@ ledger unchanged</pre>
     </div>
     <p class="note" style="margin-top:12px">The film is the 3-minute cut. The button above opens the same drift with no install; every frame is code-rendered scenes plus real captured beats from the running app.</p>
     <p class="note" style="margin-top:6px">If the player does not load, <a class="u" href="https://youtu.be/AZPUVhGFr0A" target="_blank" rel="noopener">watch the film on YouTube</a>.</p>
-    <p class="chapters-label">Jump to a chapter</p>
+    <p class="chapters-label">Chapters</p>
     <ul class="chapters">
       <li><button class="chapter" type="button" data-time="0"><span class="chap-time">0:00</span>the $45 phantom refund.</button></li>
       <li><button class="chapter" type="button" data-time="20"><span class="chap-time">0:20</span>the cost.</button></li>
