@@ -1,0 +1,55 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="320" viewBox="0 0 1280 320" role="img" aria-label="Settleye: execution auditor for AI support agents">
+  <defs>
+    <radialGradient id="mintGlow" cx="82%" cy="-10%" r="70%">
+      <stop offset="0%" stop-color="#9fd8c2" stop-opacity="0.20"/>
+      <stop offset="100%" stop-color="#9fd8c2" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="alarmGlow" cx="6%" cy="115%" r="60%">
+      <stop offset="0%" stop-color="#f0837f" stop-opacity="0.12"/>
+      <stop offset="100%" stop-color="#f0837f" stop-opacity="0"/>
+    </radialGradient>
+    <pattern id="grid" width="64" height="64" patternUnits="userSpaceOnUse">
+      <path d="M 64 0 L 0 0 0 64" fill="none" stroke="#e9ece6" stroke-opacity="0.035" stroke-width="1"/>
+    </pattern>
+  </defs>
+
+  <rect width="1280" height="320" fill="#0a1014"/>
+  <rect width="1280" height="320" fill="url(#mintGlow)"/>
+  <rect width="1280" height="320" fill="url(#alarmGlow)"/>
+  <rect width="1280" height="320" fill="url(#grid)"/>
+
+  <g fill="none" stroke="#e9ece6" stroke-opacity="0.12">
+    <circle cx="1080" cy="40" r="230"/>
+    <circle cx="1080" cy="40" r="340" stroke-dasharray="3 9" stroke-opacity="0.18"/>
+    <circle cx="1080" cy="40" r="450" stroke-dasharray="1 14" stroke-opacity="0.10"/>
+  </g>
+  <circle cx="1248" cy="170" r="4" fill="#9fd8c2"/>
+
+  <g>
+    <circle cx="114" cy="112" r="32" fill="#e9ece6"/>
+    <circle cx="128" cy="102" r="29" fill="#0a1014"/>
+  </g>
+
+  <text x="170" y="145" fill="#e9ece6" font-family="Georgia, 'Times New Roman', serif" font-size="92" font-weight="400" letter-spacing="-4">Settleye</text>
+  <text x="172" y="190" fill="#9fd8c2" font-family="Menlo, Consolas, monospace" font-size="14" letter-spacing="3.5">EXECUTION AUDITOR FOR AI SUPPORT AGENTS</text>
+  <rect x="172" y="215" width="132" height="2" fill="#9fd8c2" fill-opacity="0.8"/>
+  <text x="172" y="252" fill="#e9ece6" fill-opacity="0.58" font-family="Menlo, Consolas, monospace" font-size="12" letter-spacing="0.5">Promise. Ledger. Receipt. One proof at a time.</text>
+
+  <g>
+    <rect x="820" y="76" width="380" height="168" rx="18" fill="#e9ece6" fill-opacity="0.05" stroke="#e9ece6" stroke-opacity="0.16"/>
+    <rect x="820" y="76" width="380" height="2" rx="1" fill="#9fd8c2" fill-opacity="0.65"/>
+    <text x="846" y="106" fill="#e9ece6" fill-opacity="0.55" font-family="Menlo, Consolas, monospace" font-size="11" letter-spacing="1.5">ORDER #992</text>
+    <rect x="1112" y="92" width="64" height="22" rx="11" fill="#f0837f" fill-opacity="0.12" stroke="#f0837f" stroke-opacity="0.35"/>
+    <text x="1144" y="107" text-anchor="middle" fill="#f0837f" font-family="Menlo, Consolas, monospace" font-size="10" letter-spacing="1">DRIFT</text>
+    <line x1="846" y1="124" x2="1174" y2="124" stroke="#e9ece6" stroke-opacity="0.10"/>
+    <text x="846" y="152" fill="#e9ece6" fill-opacity="0.55" font-family="Menlo, Consolas, monospace" font-size="11" letter-spacing="1.5">PROMISE</text>
+    <text x="1174" y="154" text-anchor="end" fill="#e9ece6" font-family="Menlo, Consolas, monospace" font-size="24" font-weight="600">$45.00</text>
+    <line x1="846" y1="168" x2="1174" y2="168" stroke="#e9ece6" stroke-opacity="0.10"/>
+    <text x="846" y="196" fill="#e9ece6" fill-opacity="0.55" font-family="Menlo, Consolas, monospace" font-size="11" letter-spacing="1.5">SETTLED</text>
+    <text x="1174" y="198" text-anchor="end" fill="#f0837f" font-family="Menlo, Consolas, monospace" font-size="24" font-weight="600">$0.00</text>
+    <line x1="846" y1="212" x2="1174" y2="212" stroke="#e9ece6" stroke-opacity="0.10"/>
+    <text x="846" y="232" fill="#e9ece6" fill-opacity="0.42" font-family="Menlo, Consolas, monospace" font-size="10">Transcript + ledger record attached. No money moved.</text>
+  </g>
+
+  <text x="1200" y="286" text-anchor="end" fill="#9fd8c2" fill-opacity="0.72" font-family="Menlo, Consolas, monospace" font-size="11" letter-spacing="1.5">RESOLVED IS NOT SETTLED.</text>
+</svg>
