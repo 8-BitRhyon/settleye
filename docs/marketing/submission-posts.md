@@ -24,7 +24,7 @@ I used OpenCode with a captain and teamwork loop: `/goal` for the outcome, `/pla
 
 Sample: https://8-bitrhyon.github.io/settleye/index.html?sample=1
 
-Film: https://youtu.be/rsf70ZVFdz0
+Film: https://youtu.be/AZPUVhGFr0A
 
 Repo: https://github.com/8-BitRhyon/settleye
 
@@ -81,7 +81,7 @@ The hard part was deciding what not to claim. The 4.0% failure rate is an assump
 
 - Landing: https://8-bitrhyon.github.io/settleye/landing.html
 - Sample inbox: https://8-bitrhyon.github.io/settleye/index.html?sample=1
-- Film: https://youtu.be/rsf70ZVFdz0
+- Film: https://youtu.be/AZPUVhGFr0A
 - 15-second proof: https://github.com/8-BitRhyon/settleye/releases/download/demo-v1/settleye-proof.mp4
 - Receipt verification clip: https://github.com/8-BitRhyon/settleye/releases/download/demo-v1/settleye-verify.mp4
 - Repo: https://github.com/8-BitRhyon/settleye
