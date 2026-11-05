@@ -120,15 +120,16 @@
   .coststrip li + li { border-left:1px solid rgba(233,236,230,.12); padding-left:28px; }
   .coststrip b { display:block; font-family:Fraunces,serif; font-weight:350; font-size:clamp(48px,5.2vw,72px); letter-spacing:-.03em; line-height:1; font-variant-numeric:tabular-nums; color:#e9ece6; }
   .coststrip span { display:block; margin-top:12px; font-size:14px; line-height:1.6; color:rgba(233,236,230,.82); max-width:30ch; }
-  .coststrip em { display:flex; align-items:center; gap:8px; margin-top:16px; font-style:normal; font-family:"JetBrains Mono",monospace; font-size:10.5px; letter-spacing:.12em; text-transform:uppercase; color:rgba(233,236,230,.48); }
-  .coststrip em svg { width:24px; height:14px; flex:none; opacity:.55; }
+  .coststrip em { display:flex; align-items:center; gap:8px; margin-top:16px; font-style:normal; font-family:"JetBrains Mono",monospace; font-size:10.5px; letter-spacing:.12em; text-transform:uppercase; color:rgba(233,236,230,.62); }
+  .coststrip em svg { width:24px; height:14px; flex:none; opacity:.72; }
   .coststrip em .wm { display:inline-flex; align-items:center; justify-content:center; min-width:24px; height:14px; font-size:9px; letter-spacing:.08em; border:1px solid rgba(233,236,230,.3); border-radius:4px; padding:0 3px; }
   @media (max-width:860px){ .coststrip { grid-template-columns:1fr; } .coststrip li { padding-right:0; } .coststrip li + li { border-left:0; border-top:1px solid rgba(233,236,230,.12); padding-left:0; padding-top:24px; margin-top:24px; } }
-  .rails { margin-top:32px; display:flex; align-items:center; gap:10px; flex-wrap:wrap; border:1px solid rgba(233,236,230,.14); background:rgba(233,236,230,.04); border-radius:14px; padding:14px 18px; font-size:13.5px; line-height:1.6; color:rgba(233,236,230,.72); }
-  .rails svg { height:15px; width:auto; flex:none; opacity:.6; }
+  .rails { margin-top:32px; display:flex; align-items:center; gap:10px; row-gap:8px; flex-wrap:wrap; border:1px solid rgba(233,236,230,.14); background:rgba(233,236,230,.04); border-radius:14px; padding:14px 18px; font-size:13.5px; line-height:1.6; color:rgba(233,236,230,.8); }
+  .rails svg { height:16px; width:auto; flex:none; opacity:.78; }
   .rails b { color:#e9ece6; font-weight:600; }
   .rails .rails-label { font-family:"JetBrains Mono",monospace; font-size:10.5px; letter-spacing:.14em; text-transform:uppercase; color:rgba(159,216,194,.9); }
   .rails .sep { opacity:.35; }
+  .rails .rail-scope { color:rgba(233,236,230,.62); }
   .cmp { margin-top:34px; width:100%; border-collapse:collapse; font-size:14px; }
   .cmp th, .cmp td { text-align:left; padding:14px 16px; border-bottom:1px solid rgba(233,236,230,.12); vertical-align:top; }
   .cmp th { font-family:"JetBrains Mono",monospace; font-size:10.5px; letter-spacing:.12em; text-transform:uppercase; color:rgba(233,236,230,.55); font-weight:400; }
@@ -172,9 +173,13 @@
   .card .n { font-family:"JetBrains Mono",monospace; font-size:12px; letter-spacing:.12em; color:#9fd8c2; }
   .tick { display:block; width:36px; height:2px; border-radius:2px; background:#9fd8c2; opacity:.8; margin-bottom:16px; }
   .footnote { margin-top:22px; padding-left:14px; border-left:1px solid rgba(233,236,230,.25); font-size:13px; line-height:1.6; color:rgba(233,236,230,.66); max-width:70ch; }
-  .chapters { margin-top:28px; list-style:none; display:grid; gap:10px; max-width:560px; }
-  .chapters li { display:flex; align-items:center; gap:14px; background:rgba(233,236,230,.05); border:1px solid rgba(233,236,230,.14); border-radius:14px; padding:12px 16px; font-size:15px; color:rgba(233,236,230,.85); backdrop-filter:blur(12px); }
-  .chapters time { font-family:"JetBrains Mono",monospace; font-size:12px; color:#0a1014; background:#9fd8c2; border-radius:999px; padding:4px 10px; min-width:52px; text-align:center; font-variant-numeric:tabular-nums; }
+  .chapters-label { margin-top:28px; font-family:"JetBrains Mono",monospace; font-size:10px; letter-spacing:.14em; text-transform:uppercase; color:rgba(233,236,230,.45); }
+  .chapters { margin-top:10px; list-style:none; display:grid; gap:10px; max-width:560px; }
+  .chapters li { background:rgba(233,236,230,.05); border:1px solid rgba(233,236,230,.14); border-radius:14px; overflow:hidden; backdrop-filter:blur(12px); }
+  .chapters button { display:flex; align-items:center; gap:14px; width:100%; padding:12px 16px; border:0; background:transparent; color:rgba(233,236,230,.85); font:inherit; font-size:15px; text-align:left; cursor:pointer; transition:background-color .2s, color .2s; }
+  .chapters button:hover { background:rgba(159,216,194,.08); color:#e9ece6; }
+  .chapters button:focus-visible { outline:2px solid #9fd8c2; outline-offset:-2px; }
+  .chap-time { font-family:"JetBrains Mono",monospace; font-size:12px; color:#0a1014; background:#9fd8c2; border-radius:999px; padding:4px 10px; min-width:52px; text-align:center; font-variant-numeric:tabular-nums; flex:0 0 auto; }
   .placeholder { margin-top:36px; border:1px dashed rgba(233,236,230,.3); border-radius:20px; padding:40px 28px; text-align:center; background:rgba(233,236,230,.03); }
   .placeholder p { font-family:Fraunces,serif; font-size:clamp(20px,2.4vw,26px); font-weight:400; }
   .proofgrid { margin-top:36px; display:grid; gap:16px; grid-template-columns:repeat(4,1fr); list-style:none; }
@@ -287,7 +292,7 @@
       <a class="btn" href="./index.html?sample=1"><i></i>Open the sample drift inbox</a>
       <a class="link" href="#demo">Watch the 3-minute film</a>
     </div>
-    <code class="hero-cmd rv" style="--d:760">git clone github.com/8-BitRhyon/settleye</code>
+    <code class="hero-cmd rv" style="--d:760">git clone https://github.com/8-BitRhyon/settleye.git</code>
     <ul class="heroproof rv" style="--d:820">
       <li><b>$44.00</b><span>caught live, one test order</span></li>
       <li><b>11/12</b><span>exact. Argon scored the same, then invented an id</span></li>
@@ -348,7 +353,7 @@
         <em><svg class="brandmark" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path fill="currentColor" d="M4.592 2v20H0V2h4.592zm11.46 0c0 4.194-1.583 8.105-4.415 11.068l-.278.283L17.702 22h-5.668l-6.893-9.4 1.779-1.332c2.858-2.14 4.535-5.378 4.637-8.924L11.562 2h4.49zM21.5 17a2.5 2.5 0 110 5 2.5 2.5 0 010-5z"/></svg>Klarna merchant rules</em>
       </li>
     </ul>
-    <p class="rails"><span class="rails-label">Reconciled rails</span><svg viewBox="0 0 512 214" aria-hidden="true" focusable="false"><path fill="currentColor" d="M512 110.08c0-36.409-17.636-65.138-51.342-65.138-33.85 0-54.33 28.73-54.33 64.854 0 42.808 24.179 64.426 58.88 64.426 16.925 0 29.725-3.84 39.396-9.244v-28.445c-9.67 4.836-20.764 7.823-34.844 7.823-13.796 0-26.027-4.836-27.591-21.618h69.547c0-1.85.284-9.245.284-12.658m-70.258-13.511c0-16.071 9.814-22.756 18.774-22.756 8.675 0 17.92 6.685 17.92 22.756zm-90.31-51.627c-13.939 0-22.899 6.542-27.876 11.094l-1.85-8.818h-31.288v165.83l35.555-7.537.143-40.249c5.12 3.698 12.657 8.96 25.173 8.96 25.458 0 48.64-20.48 48.64-65.564-.142-41.245-23.609-63.716-48.498-63.716m-8.534 97.991c-8.391 0-13.37-2.986-16.782-6.684l-.143-52.765c3.698-4.124 8.818-6.968 16.925-6.968 12.942 0 21.902 14.506 21.902 33.137 0 19.058-8.818 33.28-21.902 33.28M241.493 36.551l35.698-7.68V0l-35.698 7.538zm0 10.809h35.698v124.444h-35.698zm-38.257 10.524L200.96 47.36h-30.72v124.444h35.556V87.467c8.39-10.951 22.613-8.96 27.022-7.396V47.36c-4.551-1.707-21.191-4.836-29.582 10.524m-71.112-41.386-34.702 7.395-.142 113.92c0 21.05 15.787 36.551 36.836 36.551 11.662 0 20.195-2.133 24.888-4.693V140.8c-4.55 1.849-27.022 8.391-27.022-12.658V77.653h27.022V47.36h-27.022zM35.982 83.484c0-5.546 4.551-7.68 12.09-7.68 10.808 0 24.461 3.272 35.27 9.103V51.484c-11.804-4.693-23.466-6.542-35.27-6.542C19.2 44.942 0 60.018 0 85.192c0 39.252 54.044 32.995 54.044 49.92 0 6.541-5.688 8.675-13.653 8.675-11.804 0-26.88-4.836-38.827-11.378v33.849c13.227 5.689 26.596 8.106 38.827 8.106 29.582 0 49.92-14.648 49.92-40.106-.142-42.382-54.329-34.845-54.329-50.774"/></svg><b>Stripe</b><span class="sep" aria-hidden="true">·</span><svg viewBox="0 0 256 292" aria-hidden="true" focusable="false"><path fill="currentColor" d="M223.774 57.34c-.201-1.46-1.48-2.268-2.537-2.357-1.055-.088-23.383-1.743-23.383-1.743s-15.507-15.395-17.209-17.099c-1.703-1.703-5.029-1.185-6.32-.805-.19.056-3.388 1.043-8.678 2.68-5.18-14.906-14.322-28.604-30.405-28.604-.444 0-.901.018-1.358.044C129.31 3.407 123.644.779 118.75.779c-37.465 0-55.364 46.835-60.976 70.635-14.558 4.511-24.9 7.718-26.221 8.133-8.126 2.549-8.383 2.805-9.45 10.462C21.3 95.806.038 260.235.038 260.235l165.678 31.042 89.77-19.42S223.973 58.8 223.775 57.34zM156.49 40.848l-14.019 4.339c.005-.988.01-1.96.01-3.023 0-9.264-1.286-16.723-3.349-22.636 8.287 1.04 13.806 10.469 17.358 21.32zm-27.638-19.483c2.304 5.773 3.802 14.058 3.802 25.238 0 .572-.005 1.095-.01 1.624-9.117 2.824-19.024 5.89-28.953 8.966 5.575-21.516 16.025-31.908 25.161-35.828zm-11.131-10.537c1.617 0 3.246.549 4.805 1.622-12.007 5.65-24.877 19.88-30.312 48.297l-22.886 7.088C75.694 46.16 90.81 10.828 117.72 10.828z"/><path fill="#0a1014" d="M135.242 104.585l-11.069 32.926s-9.698-5.176-21.586-5.176c-17.428 0-18.305 10.937-18.305 13.693 0 15.038 39.2 20.8 39.2 56.024 0 27.713-17.577 45.558-41.277 45.558-28.44 0-42.984-17.7-42.984-17.7l7.615-25.16s14.95 12.835 27.565 12.835c8.243 0 11.596-6.49 11.596-11.232 0-19.616-32.16-20.491-32.16-52.724 0-27.129 19.472-53.382 58.778-53.382 15.145 0 22.627 4.338 22.627 4.338"/></svg><b>Shopify</b><span class="sep" aria-hidden="true">·</span>read-only test ledgers, no merchant data</p>
+    <p class="rails"><span class="rails-label">Reconciled rails</span><svg viewBox="0 0 512 214" role="img" aria-label="Stripe" focusable="false"><path fill="currentColor" d="M512 110.08c0-36.409-17.636-65.138-51.342-65.138-33.85 0-54.33 28.73-54.33 64.854 0 42.808 24.179 64.426 58.88 64.426 16.925 0 29.725-3.84 39.396-9.244v-28.445c-9.67 4.836-20.764 7.823-34.844 7.823-13.796 0-26.027-4.836-27.591-21.618h69.547c0-1.85.284-9.245.284-12.658m-70.258-13.511c0-16.071 9.814-22.756 18.774-22.756 8.675 0 17.92 6.685 17.92 22.756zm-90.31-51.627c-13.939 0-22.899 6.542-27.876 11.094l-1.85-8.818h-31.288v165.83l35.555-7.537.143-40.249c5.12 3.698 12.657 8.96 25.173 8.96 25.458 0 48.64-20.48 48.64-65.564-.142-41.245-23.609-63.716-48.498-63.716m-8.534 97.991c-8.391 0-13.37-2.986-16.782-6.684l-.143-52.765c3.698-4.124 8.818-6.968 16.925-6.968 12.942 0 21.902 14.506 21.902 33.137 0 19.058-8.818 33.28-21.902 33.28M241.493 36.551l35.698-7.68V0l-35.698 7.538zm0 10.809h35.698v124.444h-35.698zm-38.257 10.524L200.96 47.36h-30.72v124.444h35.556V87.467c8.39-10.951 22.613-8.96 27.022-7.396V47.36c-4.551-1.707-21.191-4.836-29.582 10.524m-71.112-41.386-34.702 7.395-.142 113.92c0 21.05 15.787 36.551 36.836 36.551 11.662 0 20.195-2.133 24.888-4.693V140.8c-4.55 1.849-27.022 8.391-27.022-12.658V77.653h27.022V47.36h-27.022zM35.982 83.484c0-5.546 4.551-7.68 12.09-7.68 10.808 0 24.461 3.272 35.27 9.103V51.484c-11.804-4.693-23.466-6.542-35.27-6.542C19.2 44.942 0 60.018 0 85.192c0 39.252 54.044 32.995 54.044 49.92 0 6.541-5.688 8.675-13.653 8.675-11.804 0-26.88-4.836-38.827-11.378v33.849c13.227 5.689 26.596 8.106 38.827 8.106 29.582 0 49.92-14.648 49.92-40.106-.142-42.382-54.329-34.845-54.329-50.774"/></svg><span class="sep" aria-hidden="true">·</span><svg viewBox="0 0 256 292" aria-hidden="true" focusable="false"><path fill="currentColor" d="M223.774 57.34c-.201-1.46-1.48-2.268-2.537-2.357-1.055-.088-23.383-1.743-23.383-1.743s-15.507-15.395-17.209-17.099c-1.703-1.703-5.029-1.185-6.32-.805-.19.056-3.388 1.043-8.678 2.68-5.18-14.906-14.322-28.604-30.405-28.604-.444 0-.901.018-1.358.044C129.31 3.407 123.644.779 118.75.779c-37.465 0-55.364 46.835-60.976 70.635-14.558 4.511-24.9 7.718-26.221 8.133-8.126 2.549-8.383 2.805-9.45 10.462C21.3 95.806.038 260.235.038 260.235l165.678 31.042 89.77-19.42S223.973 58.8 223.775 57.34zM156.49 40.848l-14.019 4.339c.005-.988.01-1.96.01-3.023 0-9.264-1.286-16.723-3.349-22.636 8.287 1.04 13.806 10.469 17.358 21.32zm-27.638-19.483c2.304 5.773 3.802 14.058 3.802 25.238 0 .572-.005 1.095-.01 1.624-9.117 2.824-19.024 5.89-28.953 8.966 5.575-21.516 16.025-31.908 25.161-35.828zm-11.131-10.537c1.617 0 3.246.549 4.805 1.622-12.007 5.65-24.877 19.88-30.312 48.297l-22.886 7.088C75.694 46.16 90.81 10.828 117.72 10.828z"/><path fill="#0a1014" d="M135.242 104.585l-11.069 32.926s-9.698-5.176-21.586-5.176c-17.428 0-18.305 10.937-18.305 13.693 0 15.038 39.2 20.8 39.2 56.024 0 27.713-17.577 45.558-41.277 45.558-28.44 0-42.984-17.7-42.984-17.7l7.615-25.16s14.95 12.835 27.565 12.835c8.243 0 11.596-6.49 11.596-11.232 0-19.616-32.16-20.491-32.16-52.724 0-27.129 19.472-53.382 58.778-53.382 15.145 0 22.627 4.338 22.627 4.338"/></svg><b>Shopify</b><span class="rail-scope">read-only test ledgers, no merchant data</span></p>
     <p class="footnote" style="margin-top:18px">Sources and scope for every number on this page: <a class="u" href="https://github.com/8-BitRhyon/settleye/blob/main/docs/research/20-claims.md" rel="noopener">claim ledger</a>.</p>
   </div>
 </section>
@@ -441,22 +446,25 @@ ledger unchanged</pre>
     <h2 id="demo-heading">Watch the promise break.</h2>
     <div style="display:flex;align-items:center;gap:18px;flex-wrap:wrap;margin:0 0 18px">
       <a class="btn" href="./index.html?sample=1" rel="noopener"><i></i>Open the sample drift inbox, no install</a>
-      <a class="u" href="https://github.com/8-BitRhyon/settleye/releases/download/demo-v1/settleye-proof.mp4" rel="noopener">Watch the 15-second proof</a>
-      <a class="u" href="https://github.com/8-BitRhyon/settleye/releases/download/demo-v1/settleye-verify.mp4" rel="noopener">Watch the receipt verify</a>
+      <a class="u" href="https://github.com/8-BitRhyon/settleye/releases/download/demo-v1/settleye-proof.mp4" target="_blank" rel="noopener">Watch the 15-second proof</a>
+      <a class="u" href="https://github.com/8-BitRhyon/settleye/releases/download/demo-v1/settleye-verify.mp4" target="_blank" rel="noopener">Watch the receipt verify</a>
     </div>
     <div class="placeholder">
-      <video controls preload="metadata" playsinline poster="./poster.jpg" style="width:100%;border-radius:14px;display:block">
+      <video id="film" controls preload="metadata" playsinline poster="./poster.jpg" aria-label="Settleye 3-minute product film" style="width:100%;border-radius:14px;display:block">
         <source src="https://github.com/8-BitRhyon/settleye/releases/download/demo-v1/settleye-film.mp4" type="video/mp4" />
-        <a class="u" href="https://github.com/8-BitRhyon/settleye/releases/download/demo-v1/settleye-film.mp4" rel="noopener">Download the demo film</a>
+        <a class="u" href="https://github.com/8-BitRhyon/settleye/releases/download/demo-v1/settleye-film.mp4" target="_blank" rel="noopener">Download the demo film</a>
       </video>
     </div>
     <p class="note" style="margin-top:12px">The film is the 3-minute cut. The button above opens the same drift with no install; every frame is code-rendered scenes plus real captured beats from the running app.</p>
+    <p class="note" style="margin-top:6px">If the player does not load, <a class="u" href="https://youtu.be/rsf70ZVFdz0" target="_blank" rel="noopener">watch the film on YouTube</a>.</p>
+    <p class="chapters-label">Jump to a chapter</p>
     <ul class="chapters">
-      <li><time>0:00</time>the $45 phantom refund.</li>
-      <li><time>0:45</time>live extraction.</li>
-      <li><time>1:30</time>the fix.</li>
-      <li><time>2:15</time>the math.</li>
-      <li><time>2:45</time>vision.</li>
+      <li><button class="chapter" type="button" data-time="0"><span class="chap-time">0:00</span>the $45 phantom refund.</button></li>
+      <li><button class="chapter" type="button" data-time="20"><span class="chap-time">0:20</span>the cost.</button></li>
+      <li><button class="chapter" type="button" data-time="45"><span class="chap-time">0:45</span>live extraction.</button></li>
+      <li><button class="chapter" type="button" data-time="90"><span class="chap-time">1:30</span>the fix.</button></li>
+      <li><button class="chapter" type="button" data-time="135"><span class="chap-time">2:15</span>the math.</button></li>
+      <li><button class="chapter" type="button" data-time="165"><span class="chap-time">2:45</span>vision.</button></li>
     </ul>
   </div>
 </section>
@@ -720,7 +728,7 @@ ledger unchanged</pre>
       </li>
     </ul>
     <div class="auditcard">
-      <div><code>git clone github.com/8-BitRhyon/settleye</code></div>
+      <div><code>git clone https://github.com/8-BitRhyon/settleye.git</code></div>
       <div style="display:flex;gap:14px;flex-wrap:wrap;align-items:center">
         <a class="btnlight" href="https://github.com/8-BitRhyon/settleye/issues/new?labels=pilot&amp;title=Pilot%20request" rel="noopener"><i></i>Request a pilot</a>
         <a class="u" href="https://github.com/8-BitRhyon/settleye" rel="noopener" style="font-weight:600">Open the repo</a>
@@ -749,8 +757,8 @@ ledger unchanged</pre>
       <a class="repo u" href="https://github.com/8-BitRhyon/settleye" rel="noopener">github.com/8-BitRhyon/settleye</a>
     </div>
     <div class="cmdrow">
-      <code id="clone-cmd">git clone github.com/8-BitRhyon/settleye</code>
-      <button class="copybtn" type="button" data-copy="clone-cmd">Copy</button>
+      <code id="clone-cmd">git clone https://github.com/8-BitRhyon/settleye.git</code>
+      <button class="copybtn" type="button" data-copy="clone-cmd" aria-label="Copy the clone command">Copy</button>
     </div>
     <p class="close-meta"><strong>Settleye</strong> - execution auditor for AI support agents. Built with Muse Spark Open (meta-models/muse-spark-open-1026). Synthetic demo data. Test ledgers only, no merchant data.</p>
   </div>
@@ -782,30 +790,69 @@ ledger unchanged</pre>
 })();
 </script>
 <script>
-document.querySelector(".copybtn")?.addEventListener("click", (e) => {
-  const btn = e.currentTarget;
-  const el = document.getElementById(btn.getAttribute("data-copy"));
-  const cmd = el ? el.textContent.trim() : "git clone github.com/8-BitRhyon/settleye";
-  btn.textContent = "Copied";
-  btn.setAttribute("aria-label", "Clone command copied to clipboard");
-  function fallback(text) {
-    const t = document.createElement("textarea");
-    t.value = text;
-    document.body.appendChild(t);
-    t.select();
-    try { document.execCommand("copy"); } catch (err) {}
-    t.remove();
+(() => {
+  const film = document.getElementById("film");
+  if (film) {
+    const seek = (button) => {
+      const time = Number(button.dataset.time);
+      if (!Number.isFinite(time)) return;
+      const jump = () => {
+        try { film.currentTime = time; } catch (err) {}
+        const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+        film.scrollIntoView({ behavior: reduce ? "auto" : "smooth", block: "center" });
+        const play = film.play();
+        if (play && typeof play.catch === "function") play.catch(() => {});
+      };
+      if (film.readyState >= 1) jump();
+      else film.addEventListener("loadedmetadata", jump, { once: true });
+    };
+    document.querySelectorAll(".chapter").forEach((button) => {
+      button.addEventListener("click", () => seek(button));
+    });
   }
-  try {
+
+  const button = document.querySelector(".copybtn");
+  if (!button) return;
+  const target = document.getElementById(button.getAttribute("data-copy"));
+  const command = target ? target.textContent.trim() : "git clone https://github.com/8-BitRhyon/settleye.git";
+  let timer;
+  const label = (text, aria) => {
+    button.textContent = text;
+    button.setAttribute("aria-label", aria);
+    clearTimeout(timer);
+    timer = setTimeout(() => {
+      button.textContent = "Copy";
+      button.setAttribute("aria-label", "Copy the clone command");
+    }, 2200);
+  };
+  const fallback = (text) => {
+    const area = document.createElement("textarea");
+    area.value = text;
+    area.setAttribute("readonly", "");
+    area.style.position = "fixed";
+    area.style.opacity = "0";
+    document.body.appendChild(area);
+    area.select();
+    let copied = false;
+    try { copied = document.execCommand("copy"); } catch (err) {}
+    area.remove();
+    return copied;
+  };
+  const copy = async (text) => {
     if (navigator.clipboard && navigator.clipboard.writeText) {
-      navigator.clipboard.writeText(cmd).catch(() => fallback(cmd));
-    } else {
-      fallback(cmd);
+      try {
+        await navigator.clipboard.writeText(text);
+        return true;
+      } catch (err) {}
     }
-  } catch (err) {
-    fallback(cmd);
-  }
-});
+    return fallback(text);
+  };
+  button.addEventListener("click", async () => {
+    const copied = await copy(command);
+    if (copied) label("Copied", "Clone command copied to clipboard");
+    else label("Copy failed", "Copy failed. Select the command and copy it manually.");
+  });
+})();
 </script>
 </body>
 </html>
